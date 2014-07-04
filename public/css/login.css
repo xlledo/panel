@@ -1,0 +1,108 @@
+body {
+	margin:0;
+	padding:0;
+	/*font-family: Verdana, Tahoma;*/
+  font-family: Lucida Grande, Lucida Sans, Verdana, Tahoma, Arial, sans-serif;
+	font-size: 0.7em;
+	line-height: 1.4em;
+}
+#mensajesFlash ul, #sumario ul, .mensajesFlash ul {
+  border:0 none !important;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mensajesFlash li {
+  font-size:1em !important;
+  font-weight:bold !important;
+  margin-bottom:11px !important;
+  min-height:23px !important;
+  padding:8px 8px 2px 32px !important;
+}
+.mensajesFlash ul li {
+  /*border:0 none !important;*/
+  margin:3px !important;
+  /*padding:0 !important;*/
+}
+.fm_error {
+  background:#FAEBE7 url(../images/ico_exclamacion.png) no-repeat scroll 10px 10px !important;
+  border:1px solid #F16048 !important;
+  color:#DF280A !important;
+}
+.fm_ok {
+  background:#EFF5EA url(../images/ico_ok.png) no-repeat scroll 10px 10px !important;
+  border:1px solid #95A486 !important;
+  color:#3D6611 !important;
+}
+.fm_warning {
+  background:#FFFBF0 url(../images/ico_warning.png) no-repeat scroll 10px 10px !important;
+  border:1px solid #FFD967 !important;
+  color:#EB5E00 !important;
+}
+.msgError p, .fm_error p, .fm_ok p{
+ padding-left:32px;
+}
+/*
+	Pantalla de login 
+----------------------------------------------- */
+
+#login, #solicitar {
+	width: 470px;
+	margin: 100px auto 0 auto;
+	
+}
+
+#login .contenedor {
+	padding: 15px 89px 15px 89px;
+	border: 1px solid #cccccc;
+        background:#F1F3F5 url(../images/security.png) no-repeat 15px 15px;
+}
+#solicitar .contenedor {
+	padding: 15px 89px 15px 89px;
+	border: 1px solid #cccccc;
+        background:#F1F3F5 url(../images/key-72x72.png) no-repeat 15px 15px;
+}
+#login #header_login h2,
+#solicitar #header_login h2{
+	line-height: 1.6em;
+	font-family : Arial, Helvetica, sans-serif;
+	color: #ff9900;
+}
+#form_container{
+    margin-top: 10px;
+}
+.form_field {
+    margin-bottom: 10px;
+}
+.form_field label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form_field label.inline {
+    display: inline;
+}
+/*.form_field input[type="text"], */
+.form_field input.campo {
+    width: 275px;
+    padding: 5px;
+}
+
+#pre_footer_login{
+    text-align: right;
+}
+#pre_footer_login a{
+    font-size: .9em;
+    text-decoration: underline;
+}
+#pre_footer_login a:hover{
+    text-decoration: none;
+}
+.form_field .button {
+    border : solid 1px #cccccc;
+    background: #E9ECEF;
+    color : #666666;
+    font-weight : bold;
+    font-size: 1em;
+    padding: 4px 10px;
+    cursor: pointer;
+}

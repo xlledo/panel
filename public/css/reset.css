@@ -1,0 +1,39 @@
+body, html{
+  height:100%;
+}
+body,ul,li,dl,dt,dd,p,h1,h2,h3,h4,form,fieldset,input,blockquote{
+ margin:0;
+ padding:0;
+}
+
+hr{
+ display:none;
+}
+
+img,fieldset{
+ border:none;
+}
+
+ul{
+ list-style:none;
+}
+
+#logotipo_impresion{
+ display:none;
+}
+
+/* -----------Clearfix----- */
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */

@@ -1,0 +1,24 @@
+{
+    "name": "ttt/panel",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ximo Lledó",
+            "email": "ximo@trestristestigres.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+            "src/controllers"
+        ],
+        "psr-0": {
+            "Ttt\\Panel\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

@@ -1,0 +1,52 @@
+/**************** TTT ******************/
+
+ html{
+ overflow-y: scroll;
+}
+.login-layout{background:#E4E6E9;}
+ #login-box,#forgot-box{margin-top: 20px;}
+ .login-box .toolbar > div{width:auto;}
+input.btn::-moz-focus-inner { 
+	border: 0; 
+	padding: 0; 
+	margin-top:1px; 
+}
+#tabs{padding:0;}
+#aux.mi{padding-left: 133px;}
+#tabsI{padding:0;background:#eee;}
+#tabsI>ul{border-color: #C5D0DC;float: left;margin-bottom: 0;top: auto;position:relative;min-width:132px;}
+#tabsI> ul > li {float: none;margin:0 0 -1px 0;display:block;position:relative;}
+#tabsI > ul > li > a{margin:0;margin-right: -1px;position: relative;z-index: 11;display:block;float:none;}
+#tabsI > ul > li:first-child > a{border-top:0;}
+#tabsI > ul > li.ui-tabs-active > a{border-left: 2px solid #4C8FBD;border-color:#C5D0DC rgba(0, 0, 0, 0) #C5D0DC #4C8FBD;border-top-width: 1px;box-shadow: -2px 0 3px 0 rgba(0, 0, 0, 0.15);margin: 0 -1px;}
+#tabsI .ui-tabs-panel{background:#fff;overflow:hidden;border-bottom:0;border-right:0;}
+
+.acciones form{float:left;margin-left:5px;}
+
+.pestanias:before,.pestanias:after {
+    content: " ";
+    display: table;
+}
+
+.pestanias:after {
+    clear: both;
+}
+
+[data-toggle=collapse]{cursor:pointer;}
+
+.asc {
+    background: url("../images/asc.png") no-repeat scroll 100% 50% rgba(0, 0, 0, 0);
+    padding-right: 10px;
+}
+.desc {
+    background: url("../images/desc.png") no-repeat scroll 100% 50% rgba(0, 0, 0, 0);
+    padding-right: 10px;
+}
+
+.precioMoneda{text-align:right;}
+ul.nestedView{
+ list-style-type: none;
+}
+
+#formComentarioEnvio .acciones{margin-bottom:30px;}
+.ace-spinner{width:100% !important;}
