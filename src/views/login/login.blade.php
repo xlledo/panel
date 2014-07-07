@@ -9,7 +9,7 @@
 						<div class="widget-main">
 							<h4 class="header blue lighter bigger">
 								<i class="icon-coffee green"></i>
-								Control de acceso
+								Control de acceso modificado
 							</h4>
 
 							<div class="space-6"></div>
