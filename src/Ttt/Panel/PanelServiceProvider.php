@@ -21,6 +21,7 @@ class PanelServiceProvider extends ServiceProvider {
 		$this->package('ttt/panel');
 
 		include __DIR__ . '/../../routes.php';
+		include __DIR__ . '/../../helpers.php';
 		//include __DIR__ . '/../../filters.php';
 	}
 
