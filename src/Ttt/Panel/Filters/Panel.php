@@ -10,7 +10,7 @@ class Panel{
 	{
 		if(Sentry::check())
 		{
-			return \Redirect::guest(Config::get('panel::app.access_url' . '/dashboard'));
+			return \Redirect::guest(\Config::get('panel::app.access_url') . '/dashboard');
 		}
 	}
 
@@ -25,7 +25,7 @@ class Panel{
 					'msg'   => 'Debe estar registrado para poder acceder a la aplicación'
 				)
 			));
-			return \Redirect::guest(Config::get('panel::app.access_url'));
+			return \Redirect::guest(\Config::get('panel::app.access_url'));
 		}
 	}
 }
