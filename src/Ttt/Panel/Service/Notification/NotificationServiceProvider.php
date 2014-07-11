@@ -20,8 +20,10 @@ class NotificationServiceProvider extends ServiceProvider{
 
             $config = $app['config'];
 
-            $notifier->from($config->get('mail.from'))
-                        ->to($config->get('mail.notifyTo'));
+            /*$notifier->from($config->get('mail.from'))
+                        ->to($config->get('mail.notifyTo'));*/
+            $notifier->from($config->get('panel::mail.from'))
+                        ->to($config->get('panel::mail.notifyTo'));
 
             return $notifier;
         });

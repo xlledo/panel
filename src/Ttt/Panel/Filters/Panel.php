@@ -10,7 +10,7 @@ class Panel{
 	{
 		if(Sentry::check())
 		{
-			return \Redirect::guest(\Config::get('panel::app.access_url' . '/dashboard'));
+			return \Redirect::guest(\Config::get('panel::app.access_url') . '/dashboard');
 		}
 	}
 

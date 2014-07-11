@@ -41,7 +41,7 @@ class ModuloController extends AbstractCrudController{
 		View::share('title', 'Listado de Módulos');
 
 		//recogemos la página
-		$pagina  = Input::get('pagina', 1);
+		$pagina  = Input::get(Config::get('panel::app.pageName', 'pg'), 1);
 		$perPage = Config::get('panel::app.perPage', 1);
 
 		$params = $this->getParams();
