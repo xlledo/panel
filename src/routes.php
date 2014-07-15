@@ -38,12 +38,21 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/modulos/nuevo', 'Ttt\Panel\ModuloController@nuevo');
 	Route::get('/modulos/ver/{id}', 'Ttt\Panel\ModuloController@ver');
 	Route::get('/modulos/borrar/{id}', 'Ttt\Panel\ModuloController@borrar');
-
 	Route::post('/modulos/crear', 'Ttt\Panel\ModuloController@crear');
 	Route::post('/modulos/actualizar', 'Ttt\Panel\ModuloController@actualizar');
-
 	Route::post('/modulos/cambiar_estado', 'Ttt\Panel\ModuloController@visibleNoVisible');
 
+        //Variables Globales
+	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
+        Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
+        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');        
+        Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
+        Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
+        Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
+
+	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
+        
+        
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

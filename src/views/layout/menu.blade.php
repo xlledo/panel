@@ -46,6 +46,13 @@
                 <span class="menu-text">Módulos</span>
             </a>
         </li>
+        
+        <li>
+            <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Variables Globales">
+                <i class="icon-cogs"></i>
+                <span class="menu-text">Variables Globales</span>
+            </a>
+        </li>        
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">
