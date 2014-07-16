@@ -43,9 +43,9 @@
 				<div class="alert alert-info">Actualmente no hay elementos en la base de datos</div>
 	        @else
 
-	            <form action="{{ url('admin/modulos/acciones_por_lote') }}" method="post">
+	            <form action="{{ url('admin/variablesglobales/acciones_por_lote') }}" method="post">
 	                <fieldset>
-	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de módulos" border="0" cellpadding="0" cellspacing="1">
+	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
 

@@ -34,7 +34,6 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/modulos', 'Ttt\Panel\ModuloController@index');
 	Route::post('/modulos', 'Ttt\Panel\ModuloController@index');//los filtros
 	Route::post('/modulos/acciones_por_lote', 'Ttt\Panel\ModuloController@accionesPorLote');//las acciones por lote
-
 	Route::get('/modulos/nuevo', 'Ttt\Panel\ModuloController@nuevo');
 	Route::get('/modulos/ver/{id}', 'Ttt\Panel\ModuloController@ver');
 	Route::get('/modulos/borrar/{id}', 'Ttt\Panel\ModuloController@borrar');
@@ -49,8 +48,8 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
         Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
-
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
+        Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
         
         
 	Route::get('/hola', function()
