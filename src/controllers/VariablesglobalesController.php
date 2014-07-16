@@ -26,8 +26,6 @@ class VariablesglobalesController extends AbstractCrudController{
 	);
 
 	protected $acciones_por_lote = array(
-		'visible'   => 'Visible',
-		'noVisible' => 'No visible',
 		'delete'    => 'Borrar'
 	);
 
@@ -281,6 +279,62 @@ class VariablesglobalesController extends AbstractCrudController{
 		));
 
 		return \Redirect::action('Ttt\Panel\VariablesglobalesController@ver', $id);
+	}        
+        
+        /**
+	* Ejecuta una acción sobre un conjunto de elementos
+	* @throws \Ttt\Exception\BatchActionException
+	* @return void
+	*/
+	public function accionesPorLote()
+	{
+		$input = Input::only('item', 'accion');
+
+		try{
+
+			if(! array_key_exists($input['accion'], $this->acciones_por_lote))
+			{
+				throw new \Ttt\Panel\Exception\TttException;
+			}
+
+			foreach($input['item'] as $itemId)
+			{
+				if(! method_exists($this->variablesglobale, $input['accion']))
+				{
+					throw new \Ttt\Exception\TttException;
+				}
+
+				call_user_func_array(array($this->variablesglobale, $input['accion']), array($itemId, \Sentry::getUser()['id']));
+			}
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => 'La acción ' . $this->acciones_por_lote[$input['accion']] . ' se ha ejecutado correctamente.'
+				)
+			));
+
+			return \Redirect::action('Ttt\Panel\VariablesglobalesController@index');
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$mensaje = 'La acción indicada no existe';
+		}
+		catch(\Ttt\Panel\Exception\BatchActionException $e)
+		{
+			$mensaje = $e->getMessage();
+		}
+
+		//error al intentar ejecutar la acción
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $mensaje
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\DashboardController@index');
 	}        
         
 	protected function getParams()
