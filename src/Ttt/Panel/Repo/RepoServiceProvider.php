@@ -7,6 +7,8 @@ use Ttt\Panel\Repo\Modulo\EloquentModulo;
 use Ttt\Panel\Repo\Variablesglobales\Variablesglobales;
 use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
+use Ttt\Panel\Repo\Grupo\SentryGrupo;
+
 
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,11 @@ class RepoServiceProvider extends ServiceProvider{
             return new EloquentVariablesglobales(
                 new Variablesglobales
             );
+        });
+
+        $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
+        {
+            return new SentryGrupo();
         });
     }
 }

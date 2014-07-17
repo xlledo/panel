@@ -31,6 +31,7 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::get('/dashboard', 'Ttt\Panel\DashboardController@index');
 
+	//Gestión de módulos
 	Route::get('/modulos', 'Ttt\Panel\ModuloController@index');
 	Route::post('/modulos', 'Ttt\Panel\ModuloController@index');//los filtros
 	Route::post('/modulos/acciones_por_lote', 'Ttt\Panel\ModuloController@accionesPorLote');//las acciones por lote
@@ -44,14 +45,24 @@ Route::group(array('prefix' => 'admin'), function()
         //Variables Globales
 	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
         Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
-        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');        
+        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
         Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
         Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-        
-        
+
+	//Gestión de grupos
+	Route::get('/grupos', 'Ttt\Panel\GrupoController@index');//listado
+	Route::get('/grupos/nuevo', 'Ttt\Panel\GrupoController@nuevo');//formulario de nuevo grupo
+	Route::get('/grupos/ver/{id}', 'Ttt\Panel\GrupoController@ver');//formulario de edición
+	Route::get('/grupos/borrar/{id}', 'Ttt\Panel\GrupoController@borrar');//borrar
+
+	Route::post('/grupos/crear', 'Ttt\Panel\GrupoController@crear');//creación de un nuevo grupo
+	Route::post('/grupos/actualizar', 'Ttt\Panel\GrupoController@actualizar');//actualización de un grupo
+
+
+
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();
