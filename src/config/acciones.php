@@ -10,12 +10,23 @@ return array(
 	| Se mappean las acciones del módulo con las diferentes urls que pueden llegar Request::segment(3)
 	|
 	*/
-
-    'modulos' => array(
-        'crear'  => array('nuevo', 'crear'),
-        'editar' => array('ver', 'actualizar', 'visible', 'noVisible', 'cambiar_estado'),
+    'grupos' => array(
         'listar' => array('index'),
-        'borrar' => array('borrar', 'delete')
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar'),
+        'borrar' => array('borrar')
+    ),
+    'modulos' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar', 'accionesPorLote:accion.visible', 'accionesPorLote:accion.noVisible', 'visibleNoVisible'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    ),
+    'variables-globales' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     ),
 
 );

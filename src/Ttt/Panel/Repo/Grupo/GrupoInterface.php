@@ -12,15 +12,8 @@ interface GrupoInterface extends \Cartalyst\Sentry\Groups\ProviderInterface{
 
     /**
     * Actualiza un grupo
-    * @param $data array
+    * @param $group array
     * @return boolean
     */
-    public function update(array $data);
-
-    /**
-    * Elimina un grupo
-    * @param $id int
-    * @return boolean
-    */
-    public function delete($id);
+    public function update(\Cartalyst\Sentry\Groups\GroupInterface $group);
 }

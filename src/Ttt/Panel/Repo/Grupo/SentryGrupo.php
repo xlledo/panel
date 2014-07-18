@@ -22,39 +22,16 @@ class SentryGrupo extends \Cartalyst\Sentry\Groups\Eloquent\Provider implements 
 
     /**
     * Actualiza un módulo
-    * @param $data array
-    * @return boolean
+    * @param $group array
+    * @throws \Ttt\Panel\Exception\TttException
+    *
+    * @return void
     */
-    public function update(array $data)
+    public function update(\Cartalyst\Sentry\Groups\GroupInterface $group)
     {
-        /*$modulo = $this->modulo->with('updater')->findOrFail($data['id']);
-
-        if(! $modulo)
+        if(! $group->save())
         {
-            return FALSE;
+            throw new \Ttt\Panel\Exception\TttException;
         }
-
-        $modulo->actualizado_por   = $data['usuario'];
-        $modulo->nombre            = isset($data['nombre']) ? $data['nombre'] : $modulo['nombre'];
-        $modulo->slug              = $this->slug($modulo->nombre, $modulo->id);
-        $modulo->visible           = $data['visible'];
-
-        $modulo->update();
-
-        //return TRUE;
-        return $modulo->id;*/
-    }
-
-    /**
-    * Elimina un módulo
-    * @param $id int
-    * @return boolean
-    */
-    public function delete($id)
-    {
-        /*$deletedModule = $this->modulo->findOrFail($id)
-                                                ->delete();
-
-        return ($deletedModule === TRUE) ? TRUE : FALSE;*/
     }
 }
