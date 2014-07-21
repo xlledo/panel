@@ -5,21 +5,21 @@ use \Config;
 use \Input;
 use \Sentry;
 use \View;
-use Ttt\Panel\Repo\Grupo\GrupoInterface;
+use Ttt\Panel\Repo\Grupo\UsuarioInterface;
 use Ttt\Panel\Core\AbstractCrudController;
 
-class GrupoController extends AbstractCrudController{
+class UsuarioController extends AbstractCrudController{
 
-	protected $_views_dir = 'grupos';
-	protected $_titulo = 'Grupos';
+	protected $_views_dir = 'usuarios';
+	protected $_titulo = 'Usuarios';
 
-	protected $grupo;
+	protected $usuario;
 
-	public function __construct(GrupoInterface $grupo)
+	public function __construct(UsuarioInterface $usuario)
 	{
 		parent::__construct();
 
-		$this->grupo     = $grupo;
+		$this->usuario     = $usuario;
 	}
 
 	public function index()
