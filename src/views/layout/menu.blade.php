@@ -59,6 +59,12 @@
                 <span class="menu-text">Grupos</span>
             </a>
         </li>
+        <li>
+            <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Usuarios">
+                <i class="icon-user"></i>
+                <span class="menu-text">Usuarios</span>
+            </a>
+        </li>
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

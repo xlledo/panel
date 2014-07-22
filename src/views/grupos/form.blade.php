@@ -58,7 +58,7 @@
 					                <div class="widget-body">
 					                    <div class="widget-main row">
 					                        <div class="col-md-3">
-					                            <div class="form-group @if ($errors->first('name')) has-error @endif">
+					                            <div class="form-group">
 					                                <label for="nombre">Nombre *</label>
 					                                <input type="text" class="form-control" name="name" id="name" value="{{ $item->name }}" size="20" />
 					                            </div>

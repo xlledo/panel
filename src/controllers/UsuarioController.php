@@ -7,6 +7,7 @@ use \Paginator;
 use \Sentry;
 use \View;
 use Ttt\Panel\Repo\Usuario\UsuarioInterface;
+use Ttt\Panel\Service\Form\Usuario\UsuarioForm;
 use Ttt\Panel\Repo\Grupo\GrupoInterface;
 use Ttt\Panel\Core\AbstractCrudController;
 
@@ -16,17 +17,19 @@ class UsuarioController extends AbstractCrudController{
 	protected $_titulo = 'Usuarios';
 
 	protected $usuario;
+	protected $usuarioForm;
 	protected $grupo;
 
 	protected $allowed_url_params = array(
 		'nombre', 'email', 'ordenPor', 'ordenDir', 'creado_por'
 	);
 
-	public function __construct(UsuarioInterface $usuario, GrupoInterface $grupo)
+	public function __construct(UsuarioInterface $usuario, GrupoInterface $grupo, UsuarioForm $usuarioForm)
 	{
 		parent::__construct();
 
 		$this->usuario     = $usuario;
+		$this->usuarioForm = $usuarioForm;
 		$this->grupo       = $grupo;
 	}
 
@@ -42,7 +45,7 @@ class UsuarioController extends AbstractCrudController{
 		$pagina  = Input::get(Config::get('panel::app.pageName', 'pg'), 1);
 		$perPage = Config::get('panel::app.perPage', 1);
 
-		$input = array_merge(Input::only($this->allowed_url_params));
+		$input = Input::only($this->allowed_url_params);
 
 		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';
 		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
@@ -70,11 +73,17 @@ class UsuarioController extends AbstractCrudController{
 	*/
 	public function nuevo()
 	{
-		$item = $this->grupo->createModel();
-		$item->name    = Input::old('name') ? Input::old('name') : '';
-		/*echo '<pre>';
-		print_r(Input::old());
-		echo '</pre>';exit;*/
+		$item = $this->usuario->createModel();
+		$item->first_name    = Input::old('first_name') ? Input::old('first_name') : '';
+		$item->last_name     = Input::old('last_name') ? Input::old('last_name') : '';
+		$item->email         = Input::old('email') ? Input::old('email') : '';
+		if(Input::old('grupo') && Input::old('grupo') != '')
+		{
+			$coll = new \Illuminate\Database\Eloquent\Collection;
+			$coll->add($this->grupo->findById(Input::old('grupo')));
+			$item->groups = $coll;
+		}
+
 		//construimos permisos
 		$permisos = array();
 		foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
@@ -87,9 +96,10 @@ class UsuarioController extends AbstractCrudController{
 		}
 		$item->permissions = $permisos;
 
-		View::share('title', 'Creación de nuevo grupo.');
-		return View::make('panel::grupos.form')
+		View::share('title', 'Creación de nuevo usuario.');
+		return View::make('panel::usuarios.form')
 								->with('item', $item)
+								->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
 								->with('action', 'create');
 	}
 
@@ -99,24 +109,36 @@ class UsuarioController extends AbstractCrudController{
 	*/
 	public function crear()
 	{
-		$message = 'Grupo creado correctamente.';
+		$message = 'Usuario creado correctamente.';
 		try
 		{
-			$data = array(
-				'name'        => Input::get('name')
-			);
-			$permisos = array();
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
-			{
-				foreach($acciones as $actionKey => $metodos)
-				{
-					$tmpPermiso = $moduloKey . '::' . $actionKey;
-					$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : 0;//valor por defecto
-				}
-			}
-			$data['permissions'] = $permisos;
+			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
 
-			$grupo = $this->grupo->create($data);
+			$tmp_grupo = Input::get('grupo');
+
+			if($tmp_grupo != 1)
+			{
+				$permisos = array();
+				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+				{
+					foreach($acciones as $actionKey => $metodos)
+					{
+						$tmpPermiso = $moduloKey . '::' . $actionKey;
+						$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : 0;//valor por defecto
+					}
+				}
+				$data['permissions'] = $permisos;
+			}
+
+
+			$usuario = $this->usuarioForm->create($data);
+
+			//si hemos llegado aquí ya tenemos usuario creado, por lo tanto asignamos grupo
+			if($tmp_grupo != '')
+			{
+				$grupoUsuario = $this->grupo->findById($tmp_grupo);
+				$usuario->addGroup($grupoUsuario);
+			}
 
 			\Session::flash('messages', array(
 				array(
@@ -124,15 +146,20 @@ class UsuarioController extends AbstractCrudController{
 					'msg'   => $message
 				)
 			));
-			return \Redirect::action('Ttt\Panel\GrupoController@ver', $grupo->id);
+
+			return \Redirect::action('Ttt\Panel\UsuarioController@ver', $usuario->id);
 		}
-		catch (\Cartalyst\Sentry\Groups\NameRequiredException $e)
+		catch(\Ttt\Panel\Exception\TttException $e)
 		{
-		    $message = 'El campo nombre es obligatorio.';
+			$message = $e->getMessage();
 		}
-		catch (\Cartalyst\Sentry\Groups\GroupExistsException $e)
+		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $message = 'Ya existe un grupo con ese nombre y los nombres han de ser únicos.';
+		    $message = 'Ya existe un usuario con ese email.';
+		}
+		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		{
+		    $message = 'El grupo indicado no existe.';
 		}
 
 		\Session::flash('messages', array(
@@ -142,8 +169,9 @@ class UsuarioController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\GrupoController@nuevo')
-									->withInput();
+		return \Redirect::action('Ttt\Panel\UsuarioController@nuevo')
+									->withInput()
+									->withErrors($this->usuarioForm->errors());
 	}
 
 	/**
@@ -158,8 +186,12 @@ class UsuarioController extends AbstractCrudController{
 			/*echo '<pre>';
 			print_r(Input::old());
 			echo '</pre>';exit;*/
-			$item = $this->grupo->findById($id);
-			$item->name   = ! is_null(Input::old('name')) ? Input::old('name') : $item->name;
+			$item = $this->usuario->findById($id);
+			$item->first_name   = ! is_null(Input::old('first_name')) ? Input::old('first_name') : $item->first_name;
+			$item->last_name    = ! is_null(Input::old('last_name')) ? Input::old('last_name') : $item->last_name;
+			$item->email        = ! is_null(Input::old('email')) ? Input::old('email') : $item->email;
+
+
 			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
 			{
 				foreach($acciones as $actionKey => $metodos)
@@ -176,13 +208,23 @@ class UsuarioController extends AbstractCrudController{
 			}
 			$item->permissions = $permisos;
 
-			View::share('title', 'Edición del grupo ' . $item->name);
-			return View::make('panel::grupos.form')
+			//puede que tengamos algún grupo porque viene de un error al actualizar
+			if(Input::old('grupo') && Input::old('grupo') != '')
+			{
+				$coll = new \Illuminate\Database\Eloquent\Collection;
+				$coll->add($this->grupo->findById(Input::old('grupo')));
+				$item->groups = $coll;
+			}
+
+
+			View::share('title', 'Edición del usuario ' . $item->full_name);
+			return View::make('panel::usuarios.form')
 									->with('action', 'edit')
+									->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
 									->with('item', $item);
 
 		}
-		catch(\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		catch(\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 			$message = $e->getMessage();
 		}
@@ -194,7 +236,7 @@ class UsuarioController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\GrupoController@index');
+		return \Redirect::action('Ttt\Panel\UsuarioController@index');
 	}
 
 	/**
@@ -268,15 +310,12 @@ class UsuarioController extends AbstractCrudController{
 	*/
 	public function borrar($id = null)
 	{
-		$message = 'Grupo eliminado correctamente.';
+		$message = 'Usuario eliminado correctamente.';
 		try
 		{
-			$group = $this->grupo->findById($id);
-			if($group->name == 'Superadmin')
-			{
-				throw new \Cartalyst\Sentry\Groups\GroupNotFoundException('No se puede eliminar el grupo Superadmin');
-			}
-			$group->delete();
+			$user = $this->usuario->findById($id);
+
+			$user->delete();
 
 			\Session::flash('messages', array(
 				array(
@@ -285,10 +324,10 @@ class UsuarioController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\GrupoController@index');
+			return \Redirect::action('Ttt\Panel\UsuarioController@index');
 
 		}
-		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		catch (\Cartalyst\Sentry\Groups\UserNotFoundException $e)
 		{
 			$message = $e->getMessage();
 		}
@@ -300,6 +339,6 @@ class UsuarioController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\GrupoController@ver', $group->id);
+		return \Redirect::action('Ttt\Panel\UsuarioController@ver', $user->id);
 	}
 }
