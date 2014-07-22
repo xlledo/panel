@@ -3,9 +3,11 @@ namespace Ttt\Panel;
 
 use \Config;
 use \Input;
+use \Paginator;
 use \Sentry;
 use \View;
-use Ttt\Panel\Repo\Grupo\UsuarioInterface;
+use Ttt\Panel\Repo\Usuario\UsuarioInterface;
+use Ttt\Panel\Repo\Grupo\GrupoInterface;
 use Ttt\Panel\Core\AbstractCrudController;
 
 class UsuarioController extends AbstractCrudController{
@@ -14,12 +16,18 @@ class UsuarioController extends AbstractCrudController{
 	protected $_titulo = 'Usuarios';
 
 	protected $usuario;
+	protected $grupo;
 
-	public function __construct(UsuarioInterface $usuario)
+	protected $allowed_url_params = array(
+		'nombre', 'email', 'ordenPor', 'ordenDir', 'creado_por'
+	);
+
+	public function __construct(UsuarioInterface $usuario, GrupoInterface $grupo)
 	{
 		parent::__construct();
 
 		$this->usuario     = $usuario;
+		$this->grupo       = $grupo;
 	}
 
 	public function index()
@@ -28,20 +36,32 @@ class UsuarioController extends AbstractCrudController{
 		print_r(Config::get('panel::acciones'));
 		echo '</pre>';exit;*/
 
-		View::share('title', 'Listado de Grupos');
+		View::share('title', 'Listado de Usuarios');
 
-		$input = array_merge(Input::only(Config::get('panel::app.orderBy'), Config::get('panel::app.orderDir')));
+		//recogemos la página
+		$pagina  = Input::get(Config::get('panel::app.pageName', 'pg'), 1);
+		$perPage = Config::get('panel::app.perPage', 1);
 
-		$order[Config::get('panel::app.orderBy')] = ! is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'name';
-		$order[Config::get('panel::app.orderDir')] = ! is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
+		$input = array_merge(Input::only($this->allowed_url_params));
 
-		//recogemos los grupos, aquí no paginaremos, ya que no va a ser algo corriente tener 200 grupos
-		$items = $this->grupo->findAllBy($order);
+		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';
+		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
 
-		View::share('items', $items);
-		return View::make('panel::grupos.index')
+		//recogemos la paginación
+		$pageData = $this->usuario->byPage($pagina, $perPage, $input);
+
+		$usuarios = Paginator::make(
+			$pageData->items,
+			$pageData->totalItems,
+			$perPage
+		);
+		//debemos añadir los parámetros de la url
+		$usuarios->appends($input);
+
+		View::share('items', $usuarios);
+		return View::make('panel::usuarios.index')
 									->with('currentUrl', \URL::current())
-									->with('params', $order);
+									->with('params', $input);
 	}
 
 	/**

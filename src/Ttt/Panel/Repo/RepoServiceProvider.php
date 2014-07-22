@@ -9,6 +9,8 @@ use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
 use Ttt\Panel\Repo\Grupo\SentryGrupo;
 
+use Ttt\Panel\Repo\Usuario\SentryUsuario;
+
 
 use Illuminate\Support\ServiceProvider;
 
@@ -38,6 +40,11 @@ class RepoServiceProvider extends ServiceProvider{
         $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
         {
             return new SentryGrupo();
+        });
+
+        $this->app->bind('Ttt\Panel\Repo\Usuario\UsuarioInterface', function($app)
+        {
+            return new SentryUsuario($app['sentry.hasher'], 'Ttt\Panel\Repo\Usuario\User');
         });
     }
 }

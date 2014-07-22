@@ -63,6 +63,7 @@ Route::group(array('prefix' => 'admin'), function()
 
 	//Gestión de usuarios
 	Route::get('/usuarios', 'Ttt\Panel\UsuarioController@index');//listado
+	Route::post('/usuarios', 'Ttt\Panel\UsuarioController@index');//los filtros
 	Route::get('/usuarios/nuevo', 'Ttt\Panel\UsuarioController@nuevo');//formulario de nuevo usuario
 	Route::get('/usuarios/ver/{id}', 'Ttt\Panel\UsuarioController@ver');//formulario de edición
 	Route::get('/usuarios/borrar/{id}', 'Ttt\Panel\UsuarioController@borrar');//borrar

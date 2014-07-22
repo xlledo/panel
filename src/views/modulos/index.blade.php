@@ -77,7 +77,7 @@
 								@endforeach
 	                        </tbody>
 	                    </table>
-	                    -<div class="selectAcciones row">
+	                    <div class="selectAcciones row">
 	                        <div class="elementos col-sm-6">
 	                            Mostrando de {{ $items->getFrom() }} a {{ $items->getTo() }} de un total de {{ $items->getTotal() }}
 	                        </div>
