@@ -33,6 +33,16 @@ class UsuarioController extends AbstractCrudController{
 		$this->grupo       = $grupo;
 	}
 
+	protected function _setDefaultAssets()
+	{
+		parent::_setDefaultAssets();
+
+		$assets = \View::shared('assets');
+		$assets['js'][] = asset('packages/ttt/panel/js/usuarios.js');
+
+		\View::share('assets', $assets);
+	}
+
 	public function index()
 	{
 		/*echo '<pre>';

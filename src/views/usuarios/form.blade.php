@@ -124,7 +124,7 @@
 					        </div>
 					    </div>
 						{{-- Añadimos la caja de permisos --}}
-						<div class="row" id="permissionBox">
+						<div class="row" id="permissionBox" style="display:none;">
 							<div class="col-xs-12">
 								<div class="widget-box transparent">
 									<div class="widget-header widget-header-small">
@@ -181,4 +181,12 @@
 			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\UsuarioController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 		</div>
 	@endif
+@stop
+@section('inline_js')
+	@parent
+    $(document).ready(function() {
+        tttjs.usuarios.init({
+            vista: 'edicion'
+        });
+    });
 @stop
