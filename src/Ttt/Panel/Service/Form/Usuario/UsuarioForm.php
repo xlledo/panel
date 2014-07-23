@@ -51,19 +51,37 @@ class UsuarioForm {
 
     /**
      * Update an existing user
+     * @param $input array
+     * @param \Cartalyst\Sentry\Users\UserInterface $user
      *
      * @throws \Ttt\Exception\TttException
      * @return boolean
      */
-    public function update(array $input)
+    public function update(array $input, \Cartalyst\Sentry\Users\UserInterface &$user)
     {
+        //reestablecemos las reglas para el password, ya que en la edición no ha de ser obligatorio
+        $this->validator->setRuleForKey('password', '');
+        if($input['password'] == '')
+        {
+            $this->validator->setRuleForKey('confirm_password', '');
+        }
+
         if( ! $this->valid($input) )
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido actualizarse el registro');
             return false;
         }
 
-        return $this->usuario->update($input);
+        //establecemos las nuevas propiedades
+        $user->first_name = $input['first_name'];
+        $user->last_name  = $input['last_name'];
+        $user->email      = $input['email'];
+        if($input['password'] != '')
+        {
+            $user->password = $input['password'];
+        }
+
+        return $this->usuario->update($user);
     }
 
     /**

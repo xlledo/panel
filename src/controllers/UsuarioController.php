@@ -123,6 +123,7 @@ class UsuarioController extends AbstractCrudController{
 		try
 		{
 			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
+			$data['activated'] = TRUE;//forzamos a que esté activo
 
 			$tmp_grupo = Input::get('grupo');
 
@@ -167,9 +168,9 @@ class UsuarioController extends AbstractCrudController{
 		{
 		    $message = 'Ya existe un usuario con ese email.';
 		}
-		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $message = 'El grupo indicado no existe.';
+		    $message = 'El usuario indicado no existe.';
 		}
 
 		\Session::flash('messages', array(
@@ -255,26 +256,37 @@ class UsuarioController extends AbstractCrudController{
 	*/
 	public function actualizar()
 	{
-		$message = 'Grupo actualizado correctamente.';
+		$message = 'Usuario actualizado correctamente.';
 		try
 		{
-			$ent = $this->grupo->findById(Input::get('id'));
+			$ent = $this->usuario->findById(Input::get('id'));
 
-			$ent->name = Input::get('name');
+			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
+
+			$tmp_grupo = Input::get('grupo');
+
 			$permisos = array();
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+			if($tmp_grupo != 1)
 			{
-				foreach($acciones as $actionKey => $metodos)
+				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
 				{
-					$tmpPermiso = $moduloKey . '::' . $actionKey;
-					$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : 0;//valor por defecto
+					foreach($acciones as $actionKey => $metodos)
+					{
+						$tmpPermiso = $moduloKey . '::' . $actionKey;
+						$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : -1;//valor por defecto
+					}
 				}
 			}
-			$ent->permissions = ($ent->name == 'Superadmin') ? array('superuser' => 1) : $permisos;
+			$ent->permissions = $permisos;
+			$ent->cleanGroups();
+			$this->usuarioForm->update($data, $ent);
 
-
-
-			$this->grupo->update($ent);
+			//si hemos llegado aquí ya tenemos usuario creado, por lo tanto asignamos grupo
+			if($tmp_grupo != '')
+			{
+				$grupoUsuario = $this->grupo->findById($tmp_grupo);
+				$ent->addGroup($grupoUsuario);
+			}
 
 			\Session::flash('messages', array(
 				array(
@@ -283,22 +295,18 @@ class UsuarioController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\GrupoController@ver', $ent->id);
+			return \Redirect::action('Ttt\Panel\UsuarioController@ver', $ent->id);
 
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
-			$message = 'No se han podido guardar los cambios en el grupo.';
+			$message = 'No se han podido guardar los cambios en el usuario.';
 		}
-		catch (\Cartalyst\Sentry\Groups\NameRequiredException $e)
+		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-			$message = 'El campo nombre es obligatorio.';
+			$message = 'Ya existe un usuario con ese email.';
 		}
-		catch (\Cartalyst\Sentry\Groups\GroupExistsException $e)
-		{
-			$message = 'Ya existe un grupo con ese nombre y los nombres han de ser únicos.';
-		}
-		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 			$message = $e->getMessage();
 		}
@@ -310,8 +318,9 @@ class UsuarioController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\GrupoController@ver', $ent->id)
-																		->withInput();
+		return \Redirect::action('Ttt\Panel\UsuarioController@ver', $ent->id)
+																		->withInput()
+																		->withErrors($this->usuarioForm->errors());
 	}
 
 	/**
