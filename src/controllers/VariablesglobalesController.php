@@ -17,6 +17,8 @@ class VariablesglobalesController extends AbstractCrudController{
 	protected $_views_dir = 'variablesglobales';
 	protected $_titulo = 'Variables Globales';
 
+	public static $moduleSlug = 'variables-globales';
+
 	protected $variablesglobale;
 
 	protected $variablesglobalesForm;
@@ -39,8 +41,8 @@ class VariablesglobalesController extends AbstractCrudController{
 
 	public function index()
 	{
-            
-            
+
+
 		View::share('title', 'Listado de ' . $this->_titulo);
 
 		//recogemos la página
@@ -69,7 +71,7 @@ class VariablesglobalesController extends AbstractCrudController{
 
 
 	}
-        
+
 	/**
 	* Muestra el formulario de creación
 	* @return void
@@ -79,13 +81,13 @@ class VariablesglobalesController extends AbstractCrudController{
                 $item = new \StdClass;
 		$item->clave    = Input::old('clave') ? Input::old('clave') : '';
 		$item->valor    = Input::old('valor') ? Input::old('valor') : '';
-                
+
 		//return Input::all();
 		View::share('title', 'Creación de una nueva variable global.');
 		return View::make('panel::variablesglobales.form')
 								->with('item', $item)
 								->with('action', 'create');
-	}     
+	}
 
 	/**
 	* Intenta crear un nuevo elemento
@@ -131,7 +133,7 @@ class VariablesglobalesController extends AbstractCrudController{
 		return \Redirect::action('Ttt\Panel\VariablesglobalesController@nuevo')
 									->withInput()
 									->withErrors($this->variablesglobalesForm->errors());
-	}      
+	}
 
 	/**
 	* Muestra el formulario de edición
@@ -167,7 +169,7 @@ class VariablesglobalesController extends AbstractCrudController{
 		));
 
                 return \Redirect::action('Ttt\Panel\VariablesglobalesController@index');
-	}        
+	}
 
 
 	/**
@@ -180,25 +182,25 @@ class VariablesglobalesController extends AbstractCrudController{
 		try
 		{
 			$ent = $this->variablesglobale->byId(Input::get('id'));
-                        
+
                         $var = Variablesglobales::find(Input::get('id'));
-                        
-                        //Refactorizacion 
+
+                        //Refactorizacion
 //			$data = array(
 //				'id'            => $ent->id,
 //				'usuario'       => \Sentry::getUser()['id'],
 //				'clave'         => Input::get('clave'),
 //				'valor'         => Input::get('valor')
 //			);
-                        
+
                         //$var->actualizado_por = \Sentry::getUser()['id']; //Meter un observer/evento para los actulizados_por, creado_por
-                        
+
                         $var->clave   = Input::get('clave');
                         $var->valor   = Input::get('valor');
-                        
+
                         $var->save();
-                        
-                        
+
+
 
 			//$moduloId = $this->variablesglobalesForm->update($data);
 
@@ -206,7 +208,7 @@ class VariablesglobalesController extends AbstractCrudController{
 				array(
 					'class' => 'alert-success',
 					'msg'   => $message
-				)	
+				)
 		));
 
 			return \Redirect::action('Ttt\Panel\VariablesglobalesController@ver', $var->id);
@@ -232,8 +234,8 @@ class VariablesglobalesController extends AbstractCrudController{
 		return \Redirect::action('Ttt\Panel\VariablesglobalesController@ver', $ent->id)
 										->withInput()
 										->withErrors($this->variablesglobaleForm->errors());
-	}        
-        
+	}
+
 /**
 	* Intenta actualizar un elemento existente
 	* @return void
@@ -243,7 +245,7 @@ class VariablesglobalesController extends AbstractCrudController{
 		$message = 'Variable eliminada correctamente.';
 		try
 		{
-                    
+
 			//$ent = $this->modulo->byId(Input::get('id'));
 			if(! $this->variablesglobale->delete($id))
 			{
@@ -256,7 +258,7 @@ class VariablesglobalesController extends AbstractCrudController{
 					'msg'   => $message
 				)
 			));
-                        
+
 
 			return \Redirect::action('Ttt\Panel\VariablesglobalesController@index');
 
@@ -279,8 +281,8 @@ class VariablesglobalesController extends AbstractCrudController{
 		));
 
 		return \Redirect::action('Ttt\Panel\VariablesglobalesController@ver', $id);
-	}        
-        
+	}
+
         /**
 	* Ejecuta una acción sobre un conjunto de elementos
 	* @throws \Ttt\Exception\BatchActionException
@@ -335,15 +337,15 @@ class VariablesglobalesController extends AbstractCrudController{
 		));
 
 		return \Redirect::action('Ttt\Panel\DashboardController@index');
-	}        
-        
+	}
+
 	protected function getParams()
 	{
 		$input = array_merge(Input::only($this->allowed_url_params));
-                
+
 		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'clave';
 		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
-                
+
 		return $input;
 	}
 }

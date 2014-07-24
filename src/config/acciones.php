@@ -7,7 +7,7 @@ return array(
 	| Acciones para la gestión de módulos
 	|--------------------------------------------------------------------------
 	|
-	| Se mappean las acciones del módulo con las diferentes urls que pueden llegar Request::segment(3)
+	| Se mappean las acciones del módulo con los diferentes métodos existentes en cada controlador
 	|
 	*/
     'grupos' => array(

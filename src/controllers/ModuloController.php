@@ -14,6 +14,8 @@ class ModuloController extends AbstractCrudController{
 	protected $_views_dir = 'modulos';
 	protected $_titulo = 'Modulos';
 
+	public static $moduleSlug = 'modulos';
+
 	protected $modulo;
 
 	protected $moduloForm;

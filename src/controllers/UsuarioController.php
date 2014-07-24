@@ -16,6 +16,8 @@ class UsuarioController extends AbstractCrudController{
 	protected $_views_dir = 'usuarios';
 	protected $_titulo = 'Usuarios';
 
+	public static $moduleSlug = 'usuarios';
+
 	protected $usuario;
 	protected $usuarioForm;
 	protected $grupo;

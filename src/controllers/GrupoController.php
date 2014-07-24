@@ -13,6 +13,8 @@ class GrupoController extends AbstractCrudController{
 	protected $_views_dir = 'grupos';
 	protected $_titulo = 'Grupos';
 
+	public static $moduleSlug = 'grupos';
+
 	protected $grupo;
 
 	public function __construct(GrupoInterface $grupo)

@@ -14,6 +14,7 @@ Route::group(array('prefix' => 'admin'), function()
 	// Filtros de control de logueado o no
 	Route::filter('notLogged', 'Ttt\Panel\Filters\Panel@notLogged');
 	Route::filter('logged', 'Ttt\Panel\Filters\Panel@logged');
+	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
 

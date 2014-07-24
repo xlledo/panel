@@ -7,6 +7,8 @@ use \Sentry;
 class PanelController extends \BaseController {
 	protected $_views_dir = null;//indica el directorio de vistas
 
+	public static $moduleSlug = null;
+
 	/**
 	* Lista de métodos que no ejecutan el filtro que comprueba si se está logueado para acceder, por defecto lo ejecutan todos
 	* @var array
@@ -16,11 +18,19 @@ class PanelController extends \BaseController {
 
 	public function __construct()
 	{
+		/*
+		echo '<pre>';
+		print_r (\Route::current()->getActionName());//
+		echo '</pre>';
+		echo \Route::currentRouteAction();exit;//el método invocado Ttt\Panel\LoginController@index
+		*/
 		//la única manera de poder establecer el parámetro página en la url
 		\App::make('paginator')->setPageName(\Config::get('ttt.pageName', 'pg'));
 
 
 		$this->beforeFilter( 'notLogged' , array('except' => $this->whitelist));
+
+		$this->beforeFilter( 'hasPermission');
 
 		$this->_setDefaultAssets();
 
