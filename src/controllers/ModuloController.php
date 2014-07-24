@@ -371,10 +371,8 @@ class ModuloController extends AbstractCrudController{
 	protected function getParams()
 	{
 		$input = array_merge(Input::only($this->allowed_url_params));
-
 		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';
 		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
-
 		return $input;
 	}
 

@@ -77,9 +77,7 @@ class PanelController extends \BaseController {
 	protected function _setDefaultAssets()
 	{
 		$components_assets = array();
-
 		$css_assets = array();
-
 
 		$components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/bootstrap.min.js');
 		$components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/ace-extra.min.js');

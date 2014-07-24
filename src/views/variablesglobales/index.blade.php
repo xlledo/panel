@@ -52,6 +52,7 @@
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">Actualizado por</th>
+                                                                        <th scope="col">Versiones</th>
 	                                <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 	                            </tr>
 	                        </thead>
@@ -61,6 +62,7 @@
 										<td class="td_click">{{ link_to('admin/variablesglobales/ver/' . $item->id, $item->clave) }}</td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
+                                                                                <td class="td_click"><?php echo count($item->versiones); ?></td>
 										<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 									</tr>
 								@endforeach

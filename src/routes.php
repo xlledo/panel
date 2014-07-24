@@ -51,6 +51,8 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
         
+        //Versiones
+        Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
         
 	Route::get('/hola', function()
 	{

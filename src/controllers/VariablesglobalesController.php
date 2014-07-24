@@ -346,4 +346,15 @@ class VariablesglobalesController extends AbstractCrudController{
                 
 		return $input;
 	}
+        
+        protected function _setDefaultAssets() 
+        {
+            parent::_setDefaultAssets();
+
+            $assets = \View::shared('assets');
+            $assets['js'][] = asset('packages/ttt/panel/js/versionable.js');
+            
+            \View::share('assets', $assets);
+            
+        }
 }

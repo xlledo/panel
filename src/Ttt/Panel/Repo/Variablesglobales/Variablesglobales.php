@@ -3,28 +3,20 @@ namespace Ttt\Panel\Repo\Variablesglobales;
 
 use Illuminate\Validation\Factory as Validator;
 
+
+
 class Variablesglobales extends \Eloquent{
 
+        use \Ttt\Panel\Repo\Revisiones\RevisionTrait;
+    
 	protected $fillable = array('creado_por', 'actualizado_por', 'clave', 'valor');
 
 	public $validator = null;
         
-        public static function boot()
-        {
-            parent::boot();
-            
-//            //Asignamos eventos para guardar y actualizar
-//            Variablesglobales::creating(function($item)
-//            {
-//                    $item->creado_por = \Sentry::getUser()['id'];
-//                    $item->actualizado_por = \Sentry::getUser()['id'];
-//            });
-//            
-//            Variablesglobales::updating(function($item)
-//            {
-//                    $item->actualizado_por = \Sentry::getUser()['id'];
-//            });
-        }
+        protected $camposVersionables = array('clave', 'valor'); //Campos versionables
+        
+        protected $controlDeVersiones = TRUE; //Activa o desactiva el control de versiones
+
         
 	public function maker()
 	{
@@ -35,5 +27,23 @@ class Variablesglobales extends \Eloquent{
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
 	}
+        
+        public function versiones()
+        {
+            return $this->morphMany('Ttt\Panel\Repo\Revisiones\Revision','revisionable');
+        }
+        
+        public function versionesByClave($clave = null)
+        {
+            if($clave)
+            {   $v = new \Ttt\Panel\Repo\Revisiones\Revision();
+                $versiones = \Illuminate\Support\Facades\DB::table($v->getTable())
+                                                                    ->where('revisionable_type', get_class())
+                                                                    ->where('clave', $clave)
+                                                                    ->orderBy('created_at','desc')
+                                                                    ->get();
+                return $versiones;
+            }
+        }
      
 }
