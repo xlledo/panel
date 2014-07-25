@@ -40,31 +40,38 @@
                 <span class="menu-text">Dashboard</span>
             </a>
         </li>
-        <li>
-            <a href="{{ action('Ttt\Panel\ModuloController@index') }}" title="Módulos">
-                <i class="icon-cogs"></i>
-                <span class="menu-text">Módulos</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Variables Globales">
-                <i class="icon-cogs"></i>
-                <span class="menu-text">Variables Globales</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Grupos">
-                <i class="icon-group"></i>
-                <span class="menu-text">Grupos</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Usuarios">
-                <i class="icon-user"></i>
-                <span class="menu-text">Usuarios</span>
-            </a>
-        </li>
+        @if(Sentry::getUser()->hasAccess('modulos::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\ModuloController@index') }}" title="Módulos">
+                    <i class="icon-cogs"></i>
+                    <span class="menu-text">Módulos</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('variables-globales::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Variables Globales">
+                    <i class="icon-cogs"></i>
+                    <span class="menu-text">Variables Globales</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('grupos::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Grupos">
+                    <i class="icon-group"></i>
+                    <span class="menu-text">Grupos</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('usuarios::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Usuarios">
+                    <i class="icon-user"></i>
+                    <span class="menu-text">Usuarios</span>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

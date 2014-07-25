@@ -24,13 +24,15 @@
 @stop
 
 @section('tools')
-	<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
+		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
-		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Módulos</a></h1>
+		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Módulos</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
 	@endif
 @stop
 @section('content')
@@ -57,7 +59,7 @@
 					                </div>
 					                <div class="widget-body">
 					                    <div class="widget-main row">
-					                        
+
 					                        <div class="col-md-3">
 					                            <div class="form-group @if ($errors->first('clave')) has-error @endif">
 					                                <label for="clave">Clave *</label>
@@ -79,7 +81,7 @@
 														@endforeach
 													@endif
 					                            </div>
-					                        </div>                                                                
+					                        </div>
 					                    </div>
 					                </div>
 					            </div>
@@ -95,10 +97,12 @@
 			</div>
 		</div>
 	</div>
-	@if ($action != 'create')
-		<div class="space-6"></div>
-		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\VariablesglobalesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
-		</div>
+	@if(Sentry::getUser()->hasAccess('variables-globales::borrar'))
+		@if ($action != 'create')
+			<div class="space-6"></div>
+			<div class="acciones">
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\VariablesglobalesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			</div>
+		@endif
 	@endif
 @stop

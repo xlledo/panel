@@ -37,6 +37,11 @@ class VariablesglobalesController extends AbstractCrudController{
 
 		$this->variablesglobale 		= $variablesglobale;
 		$this->variablesglobalesForm            = $variablesglobalesForm;
+
+		if(! \Sentry::getUser()->hasAccess('variables-globales::borrar'))
+		{
+			unset($this->acciones_por_lote['delete']);
+		}
 	}
 
 	public function index()

@@ -24,7 +24,9 @@
 @stop
 
 @section('tools')
-	<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('usuarios::crear'))
+		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
@@ -175,11 +177,13 @@
 			</div>
 		</div>
 	</div>
-	@if ($action != 'create')
-		<div class="space-6"></div>
-		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\UsuarioController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
-		</div>
+	@if(Sentry::getUser()->hasAccess('usuarios::borrar'))
+		@if ($action != 'create')
+			<div class="space-6"></div>
+			<div class="acciones">
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\UsuarioController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			</div>
+		@endif
 	@endif
 @stop
 @section('inline_js')
