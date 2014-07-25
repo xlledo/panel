@@ -14,6 +14,7 @@ Route::group(array('prefix' => 'admin'), function()
 	// Filtros de control de logueado o no
 	Route::filter('notLogged', 'Ttt\Panel\Filters\Panel@notLogged');
 	Route::filter('logged', 'Ttt\Panel\Filters\Panel@logged');
+	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
 
@@ -31,6 +32,7 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::get('/dashboard', 'Ttt\Panel\DashboardController@index');
 
+	//Gestión de módulos
 	Route::get('/modulos', 'Ttt\Panel\ModuloController@index');
 	Route::post('/modulos', 'Ttt\Panel\ModuloController@index');//los filtros
 	Route::post('/modulos/acciones_por_lote', 'Ttt\Panel\ModuloController@accionesPorLote');//las acciones por lote

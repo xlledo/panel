@@ -10,6 +10,9 @@ use Ttt\Panel\Service\Form\Modulo\ModuloFormLaravelValidator;
 use Ttt\Panel\Service\Form\Variablesglobales\VariablesglobalesForm;
 use Ttt\Panel\Service\Form\Variablesglobales\VariablesglobalesFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Usuario\UsuarioForm;
+use Ttt\Panel\Service\Form\Usuario\UsuarioFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -28,16 +31,24 @@ class FormServiceProvider extends ServiceProvider {
                 $app->make('Ttt\Panel\Repo\Modulo\ModuloInterface')
             );
         });
-        
+
         $app->bind('Ttt\Panel\Service\Form\Variablesglobales\VariablesglobalesForm', function($app)
         {
             return new VariablesglobalesForm(
                 new VariablesglobalesFormLaravelValidator( $app['validator'] ),
                 $app->make('Ttt\Panel\Repo\Variablesglobales\VariablesglobalesInterface')
             );
-        });        
-        
-        
+        });
+
+        $app->bind('Ttt\Panel\Service\Form\Usuario\UsuarioForm', function($app)
+        {
+            return new UsuarioForm(
+                new UsuarioFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Usuario\UsuarioInterface')
+            );
+        });
+
+
     }
 
 }
