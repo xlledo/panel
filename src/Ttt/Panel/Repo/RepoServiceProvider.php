@@ -7,10 +7,10 @@ use Ttt\Panel\Repo\Modulo\EloquentModulo;
 use Ttt\Panel\Repo\Variablesglobales\Variablesglobales;
 use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
+use Ttt\Panel\Repo\Revisiones\Revision;
 use Ttt\Panel\Repo\Grupo\SentryGrupo;
 
 use Ttt\Panel\Repo\Usuario\SentryUsuario;
-
 
 use Illuminate\Support\ServiceProvider;
 
@@ -38,6 +38,11 @@ class RepoServiceProvider extends ServiceProvider{
         });
         
         $this->app->bind('Ttt\Panel\Repo\Revisiones\Revision', function($app)
+        {
+            return new Revision();
+        });
+        
+        $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
         {
             return new SentryGrupo();
         });

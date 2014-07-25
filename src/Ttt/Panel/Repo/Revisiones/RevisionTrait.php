@@ -137,4 +137,27 @@ trait RevisionTrait {
         }
     }
     
+    
+    /**
+     * Devuelve las versiones de un modelo
+     * 
+     * 
+     * @param String $clave Clave del campo
+     * @return String Valor
+     */
+            
+        public function versionesByClave($clave = null)
+        {
+            if($clave)
+            {   $v = new \Ttt\Panel\Repo\Revisiones\Revision();
+                $versiones = \Illuminate\Support\Facades\DB::table($v->getTable())
+                                                                    ->where('revisionable_type', get_class())
+                                                                    ->where('clave', $clave)
+                                                                    ->orderBy('created_at','desc')
+                                                                    ->get();
+                return $versiones;
+            }
+        }
+    
+    
 }

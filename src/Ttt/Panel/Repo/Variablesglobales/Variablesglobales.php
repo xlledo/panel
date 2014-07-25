@@ -32,18 +32,6 @@ class Variablesglobales extends \Eloquent{
         {
             return $this->morphMany('Ttt\Panel\Repo\Revisiones\Revision','revisionable');
         }
-        
-        public function versionesByClave($clave = null)
-        {
-            if($clave)
-            {   $v = new \Ttt\Panel\Repo\Revisiones\Revision();
-                $versiones = \Illuminate\Support\Facades\DB::table($v->getTable())
-                                                                    ->where('revisionable_type', get_class())
-                                                                    ->where('clave', $clave)
-                                                                    ->orderBy('created_at','desc')
-                                                                    ->get();
-                return $versiones;
-            }
-        }
+
      
 }

@@ -56,7 +56,7 @@ Route::group(array('prefix' => 'admin'), function()
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
-//Gestión de grupos
+        //Gestión de grupos
 	Route::get('/grupos', 'Ttt\Panel\GrupoController@index');//listado
 	Route::get('/grupos/nuevo', 'Ttt\Panel\GrupoController@nuevo');//formulario de nuevo grupo
 	Route::get('/grupos/ver/{id}', 'Ttt\Panel\GrupoController@ver');//formulario de edición
