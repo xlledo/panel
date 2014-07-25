@@ -1,6 +1,8 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
-	<a href="{{ action('Ttt\Panel\ModuloController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('modulos::crear'))
+		<a href="{{ action('Ttt\Panel\ModuloController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	<h1>Módulos <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
@@ -48,31 +50,45 @@
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de módulos" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
-	                                <th scope="col" width="40"></th>
+									@if(Sentry::getUser()->hasAccess('modulos::editar'))
+	                                	<th scope="col" width="40"></th>
+									@endif
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">Actualizado por</th>
-	                                <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
+									@if(Sentry::getUser()->hasAccess(array('modulos::editar', 'modulos::borrar'), FALSE))
+	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
+									@endif
 	                            </tr>
 	                        </thead>
 	                        <tbody>
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
-										<th scope="row" class="td_click center">
-											<div>
-												@if($item->visible)
-													<input type="checkbox" autocomplete="off" id="estado_{{ $item->id }}" class="activo cambiar_estado ace ace-switch ace-switch-6" rel="on" title="Desactivar elemento" checked="checked"/>
-													<span class="lbl"></span>
-												@else
-													<input type="checkbox" autocomplete="off" id="estado_fichero_{{ $item->id }}" class="noActivo cambiar_estado ace ace-switch ace-switch-6" rel="off" title="Activar elemento"/>
-													<span class="lbl"></span>
-												@endif
-											</div>
-										</th>
-										<td class="td_click">{{ link_to('admin/modulos/ver/' . $item->id, $item->nombre) }}</td>
+										@if(Sentry::getUser()->hasAccess('modulos::editar'))
+											<th scope="row" class="td_click center">
+												<div>
+													@if($item->visible)
+														<input type="checkbox" autocomplete="off" id="estado_{{ $item->id }}" class="activo cambiar_estado ace ace-switch ace-switch-6" rel="on" title="Desactivar elemento" checked="checked"/>
+														<span class="lbl"></span>
+													@else
+														<input type="checkbox" autocomplete="off" id="estado_fichero_{{ $item->id }}" class="noActivo cambiar_estado ace ace-switch ace-switch-6" rel="off" title="Activar elemento"/>
+														<span class="lbl"></span>
+													@endif
+												</div>
+											</th>
+										@endif
+										<td class="td_click">
+											@if(Sentry::getUser()->hasAccess('modulos::editar'))
+												{{ link_to('admin/modulos/ver/' . $item->id, $item->nombre) }}
+											@else
+												{{ $item->nombre }}
+											@endif
+										</td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
-										<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
+										@if(Sentry::getUser()->hasAccess(array('modulos::editar', 'modulos::borrar'), FALSE))
+											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
+										@endif
 									</tr>
 								@endforeach
 	                        </tbody>
@@ -81,18 +97,20 @@
 	                        <div class="elementos col-sm-6">
 	                            Mostrando de {{ $items->getFrom() }} a {{ $items->getTo() }} de un total de {{ $items->getTotal() }}
 	                        </div>
-	                        <div class="acciones col-sm-6">
-	                            <div class="pull-right form-inline selectAcciones">
-	                                <label for="acciones_por_lote">Acción:</label>
-	                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
-	                                    <option value="0" selected="selected">-seleccionar-</option>
-										@foreach($accionesPorLote as $key => $apl)
-											<option value="{{ $key }}">{{ $apl }}</option>
-										@endforeach
-	                                </select>
-	                                <input type="submit" name="ejecutar" class="btn btn-success btn-xs" value="Enviar" />
-	                            </div>
-	                        </div>
+							@if(count($accionesPorLote))
+		                        <div class="acciones col-sm-6">
+		                            <div class="pull-right form-inline selectAcciones">
+		                                <label for="acciones_por_lote">Acción:</label>
+		                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
+		                                    <option value="0" selected="selected">-seleccionar-</option>
+											@foreach($accionesPorLote as $key => $apl)
+												<option value="{{ $key }}">{{ $apl }}</option>
+											@endforeach
+		                                </select>
+		                                <input type="submit" name="ejecutar" class="btn btn-success btn-xs" value="Enviar" />
+		                            </div>
+		                        </div>
+							@endif
 	                    </div>
 	                </fieldset>
 	            </form>

@@ -1,6 +1,8 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
-	<a href="{{ action('Ttt\Panel\GrupoController@nuevo') }}" title="Nuevo Grupo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('grupos::crear'))
+		<a href="{{ action('Ttt\Panel\GrupoController@nuevo') }}" title="Nuevo Grupo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	<h1>Grupos <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
@@ -24,12 +26,18 @@
 							@foreach($items as $index => $item)
 								<tr class="@if($index % 2 == 0) par @else impar @endif">
 									<td class="center">{{ $item->id }}</td>
-									<td>{{ link_to('admin/grupos/ver/' . $item->id, $item->name) }}</td>
+									<td>
+										@if(Sentry::getUser()->hasAccess('grupos::editar'))
+											{{ link_to('admin/grupos/ver/' . $item->id, $item->name) }}
+										@else
+											{{ $item->name }}
+										@endif
+									</td>
 								</tr>
 							@endforeach
                         </tbody>
                     </table>
-                    -<div class="selectAcciones row">
+                    <div class="selectAcciones row">
                         <div class="elementos col-sm-6">
                             Número total de grupos {{ $items->count() }}
                         </div>

@@ -24,7 +24,9 @@
 @stop
 
 @section('tools')
-	<a href="{{ action('Ttt\Panel\ModuloController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('modulos::crear'))
+		<a href="{{ action('Ttt\Panel\ModuloController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
@@ -99,10 +101,12 @@
 			</div>
 		</div>
 	</div>
-	@if ($action != 'create')
-		<div class="space-6"></div>
-		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\ModuloController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
-		</div>
+	@if(Sentry::getUser()->hasAccess('modulos::borrar'))
+		@if ($action != 'create')
+			<div class="space-6"></div>
+			<div class="acciones">
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\ModuloController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			</div>
+		@endif
 	@endif
 @stop

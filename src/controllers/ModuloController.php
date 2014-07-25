@@ -36,6 +36,16 @@ class ModuloController extends AbstractCrudController{
 
 		$this->modulo     = $modulo;
 		$this->moduloForm = $moduloForm;
+
+		if(! \Sentry::getUser()->hasAccess('modulos::editar'))
+		{
+			unset($this->acciones_por_lote['visible']);
+			unset($this->acciones_por_lote['noVisible']);
+		}
+		if(! \Sentry::getUser()->hasAccess('modulos::borrar'))
+		{
+			unset($this->acciones_por_lote['delete']);
+		}
 	}
 
 	public function index()

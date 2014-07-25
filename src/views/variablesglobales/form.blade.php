@@ -24,13 +24,15 @@
 @stop
 
 @section('tools')
-	<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
+		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
-		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Módulos</a></h1>
+		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Módulos</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
 	@endif
 @stop
 @section('content')
@@ -40,6 +42,7 @@
 				<ul id="aux">
 				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
 				</ul>
+
 				<div id="datos">
 					<form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\VariablesglobalesController@crear') : action('Ttt\Panel\VariablesglobalesController@actualizar') ; ?>" method="post">
 						@if($action != 'create')
@@ -56,30 +59,20 @@
 					                </div>
 					                <div class="widget-body">
 					                    <div class="widget-main row">
+					                        
 					                        <div class="col-md-3">
-					                            <div class="input-group @if ($errors->first('clave')) has-error @endif">
-                                                                         <label for="clave">Clave *</label>
-                                                                        <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
-                                                                        <div class='input-group-btn'>
-                                                                            <button type="button" class="btn  boton dropdown-toggle "  style="border:none; margin-top: 24px;" data-toggle="dropdown">
-                                                                                Versiones <span class="caret"></span>
-                                                                            </button>
-                                                                            <ul class="dropdown-menu pull-right" role="menu">
-                                                                            <!-- Version Actual --><li><a  class="selector_versiones" href="#" data-version="-1" data-formelement="clave" data-content="{{ $item->clave}}">Version Actual</a></li> 
-                                                                                        @foreach($item->versionesByClave('clave') as $version)
-                                                                                                    <li><a class="selector_versiones" href="#" data-version="{{$version->id}}" data-formelement="clave">[{{$version->id}}] Revision {{ $version->created_at }}</a></li>
-                                                                                        @endforeach
-                                                                            </ul>
-                                                                        </div>
-                                                                                        @if ($errors->first('clave'))
-												@foreach($errors->get('clave') as $err)
-													<span class="help-block">{{ $err }}</span>
-												@endforeach
-											@endif
+					                            <div class="form-group @if ($errors->first('clave')) has-error @endif">
+					                                <label for="clave">Clave *</label>
+					                                <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
+													@if ($errors->first('clave'))
+														@foreach($errors->get('clave') as $err)
+															<span class="help-block">{{ $err }}</span>
+														@endforeach
+													@endif
 					                            </div>
 					                        </div>
 					                        <div class="col-md-3">
-					                            <div class="input-group @if ($errors->first('valor')) has-error @endif">
+					                            <div class="form-group @if ($errors->first('valor')) has-error @endif">
 					                                <label for="valor">Valor *</label>
 					                                <input type="text" class="form-control" name="valor" id="valor" value="{{ $item->valor }}" size="20" />
                                                                         <div class='input-group-btn'>
@@ -115,19 +108,14 @@
 			</div>
 		</div>
 	</div>
-	@if ($action != 'create')
-		<div class="space-6"></div>
-		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\VariablesglobalesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
-		</div>
-                
-                <script type="text/javascript">
-                        $(document).ready(function()
-                        {
-                            initVersionable();
-                        });
+	@if(Sentry::getUser()->hasAccess('variables-globales::borrar'))
+		@if ($action != 'create')
+			<div class="space-6"></div>
+			<div class="acciones">
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\VariablesglobalesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			</div>
+		@endif
 
-                </script>
+              
 	@endif
 @stop
-

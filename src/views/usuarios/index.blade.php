@@ -1,6 +1,8 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
-	<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('usuarios::crear'))
+		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	<h1>Usuarios <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
@@ -63,8 +65,19 @@
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="center">{{ $item->id }}</td>
-										<td>{{ link_to('admin/usuarios/ver/' . $item->id, $item->full_name) }}</td>
-										<td>{{ link_to('admin/usuarios/ver/' . $item->id, $item->email) }}</td>
+										<td>
+											@if(Sentry::getUser()->hasAccess('usuarios::editar'))
+												{{ link_to('admin/usuarios/ver/' . $item->id, $item->full_name) }}</td>
+											@else
+												{{ $item->full_name }}
+											@endif
+										<td>
+											@if(Sentry::getUser()->hasAccess('usuarios::editar'))
+												{{ link_to('admin/usuarios/ver/' . $item->id, $item->email) }}
+											@else
+												{{ $item->email }}
+											@endif
+										</td>
 										<td>@if($item->groups->count()) {{ $item->groups->first()->name }} @endif</td>
 									</tr>
 								@endforeach

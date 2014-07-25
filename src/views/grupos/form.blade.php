@@ -24,7 +24,9 @@
 @stop
 
 @section('tools')
-	<a href="{{ action('Ttt\Panel\GrupoController@nuevo') }}" title="Nuevo Grupo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('grupos::crear'))
+		<a href="{{ action('Ttt\Panel\GrupoController@nuevo') }}" title="Nuevo Grupo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
@@ -122,12 +124,14 @@
 			</div>
 		</div>
 	</div>
-	@if ($action != 'create')
-		@if($item->name != 'Superadmin')
-			<div class="space-6"></div>
-			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\GrupoController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
-			</div>
+	@if(Sentry::getUser()->hasAccess('grupos::borrar'))
+		@if ($action != 'create')
+			@if($item->name != 'Superadmin')
+				<div class="space-6"></div>
+				<div class="acciones">
+					<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\GrupoController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+				</div>
+			@endif
 		@endif
 	@endif
 @stop
