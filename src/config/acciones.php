@@ -34,5 +34,14 @@ return array(
         'editar' => array('ver', 'actualizar'),
         'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     ),
+    'categorias' => array(
+        'listar' => array('index'),//muestra el listado de árboles existentes
+        'crear-arbol'  => array('nuevoArbol', 'crearArbol'),//crea un nuevo árbol
+        'crear'  => array('nuevo', 'crear'),//crea un nuevo nodo dentro del árbol
+        'editar-arbol' => array('verArbol', 'actualizarArbol'),//edita el árbol
+        'editar' => array('ver', 'actualizar'),//edita un nodo dentro del árbol
+        'borrar-arbol' => array('borrarArbol'),//borra la raíz del árbol y todo su contenido
+        'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
+    ),
 
 );

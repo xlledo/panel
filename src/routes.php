@@ -46,13 +46,13 @@ Route::group(array('prefix' => 'admin'), function()
         //Variables Globales
 	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
         Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
-        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');        
+        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
         Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
         Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-        
+
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
@@ -75,7 +75,19 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/usuarios/crear', 'Ttt\Panel\UsuarioController@crear');//creación de un nuevo usuario
 	Route::post('/usuarios/actualizar', 'Ttt\Panel\UsuarioController@actualizar');//actualización de un usuario
 
-        
+	//Gestión de categorías
+	Route::get('/categorias', 'Ttt\Panel\CategoriaController@index');
+	Route::get('/categorias/nuevo-arbol', 'Ttt\Panel\CategoriaController@nuevoArbol');
+	Route::post('/categorias/crear-arbol', 'Ttt\Panel\CategoriaController@crearArbol');
+	Route::get('/categorias/ver-arbol/{id}', 'Ttt\Panel\CategoriaController@verArbol');
+	Route::get('/categorias/ver/{id}', 'Ttt\Panel\CategoriaController@ver');
+	Route::get('/categorias/nuevo/{id}', 'Ttt\Panel\CategoriaController@nuevo');
+	Route::post('/categorias/crear', 'Ttt\Panel\CategoriaController@crear');
+	Route::post('/categorias/actualizar', 'Ttt\Panel\CategoriaController@actualizar');
+	Route::get('/categorias/borrar-arbol/{id}', 'Ttt\Panel\CategoriaController@borrarArbol');
+	Route::get('/categorias/borrar/{id}', 'Ttt\Panel\CategoriaController@borrar');
+
+
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();
