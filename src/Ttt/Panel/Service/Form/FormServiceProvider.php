@@ -13,6 +13,9 @@ use Ttt\Panel\Service\Form\Variablesglobales\VariablesglobalesFormLaravelValidat
 use Ttt\Panel\Service\Form\Usuario\UsuarioForm;
 use Ttt\Panel\Service\Form\Usuario\UsuarioFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Categoria\CategoriaForm;
+use Ttt\Panel\Service\Form\Categoria\CategoriaFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -45,6 +48,14 @@ class FormServiceProvider extends ServiceProvider {
             return new UsuarioForm(
                 new UsuarioFormLaravelValidator( $app['validator'] ),
                 $app->make('Ttt\Panel\Repo\Usuario\UsuarioInterface')
+            );
+        });
+
+        $app->bind('Ttt\Panel\Service\Form\Categoria\CategoriaForm', function($app)
+        {
+            return new CategoriaForm(
+                new CategoriaFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Categoria\CategoriaInterface')
             );
         });
 

@@ -50,36 +50,19 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function index()
 	{
-		/*echo '<pre>';
-		print_r(Config::get('panel::acciones'));
-		echo '</pre>';exit;*/
 
-		View::share('title', 'Listado de Usuarios');
+		View::share('title', 'Listado de Árboles de categorías');
 
-		//recogemos la página
-		$pagina  = Input::get(Config::get('panel::app.pageName', 'pg'), 1);
-		$perPage = Config::get('panel::app.perPage', 1);
+		$order[Config::get('panel::app.orderBy')] = Input::has(Config::get('panel::app.orderBy')) ? Input::get(Config::get('panel::app.orderBy')) : 'nombre';
+		$order[Config::get('panel::app.orderDir')] = Input::has(Config::get('panel::app.orderDir')) ? Input::get(Config::get('panel::app.orderDir')) : 'asc';
 
-		$input = Input::only($this->allowed_url_params);
+		//no paginamos, porque no va a ser habitual tener 200 árboles
+		$rootItems = $this->categoria->findAllRootsBy($order[Config::get('panel::app.orderBy')], $order[Config::get('panel::app.orderDir')]);
 
-		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';
-		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
-
-		//recogemos la paginación
-		$pageData = $this->usuario->byPage($pagina, $perPage, $input);
-
-		$usuarios = Paginator::make(
-			$pageData->items,
-			$pageData->totalItems,
-			$perPage
-		);
-		//debemos añadir los parámetros de la url
-		$usuarios->appends($input);
-
-		View::share('items', $usuarios);
-		return View::make('panel::usuarios.index')
+		View::share('items', $rootItems);
+		return View::make('panel::categorias.index')
 									->with('currentUrl', \URL::current())
-									->with('params', $input);
+									->with('params', $order);
 	}
 
 	/**
@@ -89,34 +72,15 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function nuevoArbol()
 	{
-		$item = $this->usuario->createModel();
-		$item->first_name    = Input::old('first_name') ? Input::old('first_name') : '';
-		$item->last_name     = Input::old('last_name') ? Input::old('last_name') : '';
-		$item->email         = Input::old('email') ? Input::old('email') : '';
-		if(Input::old('grupo') && Input::old('grupo') != '')
-		{
-			$coll = new \Illuminate\Database\Eloquent\Collection;
-			$coll->add($this->grupo->findById(Input::old('grupo')));
-			$item->groups = $coll;
-		}
+		$item = $this->categoria->createModel();
+		$item->nombre        = Input::old('nombre') ? Input::old('nombre') : '';
+		$item->visible       = Input::old('visible') ? Input::old('visible') : FALSE;
+		$item->protegida     = Input::old('protegida') ? Input::old('protegida') : FALSE;
 
-		//construimos permisos
-		$permisos = array();
-		foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
-		{
-			foreach($acciones as $actionKey => $metodos)
-			{
-				$tmpPermiso = $moduloKey . '::' . $actionKey;
-				$permisos[$tmpPermiso] = (Input::old($tmpPermiso) && Input::old($tmpPermiso) == 'si')  ? 1 : 0;//valor por defecto
-			}
-		}
-		$item->permissions = $permisos;
-
-		View::share('title', 'Creación de nuevo usuario.');
-		return View::make('panel::usuarios.form')
+		View::share('title', 'Crear árbol de categorías.');
+		return View::make('panel::categorias.form')
 								->with('item', $item)
-								->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
-								->with('action', 'create');
+								->with('action', 'createArbol');
 	}
 
 	/**
@@ -126,37 +90,17 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function crearArbol()
 	{
-		$message = 'Usuario creado correctamente.';
+		$message = 'Árbol creado correctamente.';
 		try
 		{
-			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
-			$data['activated'] = TRUE;//forzamos a que esté activo
-
-			$tmp_grupo = Input::get('grupo');
-
-			if($tmp_grupo != 1)
-			{
-				$permisos = array();
-				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
-				{
-					foreach($acciones as $actionKey => $metodos)
-					{
-						$tmpPermiso = $moduloKey . '::' . $actionKey;
-						$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : 0;//valor por defecto
-					}
-				}
-				$data['permissions'] = $permisos;
-			}
+			$data =  array(
+				'nombre'    => Input::get('nombre'),
+				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE
+			);
 
 
-			$usuario = $this->usuarioForm->create($data);
-
-			//si hemos llegado aquí ya tenemos usuario creado, por lo tanto asignamos grupo
-			if($tmp_grupo != '')
-			{
-				$grupoUsuario = $this->grupo->findById($tmp_grupo);
-				$usuario->addGroup($grupoUsuario);
-			}
+			$nodo = $this->categoriaForm->createRoot($data);
 
 			\Session::flash('messages', array(
 				array(
@@ -165,19 +109,11 @@ class CategoriaController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\UsuarioController@ver', $usuario->id);
+			return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $nodo->id);
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
 			$message = $e->getMessage();
-		}
-		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-		{
-		    $message = 'Ya existe un usuario con ese email.';
-		}
-		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-		    $message = 'El usuario indicado no existe.';
 		}
 
 		\Session::flash('messages', array(
@@ -187,9 +123,89 @@ class CategoriaController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\UsuarioController@nuevo')
+		return \Redirect::action('Ttt\Panel\CategoriaController@nuevoArbol')
 									->withInput()
-									->withErrors($this->usuarioForm->errors());
+									->withErrors($this->categoriaForm->errors());
+	}
+
+	/**
+	* Muestra el formulario de edición de un nodo raíz
+	*
+	* @return void
+	*/
+	public function editarArbol($id = null)
+	{
+		$message = '';
+		try
+		{
+			$item = $this->categoria->rootById($id);
+
+			View::share('title', 'Edición del árbol ' . $item->nombre);
+			return View::make('panel::categorias.form')
+									->with('action', 'editArbol')
+									->with('item', $item);
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+	}
+
+	/**
+	* Intenta actualizar la información de una raíz
+	*
+	* @return void
+	*/
+	public function actualizarRaiz()
+	{
+		$message = 'Raíz actualizada correctamente.';
+		try
+		{
+			$item = $this->categoria->rootById(Input::get('id'));
+
+			$data =  array(
+				'nombre'    => Input::get('nombre'),
+				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE
+			);
+
+			$root = $this->categoriaForm->updateRoot($data, $item);
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => $message
+				)
+			));
+
+			return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $item->id);
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $item->id)
+																		->withInput()
+																		->withErrors($this->categoriaForm->errors());
 	}
 
 	/**
@@ -223,9 +239,6 @@ class CategoriaController extends AbstractCrudController{
 		$message = '';
 		try
 		{
-			/*echo '<pre>';
-			print_r(Input::old());
-			echo '</pre>';exit;*/
 			$item = $this->usuario->findById($id);
 			$item->first_name   = ! is_null(Input::old('first_name')) ? Input::old('first_name') : $item->first_name;
 			$item->last_name    = ! is_null(Input::old('last_name')) ? Input::old('last_name') : $item->last_name;
@@ -360,36 +373,20 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function borrarArbol($id = null)
 	{
-		$message = 'Usuario eliminado correctamente.';
-		try
-		{
-			$user = $this->usuario->findById($id);
+		$message = 'Árbol de categorías eliminado correctamente.';
 
-			$user->delete();
+		$categoria = $this->categoria->byId($id);
 
-			\Session::flash('messages', array(
-				array(
-					'class' => 'alert-success',
-					'msg'   => $message
-				)
-			));
-
-			return \Redirect::action('Ttt\Panel\UsuarioController@index');
-
-		}
-		catch (\Cartalyst\Sentry\Groups\UserNotFoundException $e)
-		{
-			$message = $e->getMessage();
-		}
+		$categoria->delete();
 
 		\Session::flash('messages', array(
 			array(
-				'class' => 'alert-danger',
+				'class' => 'alert-success',
 				'msg'   => $message
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\UsuarioController@ver', $user->id);
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
 	}
 
 	/**

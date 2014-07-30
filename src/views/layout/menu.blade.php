@@ -72,6 +72,14 @@
                 </a>
             </li>
         @endif
+        @if(Sentry::getUser()->hasAccess('categorias::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Categorías</span>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">
