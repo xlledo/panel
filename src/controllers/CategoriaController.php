@@ -109,7 +109,7 @@ class CategoriaController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $nodo->id);
+			return \Redirect::action('Ttt\Panel\CategoriaController@verRaiz', $nodo->id);
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
@@ -133,12 +133,16 @@ class CategoriaController extends AbstractCrudController{
 	*
 	* @return void
 	*/
-	public function editarArbol($id = null)
+	public function verRaiz($id = null)
 	{
 		$message = '';
 		try
 		{
 			$item = $this->categoria->rootById($id);
+
+			$item->nombre    = !is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
+			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
+			$item->protegida = Input::old('protegida') ? Input::old('protegida') : $item->protegida;
 
 			View::share('title', 'Edición del árbol ' . $item->nombre);
 			return View::make('panel::categorias.form')
@@ -188,7 +192,7 @@ class CategoriaController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $item->id);
+			return \Redirect::action('Ttt\Panel\CategoriaController@verRaiz', $item->id);
 
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
@@ -203,7 +207,7 @@ class CategoriaController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@editarArbol', $item->id)
+		return \Redirect::action('Ttt\Panel\CategoriaController@verRaiz', $item->id)
 																		->withInput()
 																		->withErrors($this->categoriaForm->errors());
 	}
@@ -216,7 +220,36 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function nuevo($id = null)
 	{
+		$message = '';
+		try
+		{
+			$root = $this->categoria->rootById($id);
 
+			$item = $this->categoria->createModel();
+			$item->nombre        = Input::old('nombre') ? Input::old('nombre') : '';
+			$item->valor         = Input::old('valor') ? Input::old('valor') : '';
+			$item->visible       = Input::old('visible') ? Input::old('visible') : FALSE;
+			$item->parent_id     = $id;
+
+			View::share('title', 'Nueva categoría en ' . $root->nombre);
+			return View::make('panel::categorias.form')
+									->with('action', 'create')
+									->with('item', $item);
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
 	}
 
 	/**
@@ -226,7 +259,45 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function crear()
 	{
+		try
+		{
+			$root = $this->categoria->rootById(Input::get('parent_id'));
 
+			$message = 'Nueva categoría creada correctamente en ' . $root->nombre;
+
+			$data =  array(
+				'nombre'    => Input::get('nombre'),
+				'valor'     => Input::get('valor'),
+				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'protegida' => $root->protegida
+			);
+
+			$nodo = $this->categoriaForm->createChild($data, $root);
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => $message
+				)
+			));
+
+			return \Redirect::action('Ttt\Panel\CategoriaController@ver', $nodo->id);
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@nuevo', $root->id)
+									->withInput()
+									->withErrors($this->categoriaForm->errors());
 	}
 
 	/**
@@ -239,45 +310,19 @@ class CategoriaController extends AbstractCrudController{
 		$message = '';
 		try
 		{
-			$item = $this->usuario->findById($id);
-			$item->first_name   = ! is_null(Input::old('first_name')) ? Input::old('first_name') : $item->first_name;
-			$item->last_name    = ! is_null(Input::old('last_name')) ? Input::old('last_name') : $item->last_name;
-			$item->email        = ! is_null(Input::old('email')) ? Input::old('email') : $item->email;
+			$item = $this->categoria->childById($id);
 
+			$item->nombre    = ! is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
+			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
+			$item->valor     = Input::old('valor') ? Input::old('valor') : $item->valor;
 
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
-			{
-				foreach($acciones as $actionKey => $metodos)
-				{
-					$tmpPermiso = $moduloKey . '::' . $actionKey;
-					$permisos[$tmpPermiso] = (int)(Input::old($tmpPermiso) == 'si');
-					if(Input::old($tmpPermiso))
-					{
-						$permisos[$tmpPermiso] = (int)(Input::old($tmpPermiso) == 'si');
-					}else{
-						$permisos[$tmpPermiso] = (int)$item->hasAccess($tmpPermiso);
-					}
-				}
-			}
-			$item->permissions = $permisos;
-
-			//puede que tengamos algún grupo porque viene de un error al actualizar
-			if(Input::old('grupo') && Input::old('grupo') != '')
-			{
-				$coll = new \Illuminate\Database\Eloquent\Collection;
-				$coll->add($this->grupo->findById(Input::old('grupo')));
-				$item->groups = $coll;
-			}
-
-
-			View::share('title', 'Edición del usuario ' . $item->full_name);
-			return View::make('panel::usuarios.form')
+			View::share('title', 'Edición de subcategoría ' . $item->nombre);
+			return View::make('panel::categorias.form')
 									->with('action', 'edit')
-									->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
 									->with('item', $item);
 
 		}
-		catch(\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		catch(\Ttt\Panel\Exception\TttException $e)
 		{
 			$message = $e->getMessage();
 		}
@@ -289,7 +334,7 @@ class CategoriaController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\UsuarioController@index');
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
 	}
 
 	/**
@@ -299,37 +344,18 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function actualizar()
 	{
-		$message = 'Usuario actualizado correctamente.';
+		$message = 'Categoría actualizada correctamente.';
 		try
 		{
-			$ent = $this->usuario->findById(Input::get('id'));
+			$item = $this->categoria->childById(Input::get('id'));
 
-			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
+			$data =  array(
+				'nombre'    => Input::get('nombre'),
+				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'valor'     => Input::get('valor'),
+			);
 
-			$tmp_grupo = Input::get('grupo');
-
-			$permisos = array();
-			if($tmp_grupo != 1)
-			{
-				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
-				{
-					foreach($acciones as $actionKey => $metodos)
-					{
-						$tmpPermiso = $moduloKey . '::' . $actionKey;
-						$permisos[$tmpPermiso] = (Input::get($tmpPermiso) && Input::get($tmpPermiso) == 'si')  ? 1 : -1;//valor por defecto
-					}
-				}
-			}
-			$ent->permissions = $permisos;
-			$ent->cleanGroups();
-			$this->usuarioForm->update($data, $ent);
-
-			//si hemos llegado aquí ya tenemos usuario creado, por lo tanto asignamos grupo
-			if($tmp_grupo != '')
-			{
-				$grupoUsuario = $this->grupo->findById($tmp_grupo);
-				$ent->addGroup($grupoUsuario);
-			}
+			$this->categoriaForm->updateChild($data, $item);
 
 			\Session::flash('messages', array(
 				array(
@@ -337,33 +363,22 @@ class CategoriaController extends AbstractCrudController{
 					'msg'   => $message
 				)
 			));
-
-			return \Redirect::action('Ttt\Panel\UsuarioController@ver', $ent->id);
-
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
-			$message = 'No se han podido guardar los cambios en el usuario.';
-		}
-		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-		{
-			$message = 'Ya existe un usuario con ese email.';
-		}
-		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
 			$message = $e->getMessage();
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-danger',
+					'msg'   => $message
+				)
+			));
 		}
 
-		\Session::flash('messages', array(
-			array(
-				'class' => 'alert-danger',
-				'msg'   => $message
-			)
-		));
-
-		return \Redirect::action('Ttt\Panel\UsuarioController@ver', $ent->id)
+		return \Redirect::action('Ttt\Panel\CategoriaController@ver', $item->id)
 																		->withInput()
-																		->withErrors($this->usuarioForm->errors());
+																		->withErrors($this->categoriaForm->errors());
 	}
 
 	/**
@@ -396,6 +411,93 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function borrar($id = null)
 	{
+		$message = 'Categoría eliminada correctamente.';
 
+		$categoria = $this->categoria->byId($id);
+
+		$root = $categoria->getRoot();
+
+		$categoria->delete();
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-success',
+				'msg'   => $message
+			)
+		));
+
+		//redirigimos a la estructura draggable del árbol
+		return \Redirect::action('Ttt\Panel\CategoriaController@verArbol', $root->id);
+	}
+
+	/**
+	* Muestra la estructura completa de un árbol de categorías
+	*
+	* @return void
+	*/
+	public function verArbol($id)
+	{
+		$message = '';
+		try
+		{
+			$item = $this->categoria->rootById($id);
+
+			View::share('title', 'Vista completa del árbol ' . $item->nombre);
+			return View::make('panel::categorias.ver')
+									->with('root', $item)
+									->with('tree', $item->getDescendantsAndSelf()->toHierarchy());
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+	}
+
+	/**
+	* Ordena alfabéticamente un árbol de categorías
+	*
+	* @return void
+	*/
+	public function ordenarAlfabeticamente($id)
+	{
+		$message = 'El árbol ha sido ordenado alfabéticamente.';
+		try
+		{
+			$item = $this->categoria->rootById($id);
+
+			$item->saveTreeFrom($item, $item->getDescendants()->toHierarchyForceOrder('nombre'));
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => $message
+				)
+			));
+			return \Redirect::action('Ttt\Panel\CategoriaController@verArbol', $item->id);
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\CategoriaController@index');
 	}
 }

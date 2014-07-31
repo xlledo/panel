@@ -69,6 +69,42 @@ class CategoriaForm {
     }
 
     /**
+     * Create a new child
+     *
+     * @param $input array
+     * @param \Ttt\Panel\Repo\Categoria\Categoria $root
+     * @throws \Ttt\Panel\Exception\TttException
+     * @return \Ttt\Panel\Repo\Categoria\Categoria
+     */
+    public function createChild(array $input, \Ttt\Panel\Repo\Categoria\Categoria $root)
+    {
+        if( ! $this->valid($input) )
+        {
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. Existen errores de validación.');
+            return false;
+        }
+        return $this->categoria->createChild($input, $root);
+    }
+
+    /**
+     * Update a child
+     *
+     * @param $input array
+     * @param \Ttt\Panel\Repo\Categoria\Categoria $categoria
+     * @throws \Ttt\Panel\Exception\TttException
+     * @return \Ttt\Panel\Repo\Categoria\Categoria
+     */
+    public function updateChild(array $input, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
+    {
+        if( ! $this->valid($input) )
+        {
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. Existen errores de validación.');
+            return false;
+        }
+        return $this->categoria->updateChild($input, $categoria);
+    }
+
+    /**
      * Return any validation errors
      *
      * @return array

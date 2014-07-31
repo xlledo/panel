@@ -81,7 +81,8 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/categorias/nuevo-arbol', 'Ttt\Panel\CategoriaController@nuevoArbol');
 	Route::post('/categorias/crear-arbol', 'Ttt\Panel\CategoriaController@crearArbol');
 	Route::get('/categorias/ver-arbol/{id}', 'Ttt\Panel\CategoriaController@verArbol');//drag-and-drop de todo el árbol
-	Route::get('/categorias/editar-arbol/{id}', 'Ttt\Panel\CategoriaController@editarArbol');//formulario
+	Route::get('/categorias/ordenar-arbol/{id}', 'Ttt\Panel\CategoriaController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::get('/categorias/ver-raiz/{id}', 'Ttt\Panel\CategoriaController@verRaiz');//formulario
 	Route::post('/categorias/actualizar-raiz', 'Ttt\Panel\CategoriaController@actualizarRaiz');//post para actualizar árbol
 
 	Route::get('/categorias/ver/{id}', 'Ttt\Panel\CategoriaController@ver');

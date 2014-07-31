@@ -116,7 +116,21 @@
 														@endforeach
 													@endif
 					                            </div>
+												@if(Sentry::getUser()->isSuperUser() && ! in_array($action, array('create', 'createArbol')))
+													<div class="form-group">
+														<label for="slug">Slug</label>
+														<input type="text" class="form-control" name="slug" id="slug" value="{{ $item->slug }}" readonly="readonly" size="20" />
+													</div>
+												@endif
 					                        </div>
+											@if(! $item->isRoot())
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="valor">Valor</label>
+														<input type="text" class="form-control" name="valor" id="valor" value="{{ $item->valor }}" size="20" />
+													</div>
+												</div>
+											@endif
 					                    </div>
 					                </div>
 					            </div>

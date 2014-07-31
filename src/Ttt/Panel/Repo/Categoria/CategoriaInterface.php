@@ -55,6 +55,22 @@ interface CategoriaInterface{
     public function updateRoot(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria);
 
     /**
+    * Actualiza un módulo
+    * @param $data array
+    * @param  $root \Ttt\Panel\Repo\Categoria\Categoria
+    * @return \Ttt\Panel\Repo\Categoria\Categoria
+    */
+    public function createChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $root);
+
+    /**
+    * Actualiza un hijo
+    * @param $data array
+    * @param  $categoria \Ttt\Panel\Repo\Categoria\Categoria
+    * @return boolean
+    */
+    public function updateChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria);
+
+    /**
     * Elimina un módulo
     * @param $id int
     * @return boolean

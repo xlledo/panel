@@ -111,6 +111,39 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
+    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    */
+    public function createChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $root)
+    {
+        return $this->categoria->create(
+            array(
+                'nombre'    => $data['nombre'],
+                'slug'      => $this->slug($data['nombre']),
+                'valor'     => $data['valor'],
+                'visible'   => $data['visible'],
+                'protegida' => $data['protegida']
+            )
+        )->makeChildOf($root);
+    }
+
+    /**
+    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    */
+    public function updateChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
+    {
+
+        $categoria->nombre    = $data['nombre'];
+        $categoria->slug      = $this->slug($categoria->nombre, $categoria->id);
+        $categoria->visible   = $data['visible'];
+        $categoria->valor = $data['valor'];
+
+        $categoria->update();
+
+        //return TRUE;
+        return $categoria;
+    }
+
+    /**
     * @see \Ttt\Panel\Repo\Categoria\CategoriaInterface
     */
     public function delete($id)
