@@ -1,4 +1,4 @@
-<?php namespace Ttt\Panel\Service\Form;
+<?php 
 
 namespace Ttt\Panel\Service\Form;
 
@@ -13,6 +13,9 @@ use Ttt\Panel\Service\Form\Variablesglobales\VariablesglobalesFormLaravelValidat
 use Ttt\Panel\Service\Form\Usuario\UsuarioForm;
 use Ttt\Panel\Service\Form\Usuario\UsuarioFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Traducciones\TraduccionesForm;
+use Ttt\Panel\Service\Form\Traducciones\TraduccionesFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -22,8 +25,17 @@ class FormServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        
         $app = $this->app;
 
+        $app->bind('Ttt\Panel\Service\Form\Traducciones\TraduccionesForm', function($app)     
+        {
+            return new TraduccionesForm(
+                   new TraduccionesFormLaravelValidator( $app['validator'] ), 
+                    $app->make('Ttt\Panel\Repo\Traducciones\TraduccionesInterface')
+           );
+        });        
+        
         $app->bind('Ttt\Panel\Service\Form\Modulo\ModuloForm', function($app)
         {
             return new ModuloForm(
@@ -47,8 +59,7 @@ class FormServiceProvider extends ServiceProvider {
                 $app->make('Ttt\Panel\Repo\Usuario\UsuarioInterface')
             );
         });
-
-
+    
     }
 
 }

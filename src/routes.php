@@ -17,19 +17,12 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
-
 	Route::post('/validar', 'Ttt\Panel\LoginController@login');
-
 	Route::get('/cerrar-sesion', 'Ttt\Panel\LoginController@logout');
-
 	Route::get('/recuperar-clave', 'Ttt\Panel\RecoveryController@index');
-
 	Route::post('/validar-usuario-recuperacion', 'Ttt\Panel\RecoveryController@comprobar');
-
 	Route::get('/cambiar-clave/{resetCode}/{email}', 'Ttt\Panel\RecoveryController@cambiar');
-
 	Route::post('/validar-cambio-clave', 'Ttt\Panel\RecoveryController@validar');
-
 	Route::get('/dashboard', 'Ttt\Panel\DashboardController@index');
 
 	//Gestión de módulos
@@ -52,6 +45,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
+        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion');
         
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
@@ -61,7 +55,6 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/grupos/nuevo', 'Ttt\Panel\GrupoController@nuevo');//formulario de nuevo grupo
 	Route::get('/grupos/ver/{id}', 'Ttt\Panel\GrupoController@ver');//formulario de edición
 	Route::get('/grupos/borrar/{id}', 'Ttt\Panel\GrupoController@borrar');//borrar
-
 	Route::post('/grupos/crear', 'Ttt\Panel\GrupoController@crear');//creación de un nuevo grupo
 	Route::post('/grupos/actualizar', 'Ttt\Panel\GrupoController@actualizar');//actualización de un grupo
 
@@ -71,10 +64,19 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/usuarios/nuevo', 'Ttt\Panel\UsuarioController@nuevo');//formulario de nuevo usuario
 	Route::get('/usuarios/ver/{id}', 'Ttt\Panel\UsuarioController@ver');//formulario de edición
 	Route::get('/usuarios/borrar/{id}', 'Ttt\Panel\UsuarioController@borrar');//borrar
-
 	Route::post('/usuarios/crear', 'Ttt\Panel\UsuarioController@crear');//creación de un nuevo usuario
 	Route::post('/usuarios/actualizar', 'Ttt\Panel\UsuarioController@actualizar');//actualización de un usuario
-
+        
+        //Traducciones
+        Route::get('/traducciones', 'Ttt\Panel\TraduccionesController@index');
+        Route::get('/traducciones/nuevo', 'Ttt\Panel\TraduccionesController@nuevo');
+        Route::get('/traducciones/borrar/{id}','Ttt\Panel\TraduccionesControllers@borrar');
+        Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
+        Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
+        Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
+        
+        Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
+        Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
         
 	Route::get('/hola', function()
 	{

@@ -72,7 +72,11 @@
                                                                             <ul class="dropdown-menu pull-right" role="menu">
                                                                             <!-- Version Actual --><li><a  class="selector_versiones" href="#" data-version="-1" data-formelement="clave" data-content="{{ $item->clave}}">Version Actual</a></li> 
                                                                                         @foreach($item->versionesByClave('clave') as $version)
-                                                                                                    <li><a class="selector_versiones" href="#" data-version="{{$version->id}}" data-formelement="clave">[{{$version->id}}] Revision {{ $version->created_at }}</a></li>
+                                                                                                    <li>
+                                                                                                        <a class="selector_versiones" href="#"  data-module="variablesglobales" 
+                                                                                                                                                data-version="{{$version->id}}" 
+                                                                                                                                                data-formelement="clave">[{{$version->id}}] Revision {{ $version->created_at }}</a>
+                                                                                                    </li>
                                                                                         @endforeach
                                                                             </ul>
                                                                         </div>                                                                        
@@ -94,7 +98,10 @@
                                                                             <ul class="dropdown-menu pull-right" role="menu">
                                                                                 <!-- Version Actual --><li><a class="selector_versiones" href="#" data-version="-1" data-formelement="valor" data-content="{{ $item->valor}}">Version Actual</a></li> 
                                                                                         @foreach($item->versionesByClave('valor') as $version)
-                                                                                                    <li><a class="selector_versiones" href="#" data-version="{{$version->id}}" data-formelement="valor">[{{$version->id}}] Revision {{ $version->created_at }}</a></li>
+                                                                                                    <li><a class="selector_versiones" href="#" 
+                                                                                                           data-module="variablesglobales"
+                                                                                                           data-version="{{$version->id}}" 
+                                                                                                           data-formelement="valor">[{{$version->id}}] Revision {{ $version->created_at }}</a></li>
                                                                                         @endforeach
                                                                             </ul>
                                                                         </div>
@@ -128,13 +135,11 @@
 			</div>
 		@endif
 
-                   
-                <script type="text/javascript">
-                        $(document).ready(function()
-                        {
-                            initVersionable();
-                        });
-
-                </script>
 	@endif
 @stop
+    @section('inline_js')
+                @parent
+                $(document).ready(function() {
+                    tttjs.versiones.init();
+                });
+    @stop

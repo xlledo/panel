@@ -7,6 +7,10 @@ use Ttt\Panel\Repo\Modulo\EloquentModulo;
 use Ttt\Panel\Repo\Variablesglobales\Variablesglobales;
 use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
+use Ttt\Panel\Repo\Traducciones\Traduccion;
+use Ttt\Panel\Repo\Traducciones\EloquentTraducciones;
+use Ttt\Panel\Repo\Traducciones\Traduccion_i18n;
+
 use Ttt\Panel\Repo\Revisiones\Revision;
 use Ttt\Panel\Repo\Grupo\SentryGrupo;
 
@@ -22,7 +26,7 @@ class RepoServiceProvider extends ServiceProvider{
     */
     public function register()
     {
-
+        
         $this->app->bind('Ttt\Panel\Repo\Modulo\ModuloInterface', function($app)
         {
             return new EloquentModulo(
@@ -36,20 +40,28 @@ class RepoServiceProvider extends ServiceProvider{
                 new Variablesglobales
             );
         });
-        
+
         $this->app->bind('Ttt\Panel\Repo\Revisiones\Revision', function($app)
         {
             return new Revision();
         });
-        
+          
+        $this->app->bind('Ttt\Panel\Repo\Traducciones\TraduccionesInterface', function($app)
+        {
+           return new EloquentTraducciones(
+                   new Traduccion, new Traduccion_i18n
+                   );
+        });
+           
         $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
         {
             return new SentryGrupo();
         });
-
+        
         $this->app->bind('Ttt\Panel\Repo\Usuario\UsuarioInterface', function($app)
         {
             return new SentryUsuario($app['sentry.hasher'], 'Ttt\Panel\Repo\Usuario\User');
         });
+
     }
 }

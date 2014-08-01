@@ -12,7 +12,6 @@
             <button class="btn btn-info">
                 <i class="icon-gift"></i>
             </button>
-
             <button class="btn btn-warning">
                 <i class="icon-flag"></i>
             </button>
@@ -72,6 +71,16 @@
                 </a>
             </li>
         @endif
+        
+        @if(Sentry::getUser()->hasAccess('traducciones::listar'))
+        <li>
+            <a href="{{action('Ttt\Panel\TraduccionesController@index') }}" title="Traducciones">
+                <i class="icon-globe"></i>
+                <span class="menu-text">Traducciones</span>
+            </a>
+        </li>
+        @endif
+        
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

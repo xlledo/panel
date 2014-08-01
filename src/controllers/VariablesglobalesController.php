@@ -14,6 +14,8 @@ use Ttt\Panel\Core\AbstractCrudController;
 
 class VariablesglobalesController extends AbstractCrudController{
 
+        use \Ttt\Panel\Repo\Revisiones\RevisionControllerTrait;
+    
 	protected $_views_dir = 'variablesglobales';
 	protected $_titulo = 'Variables Globales';
 
@@ -31,7 +33,8 @@ class VariablesglobalesController extends AbstractCrudController{
 		'delete'    => 'Borrar'
 	);
 
-	public function __construct(VariablesglobalesInterface $variablesglobale, VariablesglobalesForm $variablesglobalesForm)
+	public function __construct(VariablesglobalesInterface $variablesglobale, 
+                VariablesglobalesForm $variablesglobalesForm)
 	{
                 parent::__construct();
 
@@ -204,8 +207,6 @@ class VariablesglobalesController extends AbstractCrudController{
                         $var->valor   = Input::get('valor');
 
                         $var->save();
-
-
 
 			//$moduloId = $this->variablesglobalesForm->update($data);
 
