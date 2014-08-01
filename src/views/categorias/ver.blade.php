@@ -43,4 +43,11 @@
 @stop
 @section('inline_js')
 	@parent
+	@if(Sentry::getUser()->hasAccess('categorias::editar-arbol'))
+	    $(document).ready(function() {
+
+	        tttjs.categorias.init();
+
+	    });
+	@endif
 @stop

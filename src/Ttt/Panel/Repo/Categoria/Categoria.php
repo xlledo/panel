@@ -44,17 +44,65 @@ class Categoria extends \Baum\Node{
 	}
 
 	/**
-	* Reordena una colección de hijos para un padre
+	* Reordena una todo el árbol alfabéticamente por el campo nombre
 	* @param $parent Ttt\Panel\Repo\Categoria\Categoria
-	* @param $children \Ttt\Panel\Repo\Categoria\Extensions\Collection
+	* @return boolean
 	*/
-	public function saveTreeFrom(\Ttt\Panel\Repo\Categoria\Categoria $parent, \Ttt\Panel\Repo\Categoria\Extensions\Collection $children)
+
+	public function makeTreeOrdered(Categoria $parent)
 	{
-		$childrenArray = $children->toArray();
-		foreach($children as $chld)
+
+		$childrenOrdered         = $parent->getDescendants()->toHierarchyForceOrder('nombre');
+		$childrenOrderedArray    = $childrenOrdered->toArray();
+
+		$previousNode = NULL;
+
+		$iterator = 0;
+		foreach($childrenOrdered as $chld)
 		{
 			$chld->delete();
 		}
-		return $parent->makeTree($childrenArray);
+
+		$parent->makeTree($childrenOrderedArray);
+
+		return TRUE;
+	}
+
+	/**
+	* Reordena un árbol completo a partir de una estructura en array
+	* @param $parent Ttt\Panel\Repo\Categoria\Categoria
+	* @param $childrenArray array
+	* @return array
+	*/
+	public function reorderTreeFrom(Categoria $parent, array $childrenArray)
+	{
+		$parentCollection = $this->newCollection();
+
+		$pushTo = array();
+
+		foreach($childrenArray as $chld)
+		{
+			$node = $this->find($chld['id']);
+			$nodeArray = $node->toArray();
+			if(isset($chld['children']) && count($chld['children']))
+			{
+				$nodeArray['children'] = $this->reorderTreeFrom($node, $chld['children']);
+			}
+			$pushTo[] = $nodeArray;
+		}
+
+		return $pushTo;
+	}
+
+	/**
+	* Elimina todo el contenido a partir de un padre
+	* @return void
+	*/
+	public function deleteTree()
+	{
+		foreach($this->children as $chld)
+		{
+			$chld->delete();
+		}
 	}
 }

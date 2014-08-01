@@ -37,6 +37,7 @@ class CategoriaController extends AbstractCrudController{
 		parent::_setDefaultAssets();
 
 		$assets = \View::shared('assets');
+		$assets['js'][] = asset('packages/ttt/panel/components/bootstrap/js/jquery.nestable.min.js');
 		$assets['js'][] = asset('packages/ttt/panel/js/categorias.js');
 
 		\View::share('assets', $assets);
@@ -475,7 +476,7 @@ class CategoriaController extends AbstractCrudController{
 		{
 			$item = $this->categoria->rootById($id);
 
-			$item->saveTreeFrom($item, $item->getDescendants()->toHierarchyForceOrder('nombre'));
+			$item->makeTreeOrdered($item);
 
 			\Session::flash('messages', array(
 				array(
@@ -499,5 +500,51 @@ class CategoriaController extends AbstractCrudController{
 		));
 
 		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+	}
+
+	public function ordenar()
+	{
+		$response = array(
+			'error'   => FALSE,
+			'message' => '',
+			'root_id' => Input::get('root_id')
+		);
+
+		try
+		{
+			if(! \Request::ajax())
+			{
+				throw new \Ttt\Panel\Exception\TttException("Petición no válida, este recurso solo es accesible mediante AJAX");
+			}
+
+			$root = $this->categoria->rootById(Input::get('root_id'));
+
+	        $cadena_arbol = Input::get('allTree');
+        	$array_arbol  =  json_decode($cadena_arbol,true);
+
+			$popArray = array_shift($array_arbol);
+			$treeRoot     = $popArray['id'];
+			$childrenRoot = $popArray['children'];
+
+			if($root->id != $treeRoot)
+			{
+				throw new \Ttt\Panel\Exception\TttException("La raíz del árbol no es correcta.");
+			}
+
+			$newStructure = $root->reorderTreeFrom($root, $childrenRoot);
+
+			$root->deleteTree();
+			$root->makeTree($newStructure);
+
+			$response['message'] = 'Reordenado el árbol correctamente.';
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$response['error']   = TRUE;
+			$response['message'] = $e->getMessage();
+		}
+
+		return $response;//automáticamente devuelve un objeto JSON
 	}
 }

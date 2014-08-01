@@ -150,7 +150,7 @@ function toNestable($items, $slug)
         {
             if(Sentry::getUser()->hasAccess($slug . '::editarArbol'))
             {
-                $anchorContent = link_to('admin/' . $slug . '/ver-raiz/' . $item->id, $item->nombre, array('title' => $item->nombre));
+                $anchorContent = link_to('admin/' . $slug . '/ver-raiz/' . $item->id, $item->nombre, array('title' => $item->nombre, 'id' => 'root_id', 'data-id' => $item->id));
             }
         }else
         {
