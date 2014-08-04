@@ -441,6 +441,17 @@ class CategoriaController extends AbstractCrudController{
 		$message = '';
 		try
 		{
+
+			/*
+			$morocco = $this->categoria->childById(80);
+			$germany = $this->categoria->childById(84);
+			$uganda  = $this->categoria->childById(79);
+
+			$germany->moveToRightOf($morocco);
+			$uganda->moveToRightOf($germany);
+			$morocco->moveToLeftOf($uganda);
+			*/
+
 			$item = $this->categoria->rootById($id);
 
 			View::share('title', 'Vista completa del árbol ' . $item->nombre);
@@ -532,9 +543,11 @@ class CategoriaController extends AbstractCrudController{
 			}
 
 			$newStructure = $root->reorderTreeFrom($root, $childrenRoot);
-
+			/*
+			$newStructure = $root->reorderTreeFrom($root, $childrenRoot);
 			$root->deleteTree();
 			$root->makeTree($newStructure);
+			*/
 
 			$response['message'] = 'Reordenado el árbol correctamente.';
 

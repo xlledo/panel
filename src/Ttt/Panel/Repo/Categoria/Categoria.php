@@ -49,7 +49,7 @@ class Categoria extends \Baum\Node{
 	* @return boolean
 	*/
 
-	public function makeTreeOrdered(Categoria $parent)
+	public function __makeTreeOrdered(Categoria $parent)
 	{
 
 		$childrenOrdered         = $parent->getDescendants()->toHierarchyForceOrder('nombre');
@@ -68,13 +68,57 @@ class Categoria extends \Baum\Node{
 		return TRUE;
 	}
 
+	public function makeTreeOrdered(Categoria $parent)
+	{
+
+		$childrenOrdered         = $parent->getDescendants()->toHierarchyForceOrder('nombre');
+
+		$previousNode = NULL;
+
+		foreach($childrenOrdered as $chld)
+		{
+			$nodeToMove = $parent->getDescendants()->getDictionary()[$chld->id];
+			//se trata de el primer elemento
+			if(is_null($previousNode))
+			{
+				$firstChildren = $parent->getDescendants()->first();
+				if($firstChildren)
+				{
+					if($firstChildren->id != $nodeToMove->id)
+					{
+						//solo ha de moverse si no se trata del mismo nodo
+						$nodeToMove->moveToLeftOf($firstChildren);
+					}
+				}else{
+					$nodeToMove->makeFirstChildOf($parent);
+				}
+			}else{
+				//lo movemos si el nodo anterior no es este mismo, si no saltará una excepción
+				if($nodeToMove->id != $previousNode->id)
+				{
+					$nodeToMove->moveToRightOf($previousNode);
+				}
+			}
+
+			//si este nodo tiene hijos llamamos recursivamente a este método
+			if($chld->children->count())
+			{
+				$this->makeTreeOrdered($chld);
+			}
+
+			$previousNode = $nodeToMove;
+		}
+
+		return TRUE;
+	}
+
 	/**
 	* Reordena un árbol completo a partir de una estructura en array
 	* @param $parent Ttt\Panel\Repo\Categoria\Categoria
 	* @param $childrenArray array
 	* @return array
 	*/
-	public function reorderTreeFrom(Categoria $parent, array $childrenArray)
+	public function __reorderTreeFrom(Categoria $parent, array $childrenArray)
 	{
 		$parentCollection = $this->newCollection();
 
@@ -92,6 +136,46 @@ class Categoria extends \Baum\Node{
 		}
 
 		return $pushTo;
+	}
+
+	public function reorderTreeFrom(Categoria $parent, array $childrenArray)
+	{
+		$previousNode = null;
+		foreach($childrenArray as $chld)
+		{
+			$nodeToMove = $this->find($chld['id']);
+			//se trata del primer nodo
+			if(is_null($previousNode))
+			{
+				$firstChildren = $parent->getDescendants()->first();
+				if($firstChildren)
+				{
+					if($firstChildren->id != $nodeToMove->id)
+					{
+						//solo ha de moverse si no se trata del mismo nodo
+						$nodeToMove->moveToLeftOf($firstChildren);
+					}
+				}else{
+					$nodeToMove->makeFirstChildOf($parent);
+				}
+			}else{
+				//lo movemos si el nodo anterior no es este mismo, si no saltará una excepción
+				if($nodeToMove->id != $previousNode->id)
+				{
+					$nodeToMove->moveToRightOf($previousNode);
+				}
+			}
+
+			//si este nodo tiene hijos llamamos recursivamente a este método
+			if(isset($chld['children']) && count($chld['children']))
+			{
+				$this->reorderTreeFrom($nodeToMove, $chld['children']);
+			}
+
+			$previousNode = $nodeToMove;
+		}
+
+		return TRUE;
 	}
 
 	/**
