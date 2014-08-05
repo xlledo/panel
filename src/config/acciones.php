@@ -49,4 +49,12 @@ return array(
         'editar' => array('ver', 'actualizar'),
         'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     )
+,
+    'idiomas' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar', 'accionesPorLote:accion.visible', 'accionesPorLote:accion.noVisible', 'visibleNoVisible'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    ),
+
 );

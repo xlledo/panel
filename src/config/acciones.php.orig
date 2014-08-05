@@ -34,14 +34,6 @@ return array(
         'editar' => array('ver', 'actualizar'),
         'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     ),
-<<<<<<< HEAD
-    'traducciones' => array(
-        'listar' => array('index'),
-        'crear'  => array('nuevo', 'crear'),
-        'editar' => array('ver', 'actualizar'),
-        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
-    )
-=======
     'categorias' => array(
         'listar' => array('index'),//muestra el listado de árboles existentes
         'crear-arbol'  => array('nuevoArbol', 'crearArbol'),//crea un nuevo árbol
@@ -51,6 +43,20 @@ return array(
         'borrar-arbol' => array('borrarArbol'),//borra la raíz del árbol y todo su contenido
         'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
     ),
->>>>>>> xlledo/master
+<<<<<<< HEAD
+ 'traducciones' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    )
+=======
+    'idiomas' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar', 'accionesPorLote:accion.visible', 'accionesPorLote:accion.noVisible', 'visibleNoVisible'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    ),
 
+>>>>>>> xlledo/master
 );

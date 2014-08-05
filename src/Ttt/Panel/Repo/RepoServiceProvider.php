@@ -19,6 +19,9 @@ use Ttt\Panel\Repo\Usuario\SentryUsuario;
 use Ttt\Panel\Repo\Categoria\Categoria;
 use Ttt\Panel\Repo\Categoria\EloquentCategoria;
 
+use Ttt\Panel\Repo\Idioma\Idioma;
+use Ttt\Panel\Repo\Idioma\EloquentIdioma;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -70,6 +73,13 @@ class RepoServiceProvider extends ServiceProvider{
         {
             return new EloquentCategoria(
                 new Categoria
+            );
+        });
+
+        $this->app->bind('Ttt\Panel\Repo\Idioma\IdiomaInterface', function($app)
+        {
+            return new EloquentIdioma(
+                new Idioma
             );
         });
     }

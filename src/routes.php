@@ -108,6 +108,17 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/categorias/borrar-arbol/{id}', 'Ttt\Panel\CategoriaController@borrarArbol');
 	Route::get('/categorias/borrar/{id}', 'Ttt\Panel\CategoriaController@borrar');
 
+	//Gestión de idiomas
+	Route::get('/idiomas', 'Ttt\Panel\IdiomaController@index');
+	Route::post('/idiomas', 'Ttt\Panel\IdiomaController@index');//los filtros
+	Route::post('/idiomas/acciones_por_lote', 'Ttt\Panel\IdiomaController@accionesPorLote');//las acciones por lote
+	Route::get('/idiomas/nuevo', 'Ttt\Panel\IdiomaController@nuevo');
+	Route::get('/idiomas/ver/{id}', 'Ttt\Panel\IdiomaController@ver');
+	Route::get('/idiomas/borrar/{id}', 'Ttt\Panel\IdiomaController@borrar');
+	Route::post('/idiomas/crear', 'Ttt\Panel\IdiomaController@crear');
+	Route::post('/idiomas/actualizar', 'Ttt\Panel\IdiomaController@actualizar');
+	Route::post('/idiomas/cambiar_estado', 'Ttt\Panel\IdiomaController@visibleNoVisible');
+
 
 	Route::get('/hola', function()
 	{
