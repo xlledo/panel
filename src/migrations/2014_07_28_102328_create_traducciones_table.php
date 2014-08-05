@@ -32,6 +32,7 @@ class CreateTraduccionesTable extends Migration {
             
             Schema::create('traducciones_i18n', function(Blueprint $table)
             {
+                $table->increments('id');
                 $table->integer('item_id');
                 $table->foreign('item_id')->references('id')->on('traducciones');
                 
@@ -39,8 +40,6 @@ class CreateTraduccionesTable extends Migration {
                 $table->text('texto');
                 
                 $table->timestamps();
-                
-                $table->primary(array('item_id','idioma'));
             });
             
             

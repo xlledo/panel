@@ -1,4 +1,4 @@
 <?php 
  return array( 
-'clave-1' => '<p>trad</p>', 
+'clave-1s' => '<p>trad</p>', 
 );
