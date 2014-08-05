@@ -43,5 +43,11 @@ return array(
         'borrar-arbol' => array('borrarArbol'),//borra la raíz del árbol y todo su contenido
         'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
     ),
+    'idiomas' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar', 'accionesPorLote:accion.visible', 'accionesPorLote:accion.noVisible', 'visibleNoVisible'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    ),
 
 );

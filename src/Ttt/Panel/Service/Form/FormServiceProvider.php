@@ -16,6 +16,9 @@ use Ttt\Panel\Service\Form\Usuario\UsuarioFormLaravelValidator;
 use Ttt\Panel\Service\Form\Categoria\CategoriaForm;
 use Ttt\Panel\Service\Form\Categoria\CategoriaFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Idioma\IdiomaForm;
+use Ttt\Panel\Service\Form\Idioma\IdiomaFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -56,6 +59,14 @@ class FormServiceProvider extends ServiceProvider {
             return new CategoriaForm(
                 new CategoriaFormLaravelValidator( $app['validator'] ),
                 $app->make('Ttt\Panel\Repo\Categoria\CategoriaInterface')
+            );
+        });
+
+        $app->bind('Ttt\Panel\Service\Form\Idioma\IdiomaForm', function($app)
+        {
+            return new IdiomaForm(
+                new IdiomaFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Idioma\IdiomaInterface')
             );
         });
 

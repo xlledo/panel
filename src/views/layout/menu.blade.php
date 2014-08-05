@@ -80,6 +80,14 @@
                 </a>
             </li>
         @endif
+        @if(Sentry::getUser()->hasAccess('idiomas::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Idiomas">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Idiomas</span>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">
