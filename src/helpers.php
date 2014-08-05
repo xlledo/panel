@@ -139,3 +139,44 @@ function ordenable_link($baseUrl, $key, $name, $params = array(), $currentOrderD
 		'class' => $class
 	));
 }
+
+function toNestable($items, $slug)
+{
+    $out="";
+    foreach ($items as $item) {
+
+        $anchorContent = $item->nombre;
+        if($item->isRoot())
+        {
+            if(Sentry::getUser()->hasAccess($slug . '::editarArbol'))
+            {
+                $anchorContent = link_to('admin/' . $slug . '/ver-raiz/' . $item->id, $item->nombre, array('title' => $item->nombre, 'id' => 'root_id', 'data-id' => $item->id));
+            }
+        }else
+        {
+            if(Sentry::getUser()->hasAccess($slug . '::editar'))
+            {
+                $anchorContent = link_to('admin/' . $slug . '/ver/' . $item->id, $item->nombre, array('title' => $item->nombre));
+            }
+        }
+
+        $out .= '<li class="dd-item dd2-item" data-id="'.$item["id"].'">';
+        $out .= '<div class="dd-handle dd2-handle">
+                                                    <i class="normal-icon icon-comments blue bigger-130"></i>
+
+                                                    <i class="drag-icon icon-move bigger-125"></i>
+                                                </div>
+                                                <div class="dd2-content">' . $anchorContent . '</div>';
+
+        if ($item->children->count()) {
+
+            $res = toNestable($item->children, $slug);
+            if ($res) {
+                $out .= '
+    			<ol class="dd-list">' . $res . '</ol>';
+            }
+        }
+        $out .= '</li>';
+    }
+    return $out;
+}

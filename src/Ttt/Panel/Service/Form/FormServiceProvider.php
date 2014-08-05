@@ -1,4 +1,4 @@
-<?php 
+<?php namespace Ttt\Panel\Service\Form;
 
 namespace Ttt\Panel\Service\Form;
 
@@ -16,6 +16,9 @@ use Ttt\Panel\Service\Form\Usuario\UsuarioFormLaravelValidator;
 use Ttt\Panel\Service\Form\Traducciones\TraduccionesForm;
 use Ttt\Panel\Service\Form\Traducciones\TraduccionesFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Categoria\CategoriaForm;
+use Ttt\Panel\Service\Form\Categoria\CategoriaFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -25,7 +28,6 @@ class FormServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        
         $app = $this->app;
 
         $app->bind('Ttt\Panel\Service\Form\Traducciones\TraduccionesForm', function($app)     
@@ -59,7 +61,16 @@ class FormServiceProvider extends ServiceProvider {
                 $app->make('Ttt\Panel\Repo\Usuario\UsuarioInterface')
             );
         });
-    
+
+        $app->bind('Ttt\Panel\Service\Form\Categoria\CategoriaForm', function($app)
+        {
+            return new CategoriaForm(
+                new CategoriaFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Categoria\CategoriaInterface')
+            );
+        });
+
+
     }
 
 }

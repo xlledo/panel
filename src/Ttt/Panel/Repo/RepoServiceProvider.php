@@ -16,6 +16,9 @@ use Ttt\Panel\Repo\Grupo\SentryGrupo;
 
 use Ttt\Panel\Repo\Usuario\SentryUsuario;
 
+use Ttt\Panel\Repo\Categoria\Categoria;
+use Ttt\Panel\Repo\Categoria\EloquentCategoria;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -26,7 +29,7 @@ class RepoServiceProvider extends ServiceProvider{
     */
     public function register()
     {
-        
+
         $this->app->bind('Ttt\Panel\Repo\Modulo\ModuloInterface', function($app)
         {
             return new EloquentModulo(
@@ -40,7 +43,7 @@ class RepoServiceProvider extends ServiceProvider{
                 new Variablesglobales
             );
         });
-
+        
         $this->app->bind('Ttt\Panel\Repo\Revisiones\Revision', function($app)
         {
             return new Revision();
@@ -57,11 +60,17 @@ class RepoServiceProvider extends ServiceProvider{
         {
             return new SentryGrupo();
         });
-        
+
         $this->app->bind('Ttt\Panel\Repo\Usuario\UsuarioInterface', function($app)
         {
             return new SentryUsuario($app['sentry.hasher'], 'Ttt\Panel\Repo\Usuario\User');
         });
 
+        $this->app->bind('Ttt\Panel\Repo\Categoria\CategoriaInterface', function($app)
+        {
+            return new EloquentCategoria(
+                new Categoria
+            );
+        });
     }
 }

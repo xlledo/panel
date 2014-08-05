@@ -12,6 +12,7 @@
             <button class="btn btn-info">
                 <i class="icon-gift"></i>
             </button>
+
             <button class="btn btn-warning">
                 <i class="icon-flag"></i>
             </button>
@@ -80,7 +81,14 @@
             </a>
         </li>
         @endif
-        
+        @if(Sentry::getUser()->hasAccess('categorias::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Categorías</span>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

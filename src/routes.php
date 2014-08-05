@@ -17,12 +17,19 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
+
 	Route::post('/validar', 'Ttt\Panel\LoginController@login');
+
 	Route::get('/cerrar-sesion', 'Ttt\Panel\LoginController@logout');
+
 	Route::get('/recuperar-clave', 'Ttt\Panel\RecoveryController@index');
+
 	Route::post('/validar-usuario-recuperacion', 'Ttt\Panel\RecoveryController@comprobar');
+
 	Route::get('/cambiar-clave/{resetCode}/{email}', 'Ttt\Panel\RecoveryController@cambiar');
+
 	Route::post('/validar-cambio-clave', 'Ttt\Panel\RecoveryController@validar');
+
 	Route::get('/dashboard', 'Ttt\Panel\DashboardController@index');
 
 	//Gestión de módulos
@@ -45,7 +52,6 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion');
         
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
@@ -55,6 +61,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/grupos/nuevo', 'Ttt\Panel\GrupoController@nuevo');//formulario de nuevo grupo
 	Route::get('/grupos/ver/{id}', 'Ttt\Panel\GrupoController@ver');//formulario de edición
 	Route::get('/grupos/borrar/{id}', 'Ttt\Panel\GrupoController@borrar');//borrar
+
 	Route::post('/grupos/crear', 'Ttt\Panel\GrupoController@crear');//creación de un nuevo grupo
 	Route::post('/grupos/actualizar', 'Ttt\Panel\GrupoController@actualizar');//actualización de un grupo
 
@@ -64,6 +71,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/usuarios/nuevo', 'Ttt\Panel\UsuarioController@nuevo');//formulario de nuevo usuario
 	Route::get('/usuarios/ver/{id}', 'Ttt\Panel\UsuarioController@ver');//formulario de edición
 	Route::get('/usuarios/borrar/{id}', 'Ttt\Panel\UsuarioController@borrar');//borrar
+
 	Route::post('/usuarios/crear', 'Ttt\Panel\UsuarioController@crear');//creación de un nuevo usuario
 	Route::post('/usuarios/actualizar', 'Ttt\Panel\UsuarioController@actualizar');//actualización de un usuario
         
@@ -81,6 +89,26 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/traducciones/', 'Ttt\Panel\TraduccionesController@index');
         
         
+	//Gestión de categorías
+	Route::get('/categorias', 'Ttt\Panel\CategoriaController@index');
+
+	Route::get('/categorias/nuevo-arbol', 'Ttt\Panel\CategoriaController@nuevoArbol');
+	Route::post('/categorias/crear-arbol', 'Ttt\Panel\CategoriaController@crearArbol');
+	Route::get('/categorias/ver-arbol/{id}', 'Ttt\Panel\CategoriaController@verArbol');//drag-and-drop de todo el árbol
+	Route::get('/categorias/ordenar-arbol/{id}', 'Ttt\Panel\CategoriaController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::post('/categorias/ordenar/', 'Ttt\Panel\CategoriaController@ordenar');//Ordena alfabéticamente un árbol
+	Route::get('/categorias/ver-raiz/{id}', 'Ttt\Panel\CategoriaController@verRaiz');//formulario
+	Route::post('/categorias/actualizar-raiz', 'Ttt\Panel\CategoriaController@actualizarRaiz');//post para actualizar árbol
+
+	Route::get('/categorias/ver/{id}', 'Ttt\Panel\CategoriaController@ver');
+	Route::get('/categorias/nuevo/{id}', 'Ttt\Panel\CategoriaController@nuevo');
+	Route::post('/categorias/crear', 'Ttt\Panel\CategoriaController@crear');
+	Route::post('/categorias/actualizar', 'Ttt\Panel\CategoriaController@actualizar');
+
+	Route::get('/categorias/borrar-arbol/{id}', 'Ttt\Panel\CategoriaController@borrarArbol');
+	Route::get('/categorias/borrar/{id}', 'Ttt\Panel\CategoriaController@borrar');
+
+
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();
