@@ -64,6 +64,7 @@ class TraduccionesController extends AbstractCrudController
         
         public function index()
         {
+            
             View::share('title','Listado de ', $this->_titulo);
             
             //Recogemos la página
@@ -71,8 +72,6 @@ class TraduccionesController extends AbstractCrudController
             $perPage    = Config::get('panel::app.perPage', 1);
             
             $params = $this->getParams();
-            
-           
             
             //Recogemos la paginación
             $pageData = $this->traduccion->byPage($pagina, $perPage, $params);
@@ -229,6 +228,9 @@ class TraduccionesController extends AbstractCrudController
                                                 'msg'   => $message
                                         )
                                     ));
+                        
+                        //Guardamos los ficheros
+                        Traduccion::guardarFicheros();
                            
                         return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccion->id);
                     }
@@ -269,6 +271,8 @@ class TraduccionesController extends AbstractCrudController
         
         public function borrar($id = null)
         {
+            
+            
             $traduccion = Traduccion::find($id);
             $message = 'Traduccion eliminada correctamente';
             
@@ -289,7 +293,6 @@ class TraduccionesController extends AbstractCrudController
         
         /**
          * Borrado de una traduccion asociada
-         * 
          * 
          * @return type
          */
@@ -318,6 +321,54 @@ class TraduccionesController extends AbstractCrudController
             return \Redirect::action('Ttt\Panel\TraduccionesController@index');
             
         }
+        
+       /**
+	* Ejecuta una acción sobre un conjunto de elementos
+	* @throws \Ttt\Exception\BatchActionException
+	* @return void
+	*/
+	public function accionesPorLote()
+	{
+            
+            $input = Input::only('item', 'accion');
+            
+            try{
+                if(!array_key_exists($input['accion'], $this->acciones_por_lote)){
+                    
+                    throw new \Ttt\Panel\Exception\TttException;
+                }
+                
+                foreach($input['item'] as $itemId){
+                    if(!method_exists($this->traduccion, $input['accion'])){
+                        throw new \Ttt\Exception\TttException;
+                    }
+                        call_user_func(array($this->traduccion, $input['accion']), array($itemId, \Sentry::getUser()['id']));
+                }
+                
+                \Session::flash('messages', array(
+                    array(
+                            'class'=> 'alert-success',
+                            'msg'  => 'La accion ' . $this->acciones_por_lote[$input['accion']] . ' se ha ejecutado correctamente'
+                    )
+                ));
+                
+                return \Redirect::action('Ttt\Panel\TraduccionesController@index');
+                
+            } catch (\Ttt\Panel\Exception\TttException $e) {
+                    $mensaje = 'La acción indicada no existe' ;
+            } catch (\Ttt\Panel\Exception\BatchActionException $e){
+                    $mensaje = $e->getMessage();
+            }
+            
+            \Session::flash('messages', array(
+                array(
+                        'class' => 'alert-danger',
+                        'msg'   => $mensaje
+                )
+            ));
+            
+            return \Redirect::action('Ttt\Panel\DashboardController@index');
+        }        
         
         
         protected function getParams()

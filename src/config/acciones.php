@@ -35,7 +35,10 @@ return array(
         'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     ),
     'traducciones' => array(
-        'listar' => array('index')
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     )
 
 );

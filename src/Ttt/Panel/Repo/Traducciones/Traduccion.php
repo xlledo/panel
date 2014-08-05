@@ -3,6 +3,7 @@
 namespace Ttt\Panel\Repo\Traducciones;
 
 use Illuminate\Validation\Factory as Validator;
+use Illuminate\Support\Facades\File;
 
 class Traduccion extends \Eloquent{
         
@@ -21,13 +22,13 @@ class Traduccion extends \Eloquent{
         
 	public $validator = null;
        
-        /* 
-                CONTROL DE VERSIONES
-                No aplicamos por el moment control de Versiones
-                Cuando el módulo este acabado, haremos la implementación
-                protected $camposVersionables = array('clave', 'valor'); //Campos versionables
-                protected $controlDeVersiones = TRUE; //Activa o desactiva el control de versiones
-                */
+                            /* 
+                            CONTROL DE VERSIONES
+                            No aplicamos por el moment control de Versiones
+                            Cuando el módulo este acabado, haremos la implementación
+                            protected $camposVersionables = array('clave', 'valor'); //Campos versionables
+                            protected $controlDeVersiones = TRUE; //Activa o desactiva el control de versiones
+                            */
         
 	public function maker()
 	{
@@ -92,6 +93,56 @@ class Traduccion extends \Eloquent{
             
             return $item;
             
+        }
+        
+        
+        /**
+         * Guarda los ficheros de traducción
+         * 
+         * @param String $idioma Idioma del que pretendes guardar la traducción, si no se indica ninguno, guarda todos
+         * 
+         */
+        
+        public static function guardarFicheros()
+        {
+            
+            /* De momento lo ponemos asi, hasta que haya módulo de idiomas */
+            $idiomas = array('en','es','fr');
+            
+            $nombre_fichero = 'interfaz.php';
+
+            //Obtenemos todas las traducciones
+            $todas_traducciones = Traduccion::all();
+            
+            foreach($idiomas as $idioma){
+                
+                $path = '../workbench/ttt/panel/src/lang/' . $idioma . '/';
+                $texto_fichero = "<?php \n";
+
+                $texto_fichero.= " return array( \n";
+                    
+                foreach($todas_traducciones as $traduccion){
+                    
+                    $traduccion_idioma = $traduccion->traduccion($idioma);
+                    
+                    if($traduccion_idioma){ //Guardamos las traducciones que existan
+                        $texto_sin_comillas = str_replace("'", "\'", $traduccion_idioma->texto);
+                        $texto_fichero.= "'" . $traduccion->clave ."' => " . "'" . $texto_sin_comillas . "', \n";
+                    }
+                }
+
+                $texto_fichero.=");\n";
+                // Guardado del fichero
+
+                $path_completo = $path . $nombre_fichero;
+                
+                //Intentamos crear el fichero
+                if ( ! File::put($path_completo, $texto_fichero))
+                {
+                     return false;
+                }
+            }
+            return true;
         }
         
 }

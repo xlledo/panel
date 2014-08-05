@@ -74,9 +74,12 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
         Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
         Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
-        
+
+        Route::post('/traducciones/acciones_por_lote','Ttt\Panel\TraduccionesController@accionesPorLote');
         Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
         Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
+        Route::post('/traducciones/', 'Ttt\Panel\TraduccionesController@index');
+        
         
 	Route::get('/hola', function()
 	{

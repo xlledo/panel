@@ -43,7 +43,7 @@
                                                     @endif
                                                     
                                                     <div class="col-md-3">
-                                                        <div class="input-group @if ($errors->first('clave')) has-error @endif">
+                                                        <div class="input-group @if($errors->first('clave')) has-error @endif">
                                                             <label for="clave">Clave *</label>
                                                             <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
                                                             @if ($errors->first('clave') && ($idioma_error == $trad->idioma))
@@ -74,7 +74,8 @@
                                 <div class="acciones pull-right">
                                         @if(! $nueva_traduccion && $action!='create')
                                             <input type="hidden" name="idioma" value="{{ $trad->idioma }}" />
-                                        @else
+                                        @endif
+                                        @if($action=='create')
                                             <input type="hidden" name="idioma" value="{{ $idioma_predeterminado }}" />
                                         @endif
                                         @if($action != 'create')

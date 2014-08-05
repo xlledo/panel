@@ -94,6 +94,8 @@ class EloquentTraducciones implements TraduccionesInterface{
                     $datos_comunes[$k]  = $v;
                 }
             }
+
+        $datos_comunes['clave']= $this->slug($datos_comunes['clave']);
         $item                  = $this->traduccion->create($datos_comunes);
         $datos_i18n['idioma']  = $data['idioma'];
         $datos_i18n['item_id'] = $item->id;     
@@ -127,11 +129,9 @@ class EloquentTraducciones implements TraduccionesInterface{
         }
 
         $traduccion->actualizado_por   = $data['usuario']; 
-        $traduccion->clave             = isset($traduccion['clave']) ? $traduccion['clave'] : $traduccion['clave'];
-
+        $traduccion->clave             = $this->slug($data['clave'], $traduccion->id);
         $traduccion->update();
-
-        //return TRUE;
+        
         return $traduccion->id;
     }
 
@@ -145,11 +145,16 @@ class EloquentTraducciones implements TraduccionesInterface{
         //Ojo aquí, hay que diferenciar entre borrar una traducción
         //y borrar el original, lo cual se llevará por delante
         //todas las traducciones
+        
+        $itemBorrado = $this->traduccion->findOrFail($id);
+        
+        /* Borramos las traducciones asociadas */
+        $itemBorrado->first()->traducciones()->delete();
+        
+        /* Borramos el item master */
+        $itemBorrado->first()->delete();
 
-//        $deletedModule = $this->variablesglobale->findOrFail($id)
-//                                                ->delete();
-//
-//        return ($deletedModule === TRUE) ? TRUE : FALSE;
+        return ($itemBorrado === TRUE) ? TRUE : FALSE;
     }
 
     /**
@@ -169,8 +174,8 @@ class EloquentTraducciones implements TraduccionesInterface{
         while($existe)
         {
             $item = ($checkId !== FALSE) ? $this->traduccion->where('clave', $candidateSlug)
-                                                                        ->where('id', '!=', $checkId)
-                                                                        ->first() : $this->traduccion->where('clave', $candidateSlug)->first();
+                                                            ->where('id', '!=', $checkId)
+                                                            ->first() : $this->traduccion->where('clave', $candidateSlug)->first();
 
             $existe = ! is_null($item);//¿existe elemento (que no sea el actual si se indica)?
             if(! $existe)

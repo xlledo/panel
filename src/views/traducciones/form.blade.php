@@ -57,8 +57,8 @@
             <li><a href="#datos-{{ $idioma_predeterminado }}">{{ ucfirst($idioma_predeterminado) }}</a></li>
             @endif
             </ul>            
-                {{-- Formularios --}}
-                @if($action == 'create')
+                    {{-- Formularios --}}
+                    @if($action == 'create')
                             {{-- Form elemento nuevo --}}
                             @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
                     @else
@@ -88,6 +88,7 @@
 		@endif
 	@endif
 @stop
-    @section('inline_js')
-                @parent
-    @stop
+
+@section('inline_js')
+            @parent
+@stop

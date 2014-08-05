@@ -319,8 +319,7 @@ class VariablesglobalesController extends AbstractCrudController{
 				array(
 					'class' => 'alert-success',
 					'msg'   => 'La acción ' . $this->acciones_por_lote[$input['accion']] . ' se ha ejecutado correctamente.'
-				)
-			));
+				)));
 
 			return \Redirect::action('Ttt\Panel\VariablesglobalesController@index');
 

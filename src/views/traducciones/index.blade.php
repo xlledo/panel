@@ -1,6 +1,6 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
+	@if(Sentry::getUser()->hasAccess('traducciones::crear'))
 		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
@@ -8,6 +8,8 @@
 	<h1>Traducciones <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
 @stop
 @section('content')
+
+
 	<div class="row">
 	    <div class="col-xs-12">
 	        <div class="widget-box">
@@ -44,10 +46,12 @@
 			@if($items->count() === 0)
 				<div class="alert alert-info">Actualmente no hay elementos en la base de datos</div>
                         @else
-
-	            <form action="{{ url('admin/variablesglobales/acciones_por_lote') }}" method="post">
+                        
+                            
+                        
+	            <form action="{{ url('admin/traducciones/acciones_por_lote') }}" method="post">
 	                <fieldset>
-	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
+	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Traducciones" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
 
@@ -57,7 +61,7 @@
                                         <th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                                                                         
 									<th scope="col">Actualizado por</th>
-									@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
+									@if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))
 	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 									@endif
 	                            </tr>
@@ -66,17 +70,19 @@
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
-											@if(Sentry::getUser()->hasAccess('variables-globales::editar'))
+											@if(Sentry::getUser()->hasAccess('traducciones::editar'))
 												{{ link_to('admin/traducciones/ver/' . $item->id, $item->clave) }}
 											@else
 												{{ $item->clave }}
 											@endif
 										</td>
+                                                                                
                                                                                 <td class="td_click"> {{ $item->traduccion('es')->texto }}</td>
                                                                                 <td class="td_click">
                                                                                     @foreach($item->traducciones()->get() as $trad)
                                                                                         <a href="#" class="label label-success arrowed">{{$trad->idioma }}</a>
                                                                                     @endforeach
+                                                                                    
                                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
                                                                                             @if( ! $item->traduccion($id['codigo_iso'])) {{-- Solo muestra las traducciones que no existan en el item --}}
                                                                                                 <a href="#" class="label label-danger arrowed"> {{ $id['codigo_iso'] }} </a>
@@ -85,14 +91,17 @@
                                                                                 </td>
                                                                                 <td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
-										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
-											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
-										@endif
+                                                                                <td>
+                                                                                    @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))            
+                                                                                            <input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" />
+                                                                                    @endif         
+                                                                                </td>
 									</tr>
 								@endforeach
 	                        </tbody>
 	                    </table>
-	                    -<div class="selectAcciones row">
+                            
+	                    <div class="selectAcciones row">
 	                        <div class="elementos col-sm-6">
 	                            Mostrando de {{ $items->getFrom() }} a {{ $items->getTo() }} de un total de {{ $items->getTotal() }}
 	                        </div>
@@ -127,14 +136,5 @@
 
 @section('inline_js')
 	@parent
-    $(".cambiar_estado").click(function(e){
-		 e.stopPropagation();
-		 e.preventDefault();
-		if($(this).is(":checked")){
-			$(this).prop('checked', false);
-		}else{
-			$(this).prop('checked', true);
-		}
-        cambiar_estado($(this),'{{ url('admin/modulos/cambiar_estado') }}');
-    });
+   
 @stop
