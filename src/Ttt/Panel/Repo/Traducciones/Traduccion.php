@@ -107,7 +107,9 @@ class Traduccion extends \Eloquent{
         {
             
             /* De momento lo ponemos asi, hasta que haya módulo de idiomas */
-            $idiomas = array('en','es','fr');
+            //$idiomas = array('en','es','fr');
+            
+            $idiomas = \Ttt\Panel\Repo\Idioma\Idioma::all();
             
             $nombre_fichero = 'interfaz.php';
 
@@ -116,14 +118,14 @@ class Traduccion extends \Eloquent{
             
             foreach($idiomas as $idioma){
                 
-                $path = '../workbench/ttt/panel/src/lang/' . $idioma . '/';
+                $path = '../workbench/ttt/panel/src/lang/' . $idioma->codigo_iso_2 . '/';
                 $texto_fichero = "<?php \n";
 
                 $texto_fichero.= " return array( \n";
                     
                 foreach($todas_traducciones as $traduccion){
                     
-                    $traduccion_idioma = $traduccion->traduccion($idioma);
+                    $traduccion_idioma = $traduccion->traduccion($idioma->codigo_iso_2);
                     
                     if($traduccion_idioma){ //Guardamos las traducciones que existan
                         $texto_sin_comillas = str_replace("'", "\'", $traduccion_idioma->texto);

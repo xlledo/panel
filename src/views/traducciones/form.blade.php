@@ -48,13 +48,15 @@
             <ul class="pestanias">
             @if($action != 'create')
                     @foreach($item->traducciones()->get() as $trad)
-                        <li><a href="#datos-{{$trad->idioma}}"> {{ucfirst($trad->idioma) }} </a></li>
+                        <li><a href="#datos-{{$trad->idioma}}"> 
+                                {{ Ttt\Panel\Repo\Idioma\Idioma::getByCodigoIso2($trad->idioma)->nombre }}
+                            </a></li>
                     @endforeach
                     @if(count($item->traducciones()->get())!= count($todos_idiomas))
-                        <li><a href="#datos-nuevatraduccion">Nueva Traducción</a></li>
+                        <li><a href="#datos-nuevatraduccion"> Nueva Traducción </a></li>
                     @endif
             @else
-            <li><a href="#datos-{{ $idioma_predeterminado }}">{{ ucfirst($idioma_predeterminado) }}</a></li>
+                <li><a href="#datos-{{ $idioma_predeterminado->codigo_iso_2 }}">{{ ucfirst($idioma_predeterminado->nombre) }}</a></li>
             @endif
             </ul>            
                     {{-- Formularios --}}

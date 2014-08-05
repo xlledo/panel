@@ -84,8 +84,8 @@
                                                                                     @endforeach
                                                                                     
                                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
-                                                                                            @if( ! $item->traduccion($id['codigo_iso'])) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                                                <a href="#" class="label label-danger arrowed"> {{ $id['codigo_iso'] }} </a>
+                                                                                            @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
+                                                                                                <a href="#" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>

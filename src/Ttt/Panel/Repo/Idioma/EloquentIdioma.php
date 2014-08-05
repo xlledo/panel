@@ -179,7 +179,9 @@ class EloquentIdioma implements IdiomaInterface{
             }
         }
     }
+    
 
+            
     /**
     * Devuelve la consulta con las condiciones establecidas
     *

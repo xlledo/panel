@@ -3,7 +3,7 @@
 @elseif ($action != 'create')        
     <div id="datos-{{ $trad->idioma  }}">
 @else {{-- Al crear un nuevo Item siempre lo guardamos en el idioma predeterminado --}}
-    <div id="datos-{{ $idioma_predeterminado}}">
+    <div id="datos-{{ $idioma_predeterminado->codigo_iso_2}}">
 @endif
 
             @if ($nueva_traduccion)
@@ -33,8 +33,8 @@
                                                                 <select name="idioma" id="select_idioma" class="form-control">
                                                                 <option value="">- - Seleccionar - -</option>
                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
-                                                                        @if( ! $item->traduccion($id['codigo_iso'])) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                            <option value="{{$id['codigo_iso'] }}">{{ ucfirst($id['nombre']) }}</option>
+                                                                        @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
+                                                                            <option value="{{$id->codigo_iso_2 }}">{{ ucfirst($id->nombre) }}</option>
                                                                         @endif
                                                                     @endforeach
                                                                     </select>
@@ -76,7 +76,7 @@
                                             <input type="hidden" name="idioma" value="{{ $trad->idioma }}" />
                                         @endif
                                         @if($action=='create')
-                                            <input type="hidden" name="idioma" value="{{ $idioma_predeterminado }}" />
+                                            <input type="hidden" name="idioma" value="{{ $idioma_predeterminado->codigo_iso_2 }}" />
                                         @endif
                                         @if($action != 'create')
                                             <input type="hidden" name="item_id" value="{{$item->id }}"/>
@@ -86,10 +86,10 @@
                                 </div>
                     </form>
                     @if($action != 'create')
-                        @if($trad->idioma != $idioma_predeterminado)
-                        <div class="col-xs-6">
-                            <a href="{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
-                        </div>
+                        @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
+                            <div class="col-xs-6">
+                                <a href="{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
+                            </div>
                         @endif
                     @endif
 </div>

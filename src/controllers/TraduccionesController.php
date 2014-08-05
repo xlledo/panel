@@ -57,7 +57,10 @@ class TraduccionesController extends AbstractCrudController
 		$this->traduccion         = $traduccion;
 		$this->traduccionForm     = $traduccionForm; 
 
-                View::share('idioma_predeterminado', $this->_idioma_predeterminado);
+                $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
+                $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
+                
+                View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
                 View::share('todos_idiomas', $this->_todos_idiomas);
                 //Todo: Chequear permisos para unsetear acciones por lote
 	}
