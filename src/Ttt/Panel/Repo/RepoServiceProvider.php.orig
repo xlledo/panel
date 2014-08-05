@@ -7,14 +7,17 @@ use Ttt\Panel\Repo\Modulo\EloquentModulo;
 use Ttt\Panel\Repo\Variablesglobales\Variablesglobales;
 use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
-<<<<<<< HEAD
+use Ttt\Panel\Repo\Traducciones\Traduccion;
+use Ttt\Panel\Repo\Traducciones\EloquentTraducciones;
+use Ttt\Panel\Repo\Traducciones\Traduccion_i18n;
+
 use Ttt\Panel\Repo\Revisiones\Revision;
-=======
 use Ttt\Panel\Repo\Grupo\SentryGrupo;
 
 use Ttt\Panel\Repo\Usuario\SentryUsuario;
 
->>>>>>> xlledo/master
+use Ttt\Panel\Repo\Categoria\Categoria;
+use Ttt\Panel\Repo\Categoria\EloquentCategoria;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -26,7 +29,7 @@ class RepoServiceProvider extends ServiceProvider{
     */
     public function register()
     {
-
+        
         $this->app->bind('Ttt\Panel\Repo\Modulo\ModuloInterface', function($app)
         {
             return new EloquentModulo(
@@ -40,22 +43,41 @@ class RepoServiceProvider extends ServiceProvider{
                 new Variablesglobales
             );
         });
-<<<<<<< HEAD
-        
+
         $this->app->bind('Ttt\Panel\Repo\Revisiones\Revision', function($app)
         {
             return new Revision();
+        });
+<<<<<<< HEAD
+          
+        $this->app->bind('Ttt\Panel\Repo\Traducciones\TraduccionesInterface', function($app)
+        {
+           return new EloquentTraducciones(
+                   new Traduccion, new Traduccion_i18n
+                   );
+        });
+           
 =======
 
+>>>>>>> xlledo/master
         $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
         {
             return new SentryGrupo();
         });
-
+        
         $this->app->bind('Ttt\Panel\Repo\Usuario\UsuarioInterface', function($app)
         {
             return new SentryUsuario($app['sentry.hasher'], 'Ttt\Panel\Repo\Usuario\User');
->>>>>>> xlledo/master
         });
+
+<<<<<<< HEAD
+=======
+        $this->app->bind('Ttt\Panel\Repo\Categoria\CategoriaInterface', function($app)
+        {
+            return new EloquentCategoria(
+                new Categoria
+            );
+        });
+>>>>>>> xlledo/master
     }
 }
