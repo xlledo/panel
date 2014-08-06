@@ -28,16 +28,21 @@
                                                     
                                                     @if($nueva_traduccion)
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
+                                                                <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma)) has-error @endif">
                                                                 <label for="select_idioma">Idioma *</label>
                                                                 <select name="idioma" id="select_idioma" class="form-control">
                                                                 <option value="">- - Seleccionar - -</option>
-                                                                    @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
+                                                                    @foreach($todos_idiomas as $id) {{-- Cogemos todos los idiomas disponibles  --}}
                                                                         @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
                                                                             <option value="{{$id->codigo_iso_2 }}">{{ ucfirst($id->nombre) }}</option>
                                                                         @endif
                                                                     @endforeach
                                                                     </select>
+                                                                     @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma))
+                                                                        @foreach($errors->get('idioma') as $err)
+                                                                                <span class="help-block">{{ $err }}</span>
+                                                                        @endforeach
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                     @endif

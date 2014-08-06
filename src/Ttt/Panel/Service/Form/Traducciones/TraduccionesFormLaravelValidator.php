@@ -13,7 +13,8 @@ class TraduccionesFormLaravelValidator extends AbstractLaravelValidator {
      */
     protected $rules = array(
         'clave'          => 'required',
-        'texto'          => 'required'
+        'texto'          => 'required',
+        'idioma'         => 'required'
       
     );
 
