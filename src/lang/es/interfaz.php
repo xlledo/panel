@@ -1,5 +1,4 @@
 <?php 
  return array( 
-'aas' => '<p>asa</p>', 
-'aaa' => '<p>bbb</p>', 
+'clave' => '<p>trrad</p>', 
 );

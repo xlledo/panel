@@ -48,9 +48,13 @@
             <ul class="pestanias">
             @if($action != 'create')
                     @foreach($item->traducciones()->get() as $trad)
-                        <li><a href="#datos-{{$trad->idioma}}"> 
+                        <li>
+                            
+                            <a href="#datos-{{$trad->idioma}}"> 
                                 {{ Ttt\Panel\Repo\Idioma\Idioma::getByCodigoIso2($trad->idioma)->nombre }}
-                            </a></li>
+                            </a>
+                            
+                        </li>
                     @endforeach
                     @if(count($item->traducciones()->get())!= count($todos_idiomas))
                         <li><a href="#datos-nuevatraduccion"> Nueva Traducción </a></li>
@@ -59,11 +63,12 @@
                 <li><a href="#datos-{{ $idioma_predeterminado->codigo_iso_2 }}">{{ ucfirst($idioma_predeterminado->nombre) }}</a></li>
             @endif
             </ul>            
-                    {{-- Formularios --}}
-                    @if($action == 'create')
-                            {{-- Form elemento nuevo --}}
-                            @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
-                    @else
+                            {{-- Formularios --}}
+                            @if($action == 'create')
+                                    {{-- Form elemento nuevo --}}
+                                    @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
+                            @else
+                            
                             {{-- Creamos los forms de idiomas --}}
                             <?php $idioma_error =  (\Session::has('idioma_error')) ? \Session::get('idioma_error') : FALSE ?>
                             @foreach($item->traducciones()->get() as $trad)
