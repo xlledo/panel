@@ -1,4 +1,5 @@
 <?php 
  return array( 
-'clave-2' => '<p>Trad</p>', 
+'aas' => '<p>poopi</p>', 
+'aaa' => '<p>safasfsa</p>', 
 );

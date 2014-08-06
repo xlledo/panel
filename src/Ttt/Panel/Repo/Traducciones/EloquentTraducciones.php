@@ -69,7 +69,7 @@ class EloquentTraducciones implements TraduccionesInterface{
                     ->where('clave', $clave)
                     ->first();
     }
-    
+
     /**
     * Crea una nueva Traduccion
     * @param $data array
@@ -77,14 +77,14 @@ class EloquentTraducciones implements TraduccionesInterface{
     */
     public function create(array $data)
     {
-        
+
         //Aquí va la madre del cordero, asi que lo dejamos para cuando tengamos
         //el esqueleto del resto listo
-        
+
         $datos_comunes  = array();
         $datos_i18n     = array();
         $atributos_traducibles = Traduccion::$atributosTraducibles;
-        
+
         //Rellenamos los campos comunes
         foreach($data as $k => $v){
                 if(in_array($k, $atributos_traducibles))
@@ -98,18 +98,18 @@ class EloquentTraducciones implements TraduccionesInterface{
         $datos_comunes['clave']= $this->slug($datos_comunes['clave']);
         $item                  = $this->traduccion->create($datos_comunes);
         $datos_i18n['idioma']  = $data['idioma'];
-        $datos_i18n['item_id'] = $item->id;     
-        
+        $datos_i18n['item_id'] = $item->id;
+
         //creamos el Item y su traduccion
         $item_i18n  = $this->traduccion_i18n->create($datos_i18n);
-    
+
         if($item && $item_i18n)
         {
             return $item->id;
         }else{
             return FALSE;
         }
-        
+
     }
 
     /**
@@ -117,9 +117,9 @@ class EloquentTraducciones implements TraduccionesInterface{
     * @param $data array
     * @return boolean
     */
-    public function update(array $data) 
+    public function update(array $data)
     {
-            
+
         //Idem del metodo anterior
         $traduccion = $this->traduccion->with('updater')->findOrFail($data['id']);
 
@@ -128,10 +128,10 @@ class EloquentTraducciones implements TraduccionesInterface{
             return FALSE;
         }
 
-        $traduccion->actualizado_por   = $data['usuario']; 
+        $traduccion->actualizado_por   = $data['usuario'];
         $traduccion->clave             = $this->slug($data['clave'], $traduccion->id);
         $traduccion->update();
-        
+
         return $traduccion->id;
     }
 
@@ -145,12 +145,12 @@ class EloquentTraducciones implements TraduccionesInterface{
         //Ojo aquí, hay que diferenciar entre borrar una traducción
         //y borrar el original, lo cual se llevará por delante
         //todas las traducciones
-        
+
         $itemBorrado = $this->traduccion->findOrFail($id);
-        
+
         /* Borramos las traducciones asociadas */
         $itemBorrado->first()->traducciones()->delete();
-        
+
         /* Borramos el item master */
         $itemBorrado->first()->delete();
 

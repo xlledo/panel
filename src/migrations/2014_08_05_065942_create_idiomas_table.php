@@ -33,7 +33,7 @@ class CreateIdiomasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('categorias');
+		Schema::drop('idiomas');
 	}
 
 }

@@ -56,7 +56,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
         
         //Versiones
-        //Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
+        Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
         //Gestión de grupos
 	Route::get('/grupos', 'Ttt\Panel\GrupoController@index');//listado
@@ -76,7 +76,9 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::post('/usuarios/crear', 'Ttt\Panel\UsuarioController@crear');//creación de un nuevo usuario
 	Route::post('/usuarios/actualizar', 'Ttt\Panel\UsuarioController@actualizar');//actualización de un usuario
-        
+	Route::get('/preferencias', 'Ttt\Panel\UsuarioController@verPreferencias');//ver las preferencias
+	Route::post('/preferencias', 'Ttt\Panel\UsuarioController@actualizarPreferencias');//actualizar las preferencias
+
         //Traducciones
         Route::get('/traducciones', 'Ttt\Panel\TraduccionesController@index');
         Route::get('/traducciones/nuevo', 'Ttt\Panel\TraduccionesController@nuevo');
