@@ -9,7 +9,7 @@ use Ttt\Panel\Repo\Variablesglobales\EloquentVariablesglobales;
 
 use Ttt\Panel\Repo\Traducciones\Traduccion;
 use Ttt\Panel\Repo\Traducciones\EloquentTraducciones;
-use Ttt\Panel\Repo\Traducciones\Traduccion_i18n;
+use Ttt\Panel\Repo\Traducciones\TraduccionI18n;
 
 use Ttt\Panel\Repo\Revisiones\Revision;
 use Ttt\Panel\Repo\Grupo\SentryGrupo;
@@ -55,7 +55,7 @@ class RepoServiceProvider extends ServiceProvider{
         $this->app->bind('Ttt\Panel\Repo\Traducciones\TraduccionesInterface', function($app)
         {
            return new EloquentTraducciones(
-                   new Traduccion, new Traduccion_i18n
+                   new Traduccion, new TraduccionI18n
                    );
         });
 
