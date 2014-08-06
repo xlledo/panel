@@ -26,7 +26,8 @@ return array(
         'listar' => array('index'),
         'crear'  => array('nuevo', 'crear'),
         'editar' => array('ver', 'actualizar'),
-        'borrar' => array('borrar')
+        'borrar' => array('borrar'),
+        'editar-preferencias' => array('verPreferencias', 'actualizarPreferencias')
     ),
     'variables-globales' => array(
         'listar' => array('index'),
