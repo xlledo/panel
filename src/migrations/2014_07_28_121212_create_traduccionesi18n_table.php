@@ -12,9 +12,6 @@ class CreateTraduccionesi18nTable extends Migration {
 	 */
 	public function up()
 	{
-		
-       
-            
             
             Schema::create('traducciones_i18n', function(Blueprint $table)
             {

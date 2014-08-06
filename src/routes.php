@@ -52,9 +52,11 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
+       
+        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
         
         //Versiones
-        Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
+        //Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
         //Gestión de grupos
 	Route::get('/grupos', 'Ttt\Panel\GrupoController@index');//listado
