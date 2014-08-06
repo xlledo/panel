@@ -29,20 +29,6 @@ class CreateTraduccionesTable extends Migration {
                 $table->timestamps();
             });
             
-            
-            Schema::create('traducciones_i18n', function(Blueprint $table)
-            {
-                $table->increments('id');
-                $table->integer('item_id');
-                $table->foreign('item_id')->references('id')->on('traducciones');
-                
-                $table->string('idioma', 4);
-                $table->text('texto');
-                
-                $table->timestamps();
-            });
-            
-            
 	}
 
 	/**
@@ -53,7 +39,7 @@ class CreateTraduccionesTable extends Migration {
 	public function down()
 	{
 		Schema::drop('traducciones');
-                Schema::drop('traducciones_i18n');
+                
 	}
 
 }
