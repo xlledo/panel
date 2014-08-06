@@ -46,19 +46,19 @@ class RepoServiceProvider extends ServiceProvider{
                 new Variablesglobales
             );
         });
-        
+
         $this->app->bind('Ttt\Panel\Repo\Revisiones\Revision', function($app)
         {
             return new Revision();
         });
-          
+
         $this->app->bind('Ttt\Panel\Repo\Traducciones\TraduccionesInterface', function($app)
         {
            return new EloquentTraducciones(
                    new Traduccion, new Traduccion_i18n
                    );
         });
-           
+
         $this->app->bind('Ttt\Panel\Repo\Grupo\GrupoInterface', function($app)
         {
             return new SentryGrupo();
