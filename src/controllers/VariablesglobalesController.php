@@ -14,6 +14,8 @@ use Ttt\Panel\Core\AbstractCrudController;
 
 class VariablesglobalesController extends AbstractCrudController{
 
+        use \Ttt\Panel\Repo\Revisiones\RevisionControllerTrait;
+    
 	protected $_views_dir = 'variablesglobales';
 	protected $_titulo = 'Variables Globales';
 
@@ -31,7 +33,8 @@ class VariablesglobalesController extends AbstractCrudController{
 		'delete'    => 'Borrar'
 	);
 
-	public function __construct(VariablesglobalesInterface $variablesglobale, VariablesglobalesForm $variablesglobalesForm)
+	public function __construct(VariablesglobalesInterface $variablesglobale, 
+                VariablesglobalesForm $variablesglobalesForm)
 	{
                 parent::__construct();
 
@@ -205,8 +208,6 @@ class VariablesglobalesController extends AbstractCrudController{
 
                         $var->save();
 
-
-
 			//$moduloId = $this->variablesglobalesForm->update($data);
 
 			\Session::flash('messages', array(
@@ -318,8 +319,7 @@ class VariablesglobalesController extends AbstractCrudController{
 				array(
 					'class' => 'alert-success',
 					'msg'   => 'La acción ' . $this->acciones_por_lote[$input['accion']] . ' se ha ejecutado correctamente.'
-				)
-			));
+				)));
 
 			return \Redirect::action('Ttt\Panel\VariablesglobalesController@index');
 

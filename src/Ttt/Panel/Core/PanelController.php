@@ -101,6 +101,8 @@ class PanelController extends \BaseController {
 		$components_assets[] = asset('packages/ttt/panel/components/jquery/timepicker/jquery-ui-timepicker-es.js');
 		$components_assets[] = asset('packages/ttt/panel/js/base.js');
 		$components_assets[] = asset('packages/ttt/panel/js/autonumericExtended.js');
+                $components_assets[] = asset('packages/ttt/panel/components/tiny_mce/tinymce.min.js');
+                $components_assets[] = asset('packages/ttt/panel/js/initTiny.js');
 
 		$css_assets[]        = asset('packages/ttt/panel/components/bootstrap/css/jquery-ui-1.10.3.full.min.css');
 		$css_assets[]        = asset('packages/ttt/panel/components/jquery/timepicker/jquery-ui-timepicker-addon.css');

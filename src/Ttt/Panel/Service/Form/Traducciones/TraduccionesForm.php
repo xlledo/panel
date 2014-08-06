@@ -1,11 +1,12 @@
 <?php 
 
-namespace Ttt\Panel\Service\Form\Modulo;
+namespace Ttt\Panel\Service\Form\Traducciones;
 
 use Ttt\Panel\Service\Validation\ValidableInterface;
-use Ttt\Panel\Repo\Modulo\ModuloInterface;
+use Ttt\Panel\Repo\Traducciones\TraduccionesInterface;
 
-class ModuloForm {
+
+class TraduccionesForm {
 
     /**
      * Form Data
@@ -22,36 +23,38 @@ class ModuloForm {
     protected $validator;
 
     /**
-     * Modulo repository
+     * Traducciones repository
      *
-     * @var \Ttt\Repo\Article\ModuloInterface
+     * @var \Ttt\Repo\Traducciones\TraduccionesInterface
      */
-    protected $modulo;
+    protected $traduccion;
 
-    public function __construct(ValidableInterface $validator, ModuloInterface $modulo)
+    public function __construct(ValidableInterface $validator, TraduccionesInterface $traduccion)
     {
-        $this->validator = $validator;
-        $this->modulo = $modulo;
+  
+        $this->validator    = $validator;
+        $this->traduccion   = $traduccion;
     }
 
     /**
-     * Create an new modulo
+     * Create an new Traduccion
      *
      * @throws \Ttt\Panel\Exception\TttException
      * @return boolean
      */
     public function save(array $input)
     {
-        if( ! $this->valid($input) )
+        if(!$this->valid($input))
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido crearse el registro');
             return false;
         }
-        return $this->modulo->create($input);
+
+        return $this->traduccion->create($input);
     }
 
     /**
-     * Update an existing modulo
+     * Update an existing Traduccion
      *
      * @throws \Ttt\Exception\TttException
      * @return boolean
@@ -64,7 +67,7 @@ class ModuloForm {
             return false;
         }
 
-        return $this->modulo->update($input);
+        return $this->traduccion->update($input);
     }
 
     /**

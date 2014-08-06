@@ -102,10 +102,10 @@ class EloquentModulo implements ModuloInterface{
     {
         $modulo = $this->modulo->with('updater')->findOrFail($data['id']);
 
-        if(! $modulo)
-        {
-            return FALSE;
-        }
+            if(! $modulo)
+            {
+                return FALSE;
+            }
 
         $modulo->actualizado_por   = $data['usuario'];
         $modulo->nombre            = isset($data['nombre']) ? $data['nombre'] : $modulo['nombre'];

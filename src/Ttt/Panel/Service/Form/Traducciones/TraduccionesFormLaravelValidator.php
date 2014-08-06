@@ -1,10 +1,10 @@
 <?php 
 
-namespace Ttt\Panel\Service\Form\Variablesglobales;
+namespace Ttt\Panel\Service\Form\Traducciones;
 
 use Ttt\Panel\Service\Validation\AbstractLaravelValidator;
 
-class VariablesglobalesFormLaravelValidator extends AbstractLaravelValidator {
+class TraduccionesFormLaravelValidator extends AbstractLaravelValidator {
 
     /**
      * Validation rules
@@ -13,7 +13,8 @@ class VariablesglobalesFormLaravelValidator extends AbstractLaravelValidator {
      */
     protected $rules = array(
         'clave'          => 'required',
-        'valor'          => 'required', 
+        'texto'          => 'required'
+      
     );
 
     protected $messages = array(

@@ -12,7 +12,6 @@
             <button class="btn btn-info">
                 <i class="icon-gift"></i>
             </button>
-
             <button class="btn btn-warning">
                 <i class="icon-flag"></i>
             </button>
@@ -72,6 +71,7 @@
                 </a>
             </li>
         @endif
+<<<<<<< HEAD
         
         @if(Sentry::getUser()->hasAccess('traducciones::listar'))
         <li>
@@ -81,6 +81,8 @@
             </a>
         </li>
         @endif
+        
+=======
         @if(Sentry::getUser()->hasAccess('categorias::listar'))
             <li>
                 <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
@@ -89,14 +91,7 @@
                 </a>
             </li>
         @endif
-        @if(Sentry::getUser()->hasAccess('idiomas::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Idiomas">
-                    <i class="icon-flag"></i>
-                    <span class="menu-text">Idiomas</span>
-                </a>
-            </li>
-        @endif
+>>>>>>> xlledo/master
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

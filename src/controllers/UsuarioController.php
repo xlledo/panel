@@ -11,7 +11,7 @@ use Ttt\Panel\Service\Form\Usuario\UsuarioForm;
 use Ttt\Panel\Repo\Grupo\GrupoInterface;
 use Ttt\Panel\Core\AbstractCrudController;
 
-class UsuarioController extends AbstractCrudController{
+class UsuarioController extends AbstractCrudController {
 
 	protected $_views_dir = 'usuarios';
 	protected $_titulo = 'Usuarios';

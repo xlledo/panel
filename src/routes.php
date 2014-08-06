@@ -46,13 +46,13 @@ Route::group(array('prefix' => 'admin'), function()
         //Variables Globales
 	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
         Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
-        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
+        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');        
         Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
         Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-
+        
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
@@ -74,7 +74,21 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::post('/usuarios/crear', 'Ttt\Panel\UsuarioController@crear');//creación de un nuevo usuario
 	Route::post('/usuarios/actualizar', 'Ttt\Panel\UsuarioController@actualizar');//actualización de un usuario
+        
+        //Traducciones
+        Route::get('/traducciones', 'Ttt\Panel\TraduccionesController@index');
+        Route::get('/traducciones/nuevo', 'Ttt\Panel\TraduccionesController@nuevo');
+        Route::get('/traducciones/borrar/{id}','Ttt\Panel\TraduccionesControllers@borrar');
+        Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
+        Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
+        Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
 
+        Route::post('/traducciones/acciones_por_lote','Ttt\Panel\TraduccionesController@accionesPorLote');
+        Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
+        Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
+        Route::post('/traducciones/', 'Ttt\Panel\TraduccionesController@index');
+        
+        
 	//Gestión de categorías
 	Route::get('/categorias', 'Ttt\Panel\CategoriaController@index');
 
