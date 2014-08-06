@@ -326,6 +326,96 @@ class UsuarioController extends AbstractCrudController {
 	}
 
 	/**
+	* Muestra el formulario de edición de preferencias
+	* @return void
+	*/
+	public function verPreferencias()
+	{
+		$message = '';
+		try
+		{
+			/*echo '<pre>';
+			print_r(Input::old());
+			echo '</pre>';exit;*/
+			$sentryUser = Sentry::getUser();
+			$item = $this->usuario->findById($sentryUser->id);
+			$item->first_name   = ! is_null(Input::old('first_name')) ? Input::old('first_name') : $item->first_name;
+			$item->last_name    = ! is_null(Input::old('last_name')) ? Input::old('last_name') : $item->last_name;
+			$item->email        = ! is_null(Input::old('email')) ? Input::old('email') : $item->email;
+
+
+			View::share('title', 'Edición del mis preferencias ' . $item->full_name);
+			return View::make('panel::usuarios.preferencias')
+									->with('action', 'edit')
+									->with('item', $item);
+
+		}
+		catch(\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\DashboardController@index');
+	}
+
+	/**
+	* Intenta actualizar un elemento existente
+	* @return void
+	*/
+	public function actualizarPreferencias()
+	{
+		$message = 'Preferencias actualizadas correctamente.';
+		try
+		{
+			$ent = Sentry::getUser();
+
+			$data =  Input::only(array('first_name', 'last_name', 'email', 'password', 'confirm_password'));
+
+			$this->usuarioForm->update($data, $ent);
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => $message
+				)
+			));
+
+			return \Redirect::action('Ttt\Panel\UsuarioController@verPreferencias');
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = 'No se han podido guardar los cambios de sus preferencias.';
+		}
+		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
+		{
+			$message = 'Ya existe un usuario con ese email.';
+		}
+		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+			$message = $e->getMessage();
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\UsuarioController@verPreferencias')
+																		->withInput()
+																		->withErrors($this->usuarioForm->errors());
+	}
+
+	/**
 	* Intenta actualizar un elemento existente
 	* @return void
 	*/
