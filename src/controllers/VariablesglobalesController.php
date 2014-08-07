@@ -77,7 +77,6 @@ class VariablesglobalesController extends AbstractCrudController{
 							->with('currentUrl', \URL::current())
 							->with('accionesPorLote', $this->acciones_por_lote);
 
-
 	}
 
 	/**

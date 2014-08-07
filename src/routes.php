@@ -123,7 +123,9 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/idiomas/actualizar', 'Ttt\Panel\IdiomaController@actualizar');
 	Route::post('/idiomas/cambiar_estado', 'Ttt\Panel\IdiomaController@visibleNoVisible');
 
-
+        //Gestion Ficheros
+        Route::get('/ficheros', 'Ttt\Panel\FicherosController@index');
+        
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

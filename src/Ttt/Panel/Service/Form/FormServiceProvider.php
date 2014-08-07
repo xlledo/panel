@@ -22,6 +22,9 @@ use Ttt\Panel\Service\Form\Categoria\CategoriaFormLaravelValidator;
 use Ttt\Panel\Service\Form\Idioma\IdiomaForm;
 use Ttt\Panel\Service\Form\Idioma\IdiomaFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Fichero\FicheroForm;
+use Ttt\Panel\Service\Form\Fichero\FicheroFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -80,8 +83,12 @@ class FormServiceProvider extends ServiceProvider {
                 $app->make('Ttt\Panel\Repo\Idioma\IdiomaInterface')
             );
         });
-
-
+        
+        $app->bind('Ttt\Panel\Service\Form\Fichero\FicheroForm', function($app){
+            return new FicheroForm(
+                    new FicheroFormLaravelValidator($app['validator']),
+                    $app->make('Ttt\Panel\Repo\Fichero\FicheroInterface')
+                    );
+        });
     }
-
 }

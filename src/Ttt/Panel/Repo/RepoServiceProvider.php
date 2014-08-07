@@ -1,4 +1,5 @@
 <?php
+
 namespace Ttt\Panel\Repo;
 
 use Ttt\Panel\Repo\Modulo\Modulo;
@@ -21,6 +22,9 @@ use Ttt\Panel\Repo\Categoria\EloquentCategoria;
 
 use Ttt\Panel\Repo\Idioma\Idioma;
 use Ttt\Panel\Repo\Idioma\EloquentIdioma;
+
+use Ttt\Panel\Repo\Fichero\Fichero;
+use Ttt\Panel\Repo\Fichero\EloquentFichero;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -79,7 +83,14 @@ class RepoServiceProvider extends ServiceProvider{
         $this->app->bind('Ttt\Panel\Repo\Idioma\IdiomaInterface', function($app)
         {
             return new EloquentIdioma(
-                new Idioma
+                    new Idioma
+            );
+        });
+        
+        $this->app->bind('Ttt\Panel\Repo\Fichero\FicheroInterface', function($app)
+        {
+            return new EloquentFichero(
+                    new Fichero
             );
         });
     }
