@@ -162,7 +162,7 @@ class TraduccionesController extends AbstractCrudController
                     )
                 ));
                 
-                return \Redirect::action('Ttt\Panel\TraduccionesController@index');
+                return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccionId);
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
@@ -232,8 +232,8 @@ class TraduccionesController extends AbstractCrudController
                         
                         //Guardamos los ficheros
                         Traduccion::guardarFicheros();
-                           
-                        return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccion->id . '#datos-' . Input::get('idioma') );
+                        
+                        return \Redirect::to('admin/traducciones/ver/' . $traduccion->id . '#datos-' . Input::get('idioma'));
                     }
 
                 //die(var_dump($traduccion_i18n));
@@ -256,7 +256,8 @@ class TraduccionesController extends AbstractCrudController
             
             \Session::flash('idioma_error', Input::get('idioma'));
             
-            return \Redirect::action('Ttt\Panel\TraduccionesController@ver' , Input::get('item_id'))
+            $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
+            return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
                                             ->withInput()
                                             ->withErrors($this->traduccionForm->errors());
 

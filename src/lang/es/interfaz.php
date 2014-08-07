@@ -1,4 +1,4 @@
 <?php 
  return array( 
-'clave' => '<p>trrad</p>', 
+'a-b-c' => '<p>a b c</p>', 
 );

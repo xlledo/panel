@@ -1,4 +1,4 @@
 <?php 
  return array( 
-'clave' => '<p>adsfasds</p>', 
+'a-b-c' => '<p>Ingles</p>', 
 );
