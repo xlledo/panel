@@ -22,10 +22,10 @@ class TraduccionesController extends AbstractCrudController
 	protected $_titulo = 'Traducciones';
 
 	public static $moduleSlug = 'traducciones';
-        
+
         //Para desarrollo SOLO, hasta que se implementa
         //el módulo idiomas
-        
+
         public $_idioma_predeterminado = 'es';
         public $_todos_idiomas = array(
                 array(  'nombre'=>'español',
@@ -34,7 +34,7 @@ class TraduccionesController extends AbstractCrudController
                         'codigo_iso'=>'en'),
                 array(  'nombre'=>'frances',
                         'codigo_iso'=>'fr'));
-        
+
         // -------------
 
 	protected $traduccion;
@@ -49,52 +49,52 @@ class TraduccionesController extends AbstractCrudController
 		'delete'    => 'Borrar'
 	);
 
-	public function __construct(TraduccionesInterface $traduccion, 
+	public function __construct(TraduccionesInterface $traduccion,
                                     TraduccionesForm $traduccionForm)
 	{
                 parent::__construct();
 
 		$this->traduccion         = $traduccion;
-		$this->traduccionForm     = $traduccionForm; 
+		$this->traduccionForm     = $traduccionForm;
 
                 $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
                 $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
-                
+
                 View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
                 View::share('todos_idiomas', $this->_todos_idiomas);
                 //Todo: Chequear permisos para unsetear acciones por lote
 	}
-        
+
         public function index()
         {
-            
+
             View::share('title','Listado de ', $this->_titulo);
-            
+
             //Recogemos la página
             $pagina     = Input::get('pagina', 1);
             $perPage    = Config::get('panel::app.perPage', 1);
-            
+
             $params = $this->getParams();
-            
+
             //Recogemos la paginación
             $pageData = $this->traduccion->byPage($pagina, $perPage, $params);
-           
+
             $traducciones = Paginator::make(
                     $pageData->items,
                     $pageData->totalItems,
                     $perPage);
-            
+
             $traducciones->appends($params);
-            
+
             View::share('items', $traducciones);
-            
+
             return View::make('panel::traducciones.index')
                                 ->with('params', $params)
                                 ->with('currentUrl', \URL::current())
                                 ->with('accionesPorLote', $this->acciones_por_lote);
         }
-        
-        
+
+
         /**
          * Formulario de creacion de traducción
          * @return Void
@@ -104,44 +104,44 @@ class TraduccionesController extends AbstractCrudController
             $item = new \stdClass();
             $item->clave = Input::old('clave') ? Input::old('clave') : '';
             $item->texto = Input::old('texto') ? Input::old('texto') : '';
-            
+
             View::share('title', 'Creacion de una nueva traducción');
             return View::make('panel::traducciones.form')
                                             ->with('item', $item)
                                             ->with('action', 'create');
         }
-        
+
         /**
          * Formulario de edición
-         * 
+         *
          * @param int $id
          */
-        
+
         public function ver($id = null)
         {
             if($id)
             {
                 $item = Traduccion::find($id);
-                
+
                 View::share('title', 'Editar elemento');
                 return View::make('panel::traducciones.form')
                                     ->with('item', $item)
                                     ->with('action', 'edit');
-                
+
             }
         }
-        
+
 
         /**
          * Crea un Item
-         * 
+         *
          * @return void
          */
-            
+
         public function crear()
         {
             $message = 'Traducción creada correctamente.';
-            
+
             try{
                 $data = array(
                     'clave' => Input::get('clave'),
@@ -150,48 +150,48 @@ class TraduccionesController extends AbstractCrudController
                     'creado_por' => \Sentry::getUser()['id'],
                     'actualizado_por' => \Sentry::getUser()['id']
                 );
-                
+
                 $traduccionId = $this->traduccionForm->save($data);
-                
+
                 //die(var_dump($traduccionId));
-                
+
                 \Session::flash('messages', array(
                     array(
                             'class' => 'alert-success',
                             'msg'   => $message
                     )
                 ));
-                
+
                 return \Redirect::action('Ttt\Panel\TraduccionesController@index');
-                
+
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
             }
-            
+
             \Session::flash('messages', array(
 			array(
 				'class' => 'alert-danger',
 				'msg'   => $message
 			)
-		));            
-            
+		));
+
             return \Redirect::action('Ttt\Panel\TraduccionesController@nuevo')
                                     ->withInput()
                                     ->withErrors($this->traduccionForm->errors());
-            
+
         }
-        
-        
+
+
         /**
         * Actualizar un Item
-        * 
-        * @return void  
-        */    
-        
+        *
+        * @return void
+        */
+
         public function actualizar()
         {
         $message = 'Traducción guardada correctamente';
-        
+
             try{
 
                 //Cogemos tabla master traduccón
@@ -203,16 +203,16 @@ class TraduccionesController extends AbstractCrudController
                                                         ->traducciones()
                                                         ->where('idioma','=', Input::get('idioma'))
                                                         ->first();
-                
+
                 $traduccion_i18n = $traduccion_i18n ?: new TraduccionI18n;
-                
-                
-                
+
+
+
                 //Cargamos campos traducibles
                 $traduccion_i18n->texto     = Input::get('texto');
                 $traduccion_i18n->item_id   = Input::get('item_id');
                 $traduccion_i18n->idioma    = Input::get('idioma');
-                
+
                 $data = array(
                         'id'    => Input::get('item_id'),
                         'clave' => Input::get('clave'),
@@ -231,83 +231,83 @@ class TraduccionesController extends AbstractCrudController
                                                 'msg'   => $message
                                         )
                                     ));
-                        
+
                         //Guardamos los ficheros
                         Traduccion::guardarFicheros();
-                           
+
                         return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccion->id);
                     }
 
                 //die(var_dump($traduccion_i18n));
-                
+
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
             }
-            
+
             \Session::flash('messages', array(
                                 array(
                                         'class' => 'alert-danger',
                                         'msg'   => $message
                                 )
-                        ));            
+                        ));
 
             //-- Cargamos los errores en un array por idioma
             //-- para luego mostrarlos en el form de idioma que toque
             $errores = array();
             $errores[Input::get('idioma')] = $this->traduccionForm->errors();
-            
+
             \Session::flash('idioma_error', Input::get('idioma'));
-            
+
             return \Redirect::action('Ttt\Panel\TraduccionesController@ver' , Input::get('item_id'))
                                             ->withInput()
-                                            ->withErrors($this->traduccionForm->errors());            
+                                            ->withErrors($this->traduccionForm->errors());
 
             }
-    
 
-        
+
+
         /**
          * Borrado de un Item traduccion completo (tambien sus traducciones asociadas)
-         * 
+         *
          * @return type
          */
-        
+
         public function borrar($id = null)
         {
-            
-            
+
+
             $traduccion = Traduccion::find($id);
             $message = 'Traduccion eliminada correctamente';
-            
+
             if($traduccion)
             {
                 $traduccion->delete();
-                
+
                 \Session::flash('messages', array(
 				array(
 					'class' => 'alert-error',
 					'msg'   => $message
 				)
                             ));
-                
+
                 return \Redirect::action('Ttt\Panel\TraduccionesController@index');
             }
         }
-        
+
         /**
          * Borrado de una traduccion asociada
-         * 
+         *
          * @return type
          */
-        
+
         public function borrarTraduccion($id = null)
         {
             $message = 'Traduccion eliminada correctamente';
-            
+
             if($id)
             {
                 $traduccion_i18n = TraduccionI18n::find($id);
-                
+
                 if($traduccion_i18n->delete())
                 {
                     \Session::flash('messages', array(
@@ -318,13 +318,13 @@ class TraduccionesController extends AbstractCrudController
                     ));
                     return \Redirect::action('Ttt\Panel\TraduccionesController@index');
                 }
-                
+
             }
-            
+
             return \Redirect::action('Ttt\Panel\TraduccionesController@index');
-            
+
         }
-        
+
        /**
 	* Ejecuta una acción sobre un conjunto de elementos
 	* @throws \Ttt\Exception\BatchActionException
@@ -332,52 +332,52 @@ class TraduccionesController extends AbstractCrudController
 	*/
 	public function accionesPorLote()
 	{
-            
+
             $input = Input::only('item', 'accion');
-            
+
             try{
                 if(!array_key_exists($input['accion'], $this->acciones_por_lote)){
-                    
+
                     throw new \Ttt\Panel\Exception\TttException;
                 }
-                
+
                 foreach($input['item'] as $itemId){
                     if(!method_exists($this->traduccion, $input['accion'])){
                         throw new \Ttt\Exception\TttException;
                     }
                         call_user_func(array($this->traduccion, $input['accion']), array($itemId, \Sentry::getUser()['id']));
                 }
-                
+
                 \Session::flash('messages', array(
                     array(
                             'class'=> 'alert-success',
                             'msg'  => 'La accion ' . $this->acciones_por_lote[$input['accion']] . ' se ha ejecutado correctamente'
                     )
                 ));
-                
+
                 return \Redirect::action('Ttt\Panel\TraduccionesController@index');
-                
+
             } catch (\Ttt\Panel\Exception\TttException $e) {
                     $mensaje = 'La acción indicada no existe' ;
             } catch (\Ttt\Panel\Exception\BatchActionException $e){
                     $mensaje = $e->getMessage();
             }
-            
+
             \Session::flash('messages', array(
                 array(
                         'class' => 'alert-danger',
                         'msg'   => $mensaje
                 )
             ));
-            
+
             return \Redirect::action('Ttt\Panel\DashboardController@index');
-        }        
-        
-        
+        }
+
+
         protected function getParams()
         {
             $input = array_merge(Input::only($this->allowed_url_params));
-            
+
             $input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'clave';
             $input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
 

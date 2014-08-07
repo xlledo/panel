@@ -1,5 +1,5 @@
 <?php 
  return array( 
-'aas' => '<p>asa</p>', 
-'aaa' => '<p>bbb</p>', 
+'prueba' => '<p>Texto de prueba</p>', 
+'test-2' => '<p>Prueba 2</p>', 
 );
