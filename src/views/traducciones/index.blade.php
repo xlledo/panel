@@ -80,12 +80,12 @@
                                                                                 <td class="td_click"> {{ $item->traduccion('es')->texto }}</td>
                                                                                 <td class="td_click">
                                                                                     @foreach($item->traducciones()->get() as $trad)
-                                                                                        <a href="#" class="label label-success arrowed">{{$trad->idioma }}</a>
+                                                                                        <a href="{{ 'traducciones/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
                                                                                     @endforeach
                                                                                     
                                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
                                                                                             @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                                                <a href="#" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
+                                                                                                <a href="{{ 'traducciones/ver/' . $item->id. '#datos-' . $id->codigo_iso_2  }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>
