@@ -67,15 +67,8 @@ class TraduccionesController extends AbstractCrudController
 
         public function index()
         {
-<<<<<<< HEAD
-
-            View::share('title','Listado de ', $this->_titulo);
-
-=======
-            
             View::share('title','Listado de ' . $this->_titulo);
-            
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
+
             //Recogemos la página
             $pagina     = Input::get('pagina', 1);
             $perPage    = Config::get('panel::app.perPage', 1);
@@ -88,13 +81,7 @@ class TraduccionesController extends AbstractCrudController
             $traducciones = Paginator::make(
                     $pageData->items,
                     $pageData->totalItems,
-<<<<<<< HEAD
                     $perPage);
-
-=======
-                    $perPage );
-            
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
             $traducciones->appends($params);
 
             View::share('items', $traducciones);
@@ -172,15 +159,7 @@ class TraduccionesController extends AbstractCrudController
                             'msg'   => $message
                     )
                 ));
-<<<<<<< HEAD
-
-                return \Redirect::action('Ttt\Panel\TraduccionesController@index');
-
-=======
-                
                 return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccionId);
-                
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
             }
@@ -222,13 +201,6 @@ class TraduccionesController extends AbstractCrudController
                                                         ->first();
 
                 $traduccion_i18n = $traduccion_i18n ?: new TraduccionI18n;
-<<<<<<< HEAD
-
-
-
-=======
-                
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
                 //Cargamos campos traducibles
                 $traduccion_i18n->texto     = Input::get('texto');
                 $traduccion_i18n->item_id   = Input::get('item_id');
@@ -255,13 +227,7 @@ class TraduccionesController extends AbstractCrudController
 
                         //Guardamos los ficheros
                         Traduccion::guardarFicheros();
-<<<<<<< HEAD
-
-                        return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccion->id);
-=======
-                        
                         return \Redirect::to('admin/traducciones/ver/' . $traduccion->id . '#datos-' . Input::get('idioma'));
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
                     }
 
                 //die(var_dump($traduccion_i18n));
@@ -283,14 +249,8 @@ class TraduccionesController extends AbstractCrudController
             $errores[Input::get('idioma')] = $this->traduccionForm->errors();
 
             \Session::flash('idioma_error', Input::get('idioma'));
-<<<<<<< HEAD
-
-            return \Redirect::action('Ttt\Panel\TraduccionesController@ver' , Input::get('item_id'))
-=======
-            
             $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
             return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
->>>>>>> 2300ca3500965ce22d3a05e85bd14699031b0f8e
                                             ->withInput()
                                             ->withErrors($this->traduccionForm->errors());
 
