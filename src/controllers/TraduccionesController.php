@@ -11,7 +11,7 @@ use Ttt\Panel\Repo\Traducciones\TraduccionesInterface;
 use Ttt\Panel\Service\Form\Traducciones\TraduccionesForm;
 
 use Ttt\Panel\Repo\Traducciones\Traduccion;
-use Ttt\Panel\Repo\Traducciones\Traduccion_i18n;
+use Ttt\Panel\Repo\Traducciones\TraduccionI18n;
 
 use Ttt\Panel\Core\AbstractCrudController;
 
@@ -68,7 +68,7 @@ class TraduccionesController extends AbstractCrudController
         public function index()
         {
             
-            View::share('title','Listado de ', $this->_titulo);
+            View::share('title','Listado de ' . $this->_titulo);
             
             //Recogemos la página
             $pagina     = Input::get('pagina', 1);
@@ -82,7 +82,7 @@ class TraduccionesController extends AbstractCrudController
             $traducciones = Paginator::make(
                     $pageData->items,
                     $pageData->totalItems,
-                    $perPage);
+                    $perPage );
             
             $traducciones->appends($params);
             
@@ -162,7 +162,7 @@ class TraduccionesController extends AbstractCrudController
                     )
                 ));
                 
-                return \Redirect::action('Ttt\Panel\TraduccionesController@index');
+                return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccionId);
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
@@ -204,9 +204,7 @@ class TraduccionesController extends AbstractCrudController
                                                         ->where('idioma','=', Input::get('idioma'))
                                                         ->first();
                 
-                $traduccion_i18n = $traduccion_i18n ?: new Traduccion_i18n;
-                
-                
+                $traduccion_i18n = $traduccion_i18n ?: new TraduccionI18n;
                 
                 //Cargamos campos traducibles
                 $traduccion_i18n->texto     = Input::get('texto');
@@ -234,11 +232,11 @@ class TraduccionesController extends AbstractCrudController
                         
                         //Guardamos los ficheros
                         Traduccion::guardarFicheros();
-                           
-                        return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccion->id);
+                        
+                        return \Redirect::to('admin/traducciones/ver/' . $traduccion->id . '#datos-' . Input::get('idioma'));
                     }
 
-                die(var_dump($traduccion_i18n));
+                //die(var_dump($traduccion_i18n));
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
@@ -249,7 +247,7 @@ class TraduccionesController extends AbstractCrudController
                                         'class' => 'alert-danger',
                                         'msg'   => $message
                                 )
-                        ));            
+                        ));
 
             //-- Cargamos los errores en un array por idioma
             //-- para luego mostrarlos en el form de idioma que toque
@@ -258,9 +256,10 @@ class TraduccionesController extends AbstractCrudController
             
             \Session::flash('idioma_error', Input::get('idioma'));
             
-            return \Redirect::action('Ttt\Panel\TraduccionesController@ver' , Input::get('item_id'))
+            $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
+            return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
                                             ->withInput()
-                                            ->withErrors($this->traduccionForm->errors());            
+                                            ->withErrors($this->traduccionForm->errors());
 
             }
     
@@ -306,7 +305,7 @@ class TraduccionesController extends AbstractCrudController
             
             if($id)
             {
-                $traduccion_i18n = Traduccion_i18n::find($id);
+                $traduccion_i18n = TraduccionI18n::find($id);
                 
                 if($traduccion_i18n->delete())
                 {

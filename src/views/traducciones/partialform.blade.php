@@ -1,3 +1,4 @@
+
 @if ($nueva_traduccion)
     <div id="datos-nuevatraduccion">
 @elseif ($action != 'create')        
@@ -28,25 +29,33 @@
                                                     
                                                     @if($nueva_traduccion)
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
+                                                                <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
                                                                 <label for="select_idioma">Idioma *</label>
                                                                 <select name="idioma" id="select_idioma" class="form-control">
                                                                 <option value="">- - Seleccionar - -</option>
-                                                                    @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
+                                                                    @foreach($todos_idiomas as $id) {{-- Cogemos todos los idiomas disponibles  --}}
                                                                         @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
                                                                             <option value="{{$id->codigo_iso_2 }}">{{ ucfirst($id->nombre) }}</option>
                                                                         @endif
                                                                     @endforeach
                                                                     </select>
+                                                                     @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma')))
+                                                                        @foreach($errors->get('idioma') as $err)
+                                                                                <span class="help-block">{{ $err }}</span>
+                                                                        @endforeach
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                     @endif
                                                     
                                                     <div class="col-md-3">
-                                                        <div class="input-group @if($errors->first('clave')) has-error @endif">
+                                                        <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma)) has-error @endif">
                                                             <label for="clave">Clave *</label>
-                                                            <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
-                                                            @if ($errors->first('clave') && ($idioma_error == $trad->idioma))
+                                				<div class="input-group">
+                                                                    <span class="input-group-addon"><i class="icon-flag"></i></span>
+                                                                    <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común"/>
+                                                                </div>                                                            
+                                                            @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma))
                                                                         @foreach($errors->get('clave') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
                                                                         @endforeach
@@ -63,7 +72,7 @@
                                                 <div class="widget-body">
                                                     <textarea name="texto" class="mceEditor">{{ ($nueva_traduccion || $action=='create') ? '' : $trad->texto }}</textarea>
                                                 </div>
-                                                @if ($errors->first('texto') && ($idioma_error == $trad->idioma))
+                                                @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) 
                                                         @foreach($errors->get('texto') as $err)
                                                                 <span class="help-block">{{ $err }}</span>
                                                         @endforeach
@@ -81,7 +90,6 @@
                                         @if($action != 'create')
                                             <input type="hidden" name="item_id" value="{{$item->id }}"/>
                                         @endif
-                                        
                                     <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
                                 </div>
                     </form>
