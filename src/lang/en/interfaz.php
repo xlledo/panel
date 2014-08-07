@@ -1,4 +1,4 @@
-<?php
+<?php 
  return array( 
-'prueba' => '<p>Test</p>',
+'prueba' => '<p>Test</p>', 
 );

@@ -11,6 +11,13 @@ interface IdiomaInterface{
     public function byId($id);
 
     /**
+    * Devuelve el idioma principal
+    * @param $id int
+    * @return object Object con la información del idioma
+    */
+    public function idiomaPrincipal();
+
+    /**
     * Devuelve el listado de módulos y el total de los mismos
     * @param $page int
     * @param $limit int
