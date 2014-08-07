@@ -134,9 +134,15 @@ class Traduccion extends \Eloquent{
                 }
 
                 $texto_fichero.=");\n";
-                // Guardado del fichero
+                
+                //-- Guardado del fichero
 
                 $path_completo = $path . $nombre_fichero;
+                
+                //Creamos el directorio si no existe
+                if(!(file_exists($path))){
+                    mkdir($path);
+                }
 
                 //Intentamos crear el fichero
                 if ( ! File::put($path_completo, $texto_fichero))

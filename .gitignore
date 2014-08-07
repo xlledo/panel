@@ -1,4 +1,5 @@
 /vendor
+/src/lang
 composer.phar
 composer.lock
 .DS_Store
