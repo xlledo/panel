@@ -130,7 +130,7 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::get('/categorias-traducibles/borrar-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrarArbol');
 	Route::get('/categorias-traducibles/borrar/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrar');
-	Route::get('/traducciones/borrar-traduccion/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrarTraduccion');
+	Route::get('/categorias-traducibles/borrar-traduccion/{id}/{idioma}', 'Ttt\Panel\CategoriaTraducibleController@borrarTraduccion');
 
 	//Gestión de idiomas
 	Route::get('/idiomas', 'Ttt\Panel\IdiomaController@index');

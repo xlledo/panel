@@ -85,9 +85,9 @@ interface CategoriaInterface{
     public function deleteTranslation($id);
 
     /**
-     * Crea una nueva instancia del modelo. Es útil cuando queremos tener una instancia limpia del objeto.
-     *
+     * Crea una nueva instancia del modelo. Es útil cuando queremos tener una instancia limpia del objeto. Ya incluye una traducción en el idioma principal.
+     * @param $fillData array
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function createModel();
+    public function createNode(array $fillData = array());
 }

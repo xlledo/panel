@@ -94,14 +94,21 @@ abstract class AbstractLaravelValidator implements ValidableInterface{
     * Establece la regla para una clave si existe
     * @param $key string la clave de la regla a establecer
     * @param  $value string el valor de la validación
+    * @param  $replace string|null la nueva key por la que sustituir una existente
     *
     * @return void
     */
-    public function setRuleForKey($key, $value)
+    public function setRuleForKey($key, $value, $replace = null)
     {
         if(array_key_exists($key, $this->rules))
         {
-            $this->rules[$key] = $value;
+            if(! is_null($replace))
+            {
+                unset($this->rules[$key]);
+                $this->rules[$replace] = $value;
+            }else{
+                $this->rules[$key] = $value;
+            }
         }
     }
 }

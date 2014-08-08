@@ -22,6 +22,9 @@ use Ttt\Panel\Service\Form\Categoria\CategoriaFormLaravelValidator;
 use Ttt\Panel\Service\Form\Idioma\IdiomaForm;
 use Ttt\Panel\Service\Form\Idioma\IdiomaFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm as CategoriaTraducibleForm;
+use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaFormLaravelValidator as CategoriaTraducibleFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -33,14 +36,14 @@ class FormServiceProvider extends ServiceProvider {
     {
         $app = $this->app;
 
-        $app->bind('Ttt\Panel\Service\Form\Traducciones\TraduccionesForm', function($app)     
+        $app->bind('Ttt\Panel\Service\Form\Traducciones\TraduccionesForm', function($app)
         {
             return new TraduccionesForm(
-                   new TraduccionesFormLaravelValidator( $app['validator'] ), 
+                   new TraduccionesFormLaravelValidator( $app['validator'] ),
                     $app->make('Ttt\Panel\Repo\Traducciones\TraduccionesInterface')
            );
-        });        
-        
+        });
+
         $app->bind('Ttt\Panel\Service\Form\Modulo\ModuloForm', function($app)
         {
             return new ModuloForm(
@@ -78,6 +81,14 @@ class FormServiceProvider extends ServiceProvider {
             return new IdiomaForm(
                 new IdiomaFormLaravelValidator( $app['validator'] ),
                 $app->make('Ttt\Panel\Repo\Idioma\IdiomaInterface')
+            );
+        });
+
+        $app->bind('Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm', function($app)
+        {
+            return new CategoriaTraducibleForm(
+                new CategoriaTraducibleFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface')
             );
         });
 
