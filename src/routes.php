@@ -125,6 +125,8 @@ Route::group(array('prefix' => 'admin'), function()
 
         //Gestion Ficheros
         Route::get('/ficheros', 'Ttt\Panel\FicherosController@index');
+        Route::get('/ficheros/nuevo', 'Ttt\Panel\FicherosController@nuevo');
+        Route::post('/ficheros/crear', 'Ttt\Panel\FicherosController@crear');
         
 	Route::get('/hola', function()
 	{

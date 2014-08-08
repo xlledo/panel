@@ -3,7 +3,10 @@ namespace Ttt\Panel\Repo\Fichero;
 
 class Fichero extends \Eloquent{
 
-	protected $fillable = array('fichero', 
+        protected $table = 'ficheros';
+    
+	protected $fillable = array('nombre',
+                                    'fichero', 
                                     'titulo_defecto',
                                     'alt_defecto',
                                     'descripcion_defecto',
@@ -13,6 +16,8 @@ class Fichero extends \Eloquent{
                                     'mime',
                                     'peso',
                                     'dimensiones',
+                                    'creado_por',
+                                    'actualizado_por'
                                     );
 
 	public $validator = null;
@@ -25,6 +30,5 @@ class Fichero extends \Eloquent{
 	public function updater()
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
-	}        
-        
+	}                
 }

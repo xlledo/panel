@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class EloquentFichero implements FicheroInterface{
 
     
-    protected $table = 'ficheros';
+    
     protected $fichero;
 
     public function __construct(Model $fichero)
@@ -45,6 +45,18 @@ class EloquentFichero implements FicheroInterface{
 
     public function create(array $data) {
         
+        //Crea el fichero
+        
+        $fichero = $this->fichero->create(
+                array(
+                    'nombre'            => $data['nombre'],
+                    'fichero'           => $data['fichero'],
+                    'creado_por'        => $data['usuario'],
+                    'actualizado_por'   => $data['usuario'],
+                    'ruta'              => $data['ruta'],
+                    'mime'              => $data['mime'],
+                    'tipo'              => $data['tipo']
+                ));
     }
 
     public function delete($id) {

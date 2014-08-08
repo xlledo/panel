@@ -32,6 +32,12 @@ class FicherosController extends AbstractCrudController
     );
     
     
+    
+    /* Para poner en un fichero de configuracion */
+    protected $_validacion_fichero = array();
+    protected $_upload_folder = 'uploads/';
+    protected $_config_ficheros = array();
+    
     public function __construct(FicheroInterface $fichero, FicheroForm $ficheroForm)
     {
         parent::__construct();
@@ -39,11 +45,13 @@ class FicherosController extends AbstractCrudController
         $this->fichero = $fichero;
         $this->ficheroForm = $ficheroForm;
         
-        if(! \Sentry::getUser()->hasAccess('ficheros::borrar'))
-            {
-                unset($this->acciones_por_lote['delete']);
-            }        
+//        if(! \Sentry::getUser()->hasAccess('ficheros::borrar'))
+//            {
+//                unset($this->acciones_por_lote['delete']);
+//            }        
 
+         $this->_config_ficheros = Config::get('panel::ficheros');    
+         
     }
     
     public function index()
@@ -78,9 +86,87 @@ class FicherosController extends AbstractCrudController
   
     }
     
+        public function nuevo()
+        {
+            $item = new \stdClass();
+            $item->nombre = Input::old('nombre') ? Input::old('nombre'): '';
+            
+            View::share('title', 'Creacion de un nuevo fichero');
+            return View::make('panel::ficheros.form')
+                                    ->with('item', $item)
+                                    ->with('action', 'create' );
+            
+        }
+        
+        public function crear()
+        {
+            $message = 'Modulo creado correctamente';
+            
+            try{
+                $fichero = Input::file('fichero');
+                
+                if(Input::hasFile('fichero'))
+                {
+                    $fichero = Input::file('fichero');
+                    $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '.' . $fichero->getClientOriginalExtension();
+                    $path_completo  = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
+                    $mime           = $fichero->getMimeType();
+                    
+                    $i=1;
+                    while(file_exists($path_completo . $nombre_fichero)){
+                        $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '_'.$i . '.' . $fichero->getClientOriginalExtension();
+                        $i++;
+                    }
+                    
+                    //-- Guardamos el fichero en la ruta
+                    $fichero->move($path_completo , $nombre_fichero) ;
+                }
+                
+                $data = array(
+                    'nombre'  => Input::get('nombre'),
+                    'fichero' => $nombre_fichero,
+                    'usuario' => \Sentry::getUser()['id'],
+                    'ruta'    => $path_completo,
+                    'mime'    => $mime,
+                    'tipo'    => 'imagenes',
+                    'fichero_original' => $fichero //Pasamos el fichero para propositos de validacion
+                );
+                
+                /*
+                 * Primero subimos la imagen, si sube correctamente
+                 * guardamos el registro en la BBDD
+                 */
+                
+                $ficheroId = $this->ficheroForm->save($data);
+                
+                \Session::flash('messages', array(
+                        array(
+                            'class' => 'alert-success',
+                            'msg'   => $message
+                        )
+                ));
+                
+                return \Redirect::action('Ttt\Panel\FicherosController@index');
+                
+            } catch (Ttt\Panel\Exception\TttException $e) {
+                $message = 'Existen errores de valcidacion';
+            }
+            
+            \Session::flash('messages', array(
+                array(
+                    'class' => 'alert-danger',
+                    'msg'   => $message
+                )));
+            
+            return \Redirect::action('Ttt\Panel\FicherosController@nuevo')
+                                            ->withInput()
+                                            ->withErrors($this->ficheroForm->errors());
+                    
+        }
+
     	protected function getParams()
-	{
-		$input = array_merge(Input::only($this->allowed_url_params));
+	{	
+	$input = array_merge(Input::only($this->allowed_url_params));
 
 		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';
 		$input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';

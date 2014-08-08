@@ -12,8 +12,9 @@ class FicheroFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'nombre'          => 'required',
-        
+        'nombre'           => 'required',
+        'fichero'          => 'required|mimes:jpeg,jpg,png,gif',
+        'fichero_original' => 'required|mimes:jpeg,jpg,png,gif', //Esta en el fichero de configuracion tambien
     );
 
     protected $messages = array(

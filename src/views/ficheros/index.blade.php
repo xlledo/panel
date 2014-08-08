@@ -5,7 +5,7 @@
 	@endif
 @stop
 @section('page_header')
-	<h1>Variables Globale <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>Ficheros <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
 @stop
 @section('content')
 	<div class="row">
@@ -24,7 +24,7 @@
 	                    <div class="widget-main row">
 	                        <div class="col-md-3 form-group">
 	                            <label for="filtro_nombre">Nombre</label>
-	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['nombre'])): ?>{{ $params['nombre'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                            <input type="text" class="form-control" name="nombre" id="filtro_nombre" value="<?php if(isset($params['nombre'])): ?>{{ $params['nombre'] }}<?php endif; ?>" size="20" placeholder="Nombre" />
 	                        </div>
 
 	                    </div>
@@ -120,6 +120,6 @@
 		}else{
 			$(this).prop('checked', true);
 		}
-        cambiar_estado($(this),'{{ url('admin/modulos/cambiar_estado') }}');
+        cambiar_estado($(this),'{{ url('admin/ficheros/cambiar_estado') }}');
     });
 @stop

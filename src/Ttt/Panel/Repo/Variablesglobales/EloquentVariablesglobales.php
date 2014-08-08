@@ -99,10 +99,7 @@ class EloquentVariablesglobales implements VariablesglobalesInterface{
     */
     public function update(array $data) 
     {
-            //POSIBLE CAMBIO (TANTO AQUI COMO EN EL CREATE Y EN CUALQUIER METODO CREE/UPDATE)
-            //¿UTILIZAR OBSERVERS PARA AUTOMATICAMENTE GUARDAR EL USUARIO?
-
-
+    
         $variablesglobale = $this->variablesglobale->with('updater')->findOrFail($data['id']);
 
         if(! $variablesglobale)

@@ -44,7 +44,7 @@
 				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
 				</ul>
 				<div id="datos">
-					<form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\FicherosController@crear') : action('Ttt\Panel\FicherosController@actualizar') ; ?>" method="post">
+                                    <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\FicherosController@crear') : action('Ttt\Panel\FicherosController@actualizar') ; ?>" method="post"  enctype="multipart/form-data">
 						@if($action != 'create')
 							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
 						@endif
@@ -58,10 +58,25 @@
 					                    <h4 class="smaller lighter">Datos</h4>
 					                </div>
 					                <div class="widget-body">
-                                                            <div class=""> <!-- Form Ficheros -->
-                                                                
+                                                            <div class="widget-main row"> <!-- Form Ficheros -->
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group @if($errors->first('nombre')) has-error @endif">
+                                                                        <label for='nombre'>Nombre *</label>
+                                                                        <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
+                                                                            @if ($errors->first('nombre'))
+                                                                                @foreach($errors->get('nombre') as $err)
+                                                                                    <span class="help-block">{{ $err }}</span>
+                                                                                @endforeach
+                                                                            @endif                                                                        
+                                                                     </div>
+                                                                </div>
+                                                                <div class='col-md-3'>
+                                                                    <div class='form-group'>
+                                                                        <label for='fichero'>Fichero</label>
+                                                                        <input type="file" name='fichero' class='form-cotrol' />
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            
 					                </div>
 					            </div>
 					        </div>

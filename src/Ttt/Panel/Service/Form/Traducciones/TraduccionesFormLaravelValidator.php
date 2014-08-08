@@ -12,14 +12,13 @@ class TraduccionesFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'clave'          => 'required',
-        'texto'          => 'required',
-        'idioma'         => 'required'
-      
+        'clave'             => 'required',
+        'texto'             => 'required',
+        'idioma'            => 'required'
+        
     );
 
     protected $messages = array(
         'required'               => 'El campo :attribute es obligatorio'
     );
-
 }
