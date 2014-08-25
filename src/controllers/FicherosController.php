@@ -100,7 +100,7 @@ class FicherosController extends AbstractCrudController
         
         public function crear()
         {
-            $message = 'Modulo creado correctamente';
+            $message = 'Fichero creado correctamente';
             
             try{
                 $fichero = Input::file('fichero');
@@ -112,8 +112,14 @@ class FicherosController extends AbstractCrudController
                     $path_completo  = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
                     $mime           = $fichero->getMimeType();
                     
+                    
+                    /**
+                     * Generamos el nombre del fichero,
+                     * si ya existe lo numeramos
+                     */
                     $i=1;
                     while(file_exists($path_completo . $nombre_fichero)){
+                       
                         $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '_'.$i . '.' . $fichero->getClientOriginalExtension();
                         $i++;
                     }
@@ -129,7 +135,12 @@ class FicherosController extends AbstractCrudController
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
                     'tipo'    => 'imagenes',
-                    'fichero_original' => $fichero //Pasamos el fichero para propositos de validacion
+                    'titulo_defecto'        => Input::get('titulo_defecto'),
+                    'alt_defecto'           => Input::get('alt_defecto'),
+                    'enlace_defecto'        => Input::get('enlace_defecto'),
+                    'descripcion_defecto'   => Input::get('descripcion_defecto'),
+                    'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
+                        
                 );
                 
                 /*
@@ -162,6 +173,60 @@ class FicherosController extends AbstractCrudController
                                             ->withInput()
                                             ->withErrors($this->ficheroForm->errors());
                     
+        }
+        
+        public function ver($id = null)
+        {
+            $message = '';
+            
+            if( $id ){
+                
+                $fichero  = $this->fichero->byId($id);
+                $fichero->nombre = ! is_null(Input::old('nombre')) ? Input::old('nombre') : $fichero->nombre;
+                $fichero->titulo_defecto        = ! is_null(Input::old('titulo_defecto')) ? Input::old('titulo_defecto') : $fichero->titulo_defecto;
+                $fichero->alt_defecto           = ! is_null(Input::old('alt_defecto')) ? Input::old('alt_defecto') : $fichero->alt_defecto;
+                $fichero->descripcion_defecto   = ! is_null(Input::old('descripcion_defecto')) ? Input::old('descripcion_defecto') : $fichero->descripcion_defecto;
+                $fichero->enlace_defecto        = ! is_null(Input::old('enlace_defecto')) ? Input::old('enlace_defecto') : $fichero->enlace_defecto;
+                        
+                View::share('title', 'Edicion del fichero' . $fichero->nombre);
+                
+                return View::make('panel::ficheros.form')
+                                ->with('action', 'edit')
+                                ->with('item', $fichero);
+                
+            }else{
+                //TODO Redirect
+                die('no encontrado');
+            }
+        }
+        
+        public function actualizar()
+        {
+            $message = 'Fichero Actualizado correctamente.';
+            
+            try{
+                $fichero = $this->fichero->byId(Input::get('id'));
+                
+                $fichero->nombre                = Input::get('nombre');
+                $fichero->titulo_defecto        = Input::get('titulo_defecto');
+                $fichero->alt_defecto           = Input::get('alt_defecto');
+                $fichero->descripcion_defecto   = Input::get('descripcion_defecto');
+                $fichero->enlace_defecto        = Input::get('enlace_defecto');
+                
+                $fichero->save();
+                
+                \Session::flash('messages', array(
+                                array(
+                                    'class'=>'alert-success',
+                                    'msg' => $message
+                                )
+                ));
+                
+                return \Redirect::action('Ttt\Panel\FicherosController@ver', $fichero->id);
+                
+            } catch (Exception $ex) {
+
+            }
         }
 
     	protected function getParams()

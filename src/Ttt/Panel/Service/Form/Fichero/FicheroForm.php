@@ -26,7 +26,7 @@ class FicheroForm {
      *
      * @var \Ttt\Repo\Article\FicheroInterface
      */
-    protected $ficheros;
+    protected $fichero;
 
     public function __construct(ValidableInterface $validator, FicheroInterface $fichero)
     {
@@ -48,7 +48,7 @@ class FicheroForm {
             return false;
         }
 
-        return $this->idioma->create($input);
+        return $this->fichero->create($input);
     }
 
     /**
@@ -59,13 +59,13 @@ class FicheroForm {
      */
     public function update(array $input)
     {
-        if( ! $this->valid($input) )
+        if( ! $this->valid($input))
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido actualizarse el registro');
             return false;
         }
 
-        return $this->idioma->update($input);
+        return $this->fichero->update($input);
     }
 
     /**

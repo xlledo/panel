@@ -50,7 +50,7 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">Actualizado por</th>
 									@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
@@ -62,10 +62,10 @@
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
-											@if(Sentry::getUser()->hasAccess('variables-globales::editar'))
-												{{ link_to('admin/ficheros/ver/' . $item->id, $item->clave) }}
+											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
+												{{ link_to('admin/ficheros/ver/' . $item->id, $item->nombre) }}
 											@else
-												{{ $item->clave }}
+												{{ $item->nombre }}
 											@endif
 										</td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>

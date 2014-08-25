@@ -4,18 +4,16 @@ namespace Ttt\Panel\Repo\Fichero;
 use Illuminate\Database\Eloquent\Model;
 
 class EloquentFichero implements FicheroInterface{
-
-    
     
     protected $fichero;
 
-    public function __construct(Model $fichero)
-    {
+    public function __construct(Model $fichero){
         $this->fichero = $fichero;
     }
 
     public function byId($id) {
-        
+        return $this->fichero->with('maker','updater')
+                             ->findOrFail($id);
     }
 
     public function byPage($page = 1, $limit = 10, $params = array()) {
@@ -55,7 +53,11 @@ class EloquentFichero implements FicheroInterface{
                     'actualizado_por'   => $data['usuario'],
                     'ruta'              => $data['ruta'],
                     'mime'              => $data['mime'],
-                    'tipo'              => $data['tipo']
+                    'tipo'              => $data['tipo'],
+                    'titulo_defecto'    => $data['titulo_defecto'],
+                    'alt_defecto'       => $data['alt_defecto'],
+                    'descripcion_defecto'   => $data['descripcion_defecto'],
+                    'enlace_defecto'        => $data['enlace_defecto']
                 ));
     }
 

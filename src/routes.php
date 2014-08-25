@@ -127,6 +127,9 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/ficheros', 'Ttt\Panel\FicherosController@index');
         Route::get('/ficheros/nuevo', 'Ttt\Panel\FicherosController@nuevo');
         Route::post('/ficheros/crear', 'Ttt\Panel\FicherosController@crear');
+        Route::get('/ficheros/ver/{id}','Ttt\Panel\FicherosController@ver');
+      	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
+        Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
         
 	Route::get('/hola', function()
 	{

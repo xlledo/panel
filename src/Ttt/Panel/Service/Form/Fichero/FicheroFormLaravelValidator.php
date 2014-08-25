@@ -13,8 +13,13 @@ class FicheroFormLaravelValidator extends AbstractLaravelValidator {
      */
     protected $rules = array(
         'nombre'           => 'required',
-        'fichero'          => 'required|mimes:jpeg,jpg,png,gif',
-        'fichero_original' => 'required|mimes:jpeg,jpg,png,gif', //Esta en el fichero de configuracion tambien
+//        'fichero'          => 'required|mimes:jpeg,jpg,png,gif',
+//        'fichero_original' => 'required|mimes:jpeg,jpg,png,gif', //Esta en el fichero de configuracion tambien
+        'titulo_defecto'        => 'max:255',
+        'alt_defecto'           => 'max:255',
+        'enlace_defecto'        => 'max:255',
+        'descripcion_defecto'   => 'max:255'
+        
     );
 
     protected $messages = array(
