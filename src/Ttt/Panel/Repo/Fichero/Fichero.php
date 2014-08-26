@@ -17,7 +17,7 @@ class Fichero extends \Eloquent{
                                     'peso',
                                     'dimensiones',
                                     'creado_por',
-                                    'actualizado_por'
+                                    'actualizado_por'   
                                     );
 
 	public $validator = null;

@@ -51,11 +51,13 @@
 	                            <tr>
 
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-									<th scope="col">Actualizado por</th>
-									@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
-	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
-									@endif
+                                        <th scope="col">Preview</th>
+					<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+                                        
+                                        <th scope="col">Actualizado por</th>
+					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
+                                            <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
+                                        @endif
 	                            </tr>
 	                        </thead>
 	                        <tbody>
@@ -68,6 +70,9 @@
 												{{ $item->nombre }}
 											@endif
 										</td>
+                                                                                <td class="td_click">
+                                                                                    Preview
+                                                                                </td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))

@@ -40,7 +40,9 @@
 	    <div class="col-xs-12">
 			<div id="tabs">
 				<ul id="aux">
-				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
+				     <li><a href="#datos" title="datos">
+                                             <i class="icon-list"></i>  Datos</a>
+                                     </li>
 				</ul>
 
 				<div id="datos">
@@ -48,9 +50,11 @@
 						@if($action != 'create')
 							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
 						@endif
-					    <div class="acciones pull-right">
+					    
+                                            <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
+                                                
 					    <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
@@ -74,7 +78,7 @@
 												</div>
 					                        </div>
 					                        <div class="col-md-3">
-					                            <div class="form-group @if ($errors->first('nombre')) has-error @endif">
+					                            <div class="form-group @if($errors->first('nombre')) has-error @endif">
 					                                <label for="nombre">Nombre *</label>
 					                                <input type="text" class="form-control" name="nombre" id="nombre" value="{{ $item->nombre }}" size="20" />
 													@if ($errors->first('nombre'))

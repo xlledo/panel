@@ -31,8 +31,6 @@ class FicherosController extends AbstractCrudController
         'delete' => 'Borrar'
     );
     
-    
-    
     /* Para poner en un fichero de configuracion */
     protected $_validacion_fichero = array();
     protected $_upload_folder = 'uploads/';
@@ -90,6 +88,10 @@ class FicherosController extends AbstractCrudController
         {
             $item = new \stdClass();
             $item->nombre = Input::old('nombre') ? Input::old('nombre'): '';
+            $item->titulo_defecto   = Input::old('titulo_defecto')?:'';
+            $item->alt_defecto      = Input::old('alt_defecto')?:'';
+            $item->descripcion_defecto = Input::old('descripcion_defecto')?:'';
+            $item->enlace_defecto      = Input::old('enlace_defecto')?:'';
             
             View::share('title', 'Creacion de un nuevo fichero');
             return View::make('panel::ficheros.form')
@@ -112,20 +114,18 @@ class FicherosController extends AbstractCrudController
                     $path_completo  = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
                     $mime           = $fichero->getMimeType();
                     
-                    
                     /**
                      * Generamos el nombre del fichero,
                      * si ya existe lo numeramos
                      */
                     $i=1;
                     while(file_exists($path_completo . $nombre_fichero)){
-                       
                         $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '_'.$i . '.' . $fichero->getClientOriginalExtension();
                         $i++;
                     }
                     
                     //-- Guardamos el fichero en la ruta
-                    $fichero->move($path_completo , $nombre_fichero) ;
+                    $fichero->move($path_completo , $nombre_fichero);
                 }
                 
                 $data = array(
@@ -140,7 +140,6 @@ class FicherosController extends AbstractCrudController
                     'enlace_defecto'        => Input::get('enlace_defecto'),
                     'descripcion_defecto'   => Input::get('descripcion_defecto'),
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
-                        
                 );
                 
                 /*
@@ -207,6 +206,20 @@ class FicherosController extends AbstractCrudController
             try{
                 $fichero = $this->fichero->byId(Input::get('id'));
                 
+                //--Subimos la imagen si tenemos
+                if(Input::hasFile('fichero')){
+
+                    $fic = Input::file('fichero');
+                    //--Mantenemos el nombre antiguo solo si cambiamos la extensión
+                    
+                    if($fichero->mime != $fic->getMimeType()){
+                            $fichero->fichero = \Illuminate\Support\Str::slug($fic->getClientOriginalName(),'-') . '.' . $fic->getClientOriginalExtension();
+                            $fichero->ruta   = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
+                    }
+                    $fic->move($fichero->ruta, $fichero->fichero);
+                }
+                
+                //--Guardamos el fichero
                 $fichero->nombre                = Input::get('nombre');
                 $fichero->titulo_defecto        = Input::get('titulo_defecto');
                 $fichero->alt_defecto           = Input::get('alt_defecto');
@@ -224,11 +237,79 @@ class FicherosController extends AbstractCrudController
                 
                 return \Redirect::action('Ttt\Panel\FicherosController@ver', $fichero->id);
                 
-            } catch (Exception $ex) {
-
+            } catch (Exception $ex){
+                //TODO
+                die('errores');
             }
         }
+        
+        public function borrar($id = null)
+        {
+            //-- Hemos de borrar fisicamente el fichero (unlink)
+            $msg = 'Fichero borrado correctamente';
+            
+            if( $id ){
+            
+                $fichero = $this->fichero->byId($id);
+                $result = FALSE;
+                
+                    if(file_exists($fichero->ruta . $fichero->fichero)){
+                        $result = unlink($fichero->ruta . $fichero->fichero);
+                    }
+                
+                $this->fichero->delete($fichero->id);
+                
+                if($result){
+                    \Session::flash('messages', array(
+                                        array(
+                                            'class' => 'alert-success',
+                                            'msg'   => $msg
+                                        )
+                    ));
+                }
+                
+            }else{
+                    \Session::flash('messages', array(
+                                        array(
+                                            'class' => 'alert-success',
+                                            'msg'   => 'Error al borrar el fichero, fichero no encontrado'
+                                        )
+                    ));
+            }
+            
+            return \Redirect::action('Ttt\Panel\FicherosController@index');
+        }
+        
+        
+        public function accionesPorLote()
+        {
+            $input = Input::only('item', 'accion');
+            
+            try{
+                if(!array_key_exists($input['accion'], $this->acciones_por_lote))
+                {
+                    throw new \Ttt\Panel\Exception\TttException;
+                }
+                
+                foreach($input['item'] as $itemId){
+                        if(! method_exists($this->fichero, $input['accion']))
+				{
+					throw new \Ttt\Exception\TttException;
+				}
+				call_user_func_array(array($this->fichero, $input['accion']), array($itemId, \Sentry::getUser()['id']));
+                }
+            }
+            catch(\Ttt\Panel\Exception\TttException $e)
+            {
+                    $mensaje = 'La acción indicada no existe';
+            }
+            catch(\Ttt\Panel\Exception\BatchActionException $e)
+            {
+                    $mensaje = $e->getMessage();
+            }
 
+        }
+            
     	protected function getParams()
 	{	
 	$input = array_merge(Input::only($this->allowed_url_params));

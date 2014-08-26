@@ -25,7 +25,7 @@
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('ficheros::crear'))
-		<a href="{{ action('Ttt\Panel\FicherosController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<!-- <a href="{{ action('Ttt\Panel\FicherosController@nuevo') }}" title="Nuevo Fichero" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li> -->
 	@endif
 @stop
 
@@ -41,8 +41,11 @@
 	    <div class="col-xs-12">
 			<div id="tabs">
 				<ul id="aux">
-				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
+				     <li><a href="#datos" title="datos">
+                                             <i class="icon-list"></i>  Datos</a>
+                                     </li>
 				</ul>
+
 				<div id="datos">
                                     <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\FicherosController@crear') : action('Ttt\Panel\FicherosController@actualizar') ; ?>" method="post"  enctype="multipart/form-data">
 						@if($action != 'create')
@@ -51,7 +54,7 @@
 					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
-					    <div class="row">
+	  <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
 					                <div class="widget-header widget-header-small">
@@ -143,7 +146,4 @@
 @stop
     @section('inline_js')
                 @parent
-                $(document).ready(function() {
-                    tttjs.versiones.init();
-                });
     @stop

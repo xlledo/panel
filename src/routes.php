@@ -130,7 +130,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/ficheros/ver/{id}','Ttt\Panel\FicherosController@ver');
       	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
         Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
-        
+        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote        
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

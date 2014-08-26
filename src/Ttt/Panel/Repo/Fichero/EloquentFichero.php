@@ -62,11 +62,11 @@ class EloquentFichero implements FicheroInterface{
     }
 
     public function delete($id) {
+        $deletedFichero = $this->fichero->findOrFail($id)
+                                ->delete();
         
-    }
+        return ($deletedFichero === TRUE) ? TRUE : FALSE;
 
-    public function noVisible($id) {
-        
     }
 
     public function update(array $data) {
@@ -104,6 +104,10 @@ class EloquentFichero implements FicheroInterface{
         }
 
         return $query;
-    }    
-    
+    }
+
+    public function noVisible($id) {
+        
+    }
+
 }
