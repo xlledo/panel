@@ -1,16 +1,40 @@
 <?php
+namespace Ttt\Panel\Repo\Traducciones;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+use Illuminate\Validation\Factory as Validator;
 
-/**
- * Description of PaginaI18n
- *
- * @author miguel
- */
-class PaginaI18n {
-    //put your code here
+class PaginasI18n extends \Eloquent{
+
+        protected $table = 'paginas_i18n';
+
+        //Atributos
+	protected $fillable = array('item_id',
+                                    'idioma',
+                                    'texto');
+
+	public $validator = null;
+
+                    /*
+                   CONTROL DE VERSIONES
+                    No aplicamos por el moment control de Versiones
+                    Cuando el módulo este acabado, haremos la implementación
+                    protected $camposVersionables = array('clave', 'valor'); //Campos versionables
+                    protected $controlDeVersiones = TRUE; //Activa o desactiva el control de versiones
+                    */
+
+	public function maker()
+	{
+		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'creado_por');
+	}
+
+	public function updater()
+	{
+		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
+	}
+
+	public function traduccion()
+        {
+                return $this->belongsTo('Ttt\Panel\Repo\Paginas\Pagina', 'id');
+        }
+
 }

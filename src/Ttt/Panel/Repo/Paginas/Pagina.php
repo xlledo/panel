@@ -13,9 +13,9 @@ class Pagina extends \Eloquent{
         protected $modelI18n    = 'PaginaI18n';
 
         //Atributos
-	protected $fillable = array('creado_por',
-                                    'actualizado_por',
-                                    'clave');
+	   protected $fillable = array('creado_por',
+                                    'actualizado_por'
+                                    );
 
         //Atributos Traducibles
         public static $atributosTraducibles = array('texto');
@@ -39,5 +39,16 @@ class Pagina extends \Eloquent{
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
 	}
+
+    /**
+     * Devuelve todas las traducciones de un item
+     *
+     * @return PaginasI18n
+    */
+
+        public function traducciones()
+        {
+                return $this->hasMany('Ttt\Panel\Repo\Paginas\PaginasI18n', 'item_id');
+        }    
 
 }
