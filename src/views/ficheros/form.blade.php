@@ -13,11 +13,11 @@
 				<a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a>
 			</li>
 			<li>
-			 <?php if ($action == 'create'): ?>
-				Nuevo elemento
-			<? else: ?>
-				Editar <?php echo $item->nombre; ?>
-			<?php endif; ?>
+                           <?php if ($action == 'create'): ?>
+                                   Nuevo elemento
+                           <?php else: ?>
+                                   Editar <?php  echo $item->fichero; ?>
+                           <?php endif; ?>
 			</li>
 		</ul>
 </div>
@@ -33,7 +33,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }}</h1>
 	@endif
 @stop
 @section('content')
@@ -54,15 +54,20 @@
 					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
-	  <div class="row">
+                                   	    <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
+                                                        @if($action != 'create')
+                                                            <div class='alert alert-block alert-info'>
+                                                                <span>La ruta del fichero es: {{$item->ruta . $item->fichero}}</span>
+                                                            </div>
+                                                        @endif
 					                <div class="widget-header widget-header-small">
 					                    <h4 class="smaller lighter">Datos</h4>
 					                </div>
 					                <div class="widget-body">
                                                             <div class="widget-main row"> <!-- Form Ficheros -->
-                                                                <div class="col-md-3">
+                                                                <div class="col-md-4">
                                                                     <div class="form-group @if($errors->first('nombre')) has-error @endif">
                                                                         <label for='nombre'>Nombre *</label>
                                                                         <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
@@ -73,7 +78,21 @@
                                                                             @endif                                                                        
                                                                      </div>
                                                                 </div>
-                                                                <div class='col-md-3'>
+                                                                
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="tipo">Tipo *</label>
+                                                                        <select name="tipo" class="form-control">
+                                                                            <?php foreach($config_ficheros['tipos'] as $k => $v): ?>
+                                                                                <option value="{{$k}}"
+                                                                                        <?php if($action!='create' && $k==$item->tipo): ?> selected="selected" <?php endif; ?>
+                                                                                        >{{ucfirst($k)}} - ( {{ $v['desc'] }} )</option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class='col-md-4'>
                                                                     <div class='form-group'>
                                                                         <label for='fichero'>Fichero</label>
                                                                         <input type="file" name='fichero' class='form-cotrol' />

@@ -35,7 +35,7 @@ class FicheroForm {
     }
 
     /**
-     * Create an new modulo
+     * Create an new fichero
      *
      * @throws \Ttt\Panel\Exception\TttException
      * @return boolean
@@ -52,7 +52,7 @@ class FicheroForm {
     }
 
     /**
-     * Update an existing modulo
+     * Update an existing fichero
      *
      * @throws \Ttt\Exception\TttException
      * @return boolean

@@ -70,11 +70,25 @@ class EloquentFichero implements FicheroInterface{
     }
 
     public function update(array $data) {
+        $fichero = $this->fichero->findOrFail($data['id']);
         
+        if( !$fichero ){
+            return FALSE;
+        }
+        
+        $fichero->nombre                = $data['nombre'];
+        $fichero->titulo_defecto        = $data['titulo_defecto'];
+        $fichero->alt_defecto           = $data['alt_defecto'];
+        $fichero->enlace_defecto        = $data['enlace_defecto'];
+        $fichero->descripcion_defecto   = $data['descripcion_defecto'];
+        
+        $fichero->update();
+        
+        return $fichero;
     }
 
     public function visible($id) {
-        
+        throw new Exception('No implementado aún');
     }
 
     /**

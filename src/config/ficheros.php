@@ -2,23 +2,27 @@
 
 return array(
     
-    /**
-     * Configuracion de Imagenes
-     * 
-     */
-    
-    'imagenes' => array(
-            'validation' => 'mimes:jpeg,jpg,png,gif'
-                ),
-    
-    /**
-     * Todos los ficheros
-     * 
-     */
-    
-    'ficheros' => array(
-            'validation' => 'mimes:*'
-                ),
+    'tipos' => array( 
+            /**
+             * Configuracion de Imagenes
+             * 
+             */
+
+        'imagen' => array(
+                'validation' => 'mimes: jpeg, bmp, png, jpg',
+                'desc' => 'jpeg, jpg, gif, png'
+                    ),
+
+            /**
+             * Todos los ficheros
+             * 
+             */
+
+        'fichero' => array(
+                'validation' => 'mimes:*',
+                'desc' => 'Todo tipo de ficheros'
+                    ),
+            ),
     
     /**
      * 

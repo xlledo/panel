@@ -24,7 +24,7 @@ class CreateFicherosTable extends Migration {
                     $table->text('descripcion_defecto')->nullable();
                     $table->string('enlace_defecto', 255)->nullable();
                     
-                    $table->integer('tipo');
+                    $table->string('tipo',255);
                     $table->string('ruta', 255);
                     $table->string('mime', 255);
                     

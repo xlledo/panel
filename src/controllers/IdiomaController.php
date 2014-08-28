@@ -244,6 +244,7 @@ class IdiomaController extends AbstractCrudController{
 	* Intenta actualizar un elemento existente
 	* @return void
 	*/
+        
 	public function borrar($id = null)
 	{
 		$message = 'Idioma eliminado correctamente.';
