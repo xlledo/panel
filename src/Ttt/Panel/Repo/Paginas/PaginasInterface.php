@@ -1,6 +1,6 @@
 <?php
 
-namespace Ttt\Panel\Repo\Traducciones;
+namespace Ttt\Panel\Repo\Paginas;
 
 interface PaginasInterface{
 

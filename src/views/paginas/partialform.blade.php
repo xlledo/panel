@@ -8,9 +8,9 @@
 @endif
 
             @if ($nueva_traduccion)
-                <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\TraduccionesController@crear') : action('Ttt\Panel\TraduccionesController@actualizar') ; ?>" method="post">
+                <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\PaginasController@crear') : action('Ttt\Panel\PaginasController@actualizar') ; ?>" method="post">
             @else
-                <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\TraduccionesController@crear') : action('Ttt\Panel\TraduccionesController@actualizar') ; ?>" method="post">
+                <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\PaginasController@crear') : action('Ttt\Panel\PaginasController@actualizar') ; ?>" method="post">
             @endif
                             @if($action != 'create')
                                     <input type="hidden" name="id" id="id" value="{{ $item->id }}" />
@@ -26,7 +26,6 @@
                                             </div>
                                             <div class="widget-body">
                                                 <div class="widget-main row">
-                                                    
                                                     @if($nueva_traduccion)
                                                             <div class="col-md-2">
                                                                 <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
@@ -50,13 +49,13 @@
                                                     
                                                     <div class="col-md-3">
                                                         <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma)) has-error @endif">
-                                                            <label for="clave">Clave *</label>
+                                                            <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
                                                                     <span class="input-group-addon"><i class="icon-flag"></i></span>
-                                                                    <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común"/>
-                                                                </div>                                                            
-                                                            @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma))
-                                                                        @foreach($errors->get('clave') as $err)
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{ $item->titulo }}" size="20" />
+                                                                </div>
+                                                            @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
+                                                                        @foreach($errors->get('titulo') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
                                                                         @endforeach
                                                             @endif
@@ -67,7 +66,7 @@
                                             </div>
                                             <div class="widget-box transparent">
                                                 <div class="widget-header widget-header-small">
-                                                    <h4 class="smaller lighter">Traducción</h4>
+                                                    <h4 class="smaller lighter">Texto</h4>
                                                 </div>
                                                 <div class="widget-body">
                                                     <textarea name="texto" class="mceEditor">{{ ($nueva_traduccion || $action=='create') ? '' : $trad->texto }}</textarea>

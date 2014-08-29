@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('traducciones::crear'))
-		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('paginass::crear'))
+		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')
@@ -33,7 +33,7 @@
 	                    </div>
 	                    <div class="widget-toolbox padding-8 clearfix">
 	                        <div class="pull-right">
-	                            <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Mostrar Todos" class="btn btn-primary btn-xs" >Mostrar todos</a></li>
+	                            <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Mostrar Todos" class="btn btn-primary btn-xs" >Mostrar todos</a></li>
 	                            <input type="submit" name="filtrar" value="Buscar" class="btn btn-success btn-xs"/>
 	                        </div>
 	                    </div>
@@ -49,7 +49,7 @@
                         
                             
                         
-	            <form action="{{ url('admin/traducciones/acciones_por_lote') }}" method="post">
+	            <form action="{{ url('admin/paginas/acciones_por_lote') }}" method="post">
 	                <fieldset>
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Traducciones" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
@@ -71,7 +71,7 @@
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
 											@if(Sentry::getUser()->hasAccess('traducciones::editar'))
-												{{ link_to('admin/traducciones/ver/' . $item->id, $item->clave) }}
+												{{ link_to('admin/paginas/ver/' . $item->id, $item->clave) }}
 											@else
 												{{ $item->clave }}
 											@endif
@@ -80,12 +80,12 @@
                                                                                 <td class="td_click"> {{ $item->traduccion('es')->texto }}</td>
                                                                                 <td class="td_click">
                                                                                     @foreach($item->traducciones()->get() as $trad)
-                                                                                        <a href="{{ 'traducciones/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
+                                                                                        <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
                                                                                     @endforeach
                                                                                     
                                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
                                                                                             @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                                                <a href="{{ 'traducciones/ver/' . $item->id. '#datos-' . $id->codigo_iso_2  }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
+                                                                                                <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $id->codigo_iso_2  }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>
@@ -125,7 +125,7 @@
 				<div class="center">
 					@if($items->getLastPage() > 1)
 						<ul class="pagination">
-							<?php echo with(new Ttt\Panel\Pagination\TttPresenter($items))->render(); ?>
+							7<?php echo with(new Ttt\Panel\Pagination\TttPresenter($items))->render(); ?>
 						</ul>
 					@endif
 				</div>

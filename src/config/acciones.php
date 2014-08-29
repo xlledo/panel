@@ -44,7 +44,7 @@ return array(
         'borrar-arbol' => array('borrarArbol'),//borra la raíz del árbol y todo su contenido
         'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
     ),
- 'traducciones' => array(
+    'traducciones' => array(
         'listar' => array('index'),
         'crear'  => array('nuevo', 'crear'),
         'editar' => array('ver', 'actualizar'),
@@ -59,5 +59,12 @@ return array(
     'ficheros' => array(
         'listar' => array('index'),
         'borrar' => array('borrar')
-    )
+    ),
+    'paginas' => array(
+        'listar' => array('index'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar'),
+        'borrar' => array('borrar', 'accionesPorLote:accion.delete')
+    ),
+    
 );

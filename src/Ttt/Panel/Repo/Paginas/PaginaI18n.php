@@ -1,9 +1,9 @@
 <?php
-namespace Ttt\Panel\Repo\Traducciones;
+namespace Ttt\Panel\Repo\Paginas;
 
 use Illuminate\Validation\Factory as Validator;
 
-class PaginasI18n extends \Eloquent{
+class PaginaI18n extends \Eloquent{
 
         protected $table = 'paginas_i18n';
 

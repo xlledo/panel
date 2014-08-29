@@ -86,7 +86,6 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
         Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
         Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
-
         Route::post('/traducciones/acciones_por_lote','Ttt\Panel\TraduccionesController@accionesPorLote');
         Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
         Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
@@ -131,6 +130,19 @@ Route::group(array('prefix' => 'admin'), function()
       	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
         Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
         Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote        
+        
+        
+        //Gestion Paginas
+        Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
+        Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
+        Route::get('/paginas/borrar/{id}','Ttt\Panel\PaginasControllers@borrar');
+        Route::get('/paginas/ver/{id}','Ttt\Panel\PaginasController@ver');
+        Route::get('/paginas/borrar/{id}', 'Ttt\Panel\PaginasController@borrar');
+        Route::get('/paginas/borrarTraduccion/{id}', 'Ttt\Panel\PaginasController@borrarTraduccion');
+        Route::post('/paginas/acciones_por_lote','Ttt\Panel\PaginasController@accionesPorLote');
+        Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
+        Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
+        Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
         
 	Route::get('/hola', function()
 	{

@@ -1,6 +1,8 @@
 <?php
 
-namespace Ttt\Panel\Repo\Traducciones;
+
+
+namespace Ttt\Panel\Repo\Paginas;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +11,7 @@ class EloquentPaginas implements PaginasInterface{
     protected $pagina;
     protected $pagina_i18n;
 
-    public function __construct(Model $Pagina, Model $pagina_i18n)
+    public function __construct(Model $Pagina, Model $Pagina_i18n)
     {
         $this->pagina = $Pagina;
         $this->pagina_i18n = $Pagina_i18n;
@@ -41,7 +43,7 @@ class EloquentPaginas implements PaginasInterface{
         $result->totalItems = 0;
         $result->items      = array();
 
-        $orderBy  = isset($params['ordenPor']) ? $params['ordenPor'] : 'clave';
+        $orderBy  = isset($params['ordenPor']) ? $params['ordenPor'] : 'titulo';
         $orderDir = isset($params['ordenDir']) ? $params['ordenDir'] : 'asc';
 
         $query = $this->getQuery($params);
@@ -78,9 +80,6 @@ class EloquentPaginas implements PaginasInterface{
     public function create(array $data)
     {
 
-        //Aquí va la madre del cordero, asi que lo dejamos para cuando tengamos
-        //el esqueleto del resto listo
-
         $datos_comunes  = array();
         $datos_i18n     = array();
         $atributos_traducibles = Pagina::$atributosTraducibles;
@@ -95,9 +94,9 @@ class EloquentPaginas implements PaginasInterface{
                 }
             }
 
-        $datos_comunes['clave']= $this->slug($datos_comunes['clave']);
         $item                  = $this->pagina->create($datos_comunes);
         $datos_i18n['idioma']  = $data['idioma'];
+        $datos_i18n['titulo']  = $data['titulo'];
         $datos_i18n['item_id'] = $item->id;
 
         //creamos el Item y su traduccion
@@ -109,7 +108,6 @@ class EloquentPaginas implements PaginasInterface{
         }else{
             return FALSE;
         }
-
     }
 
     /**
@@ -121,18 +119,18 @@ class EloquentPaginas implements PaginasInterface{
     {
 
         //Idem del metodo anterior
-        $pagina = $this->pagina->with('updater')->findOrFail($data['id']);
-
-        if(! $pagina)
-        {
-            return FALSE;
-        }
-
-        $pagina->actualizado_por   = $data['usuario'];
-        $pagina->clave             = $this->slug($data['clave'], $pagina->id);
-        $pagina->update();
-
-        return $pagina->id;
+//        $pagina = $this->pagina->with('updater')->findOrFail($data['id']);
+//
+//        if(! $pagina)
+//        {
+//            return FALSE;
+//        }
+//
+//        $pagina->actualizado_por   = $data['usuario'];
+//        $pagina->clave             = $this->slug($data['clave'], $pagina->id);
+//        $pagina->update();
+//
+//        return $pagina->id;
     }
 
     /**

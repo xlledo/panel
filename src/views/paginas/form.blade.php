@@ -11,13 +11,13 @@
 				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
 			</li>
 			<li>
-				<a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a>
+				<a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Páginas</a>
 			</li>
 			<li>
 			 <?php if ($action == 'create'): ?>
 				Nuevo elemento
 			<? else: ?>
-				Editar <?php echo $item->clave; ?>
+				Editar <?php echo $item->titulo; ?>
 			<?php endif; ?>
 			</li>
 		</ul>
@@ -25,16 +25,16 @@
 @stop
 
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('traducciones::crear'))
-		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	@if(Sentry::getUser()->hasAccess('paginas::crear'))
+		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 
 @section('page_header')
 	@if($action == 'create')
-		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a></h1>
+		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a> <i class="icon-double-angle-right"></i></small> {{ $item->titulo }}</h1>
 	@endif
 @stop
 @section('content')
@@ -67,18 +67,18 @@
                             {{-- Formularios --}}
                             @if($action == 'create')
                                     {{-- Form elemento nuevo --}}
-                                    @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
+                                    @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
                             @else
                             
                             {{-- Creamos los forms de idiomas --}}
                             <?php $idioma_error =  (\Session::has('idioma_error')) ? \Session::get('idioma_error') : FALSE ?>
                             @foreach($item->traducciones()->get() as $trad)
-                                @include('packages/ttt/panel/traducciones/partialform', array('trad'=>$trad,'idioma_error'=>$idioma_error, 'action'=>$action, 'nueva_traduccion' => false))
+                                @include('packages/ttt/panel/paginas/partialform', array('trad'=>$trad,'idioma_error'=>$idioma_error, 'action'=>$action, 'nueva_traduccion' => false))
                             @endforeach
                             
                             {{-- Form Nueva traduccion si es necesario --}}
                             @if(count($item->traducciones()->get()) != count($todos_idiomas))
-                                @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion' => true))
+                                @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion' => true))
                             @endif
                     @endif
                 </div>
@@ -87,11 +87,11 @@
                 
 	</div>
         </div>
-	@if(Sentry::getUser()->hasAccess('traducciones::borrar'))
+	@if(Sentry::getUser()->hasAccess('paginas::borrar'))
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\TraduccionesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\PaginasController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 			</div>
 		@endif
 	@endif

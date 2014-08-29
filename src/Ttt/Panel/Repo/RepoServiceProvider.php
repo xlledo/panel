@@ -26,6 +26,10 @@ use Ttt\Panel\Repo\Idioma\EloquentIdioma;
 use Ttt\Panel\Repo\Fichero\Fichero;
 use Ttt\Panel\Repo\Fichero\EloquentFichero;
 
+use Ttt\Panel\Repo\Paginas\Pagina;
+use Ttt\Panel\Repo\Paginas\PaginaI18n;
+use Ttt\Panel\Repo\Paginas\EloquentPaginas;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -92,6 +96,13 @@ class RepoServiceProvider extends ServiceProvider{
             return new EloquentFichero(
                     new Fichero
             );
+        });
+        
+        $this->app->bind('Ttt\Panel\Repo\Paginas\PaginasInterface', function($app)
+        {
+            return new EloquentPaginas(
+                    new Pagina, new PaginaI18n
+                    );
         });
     }
 }

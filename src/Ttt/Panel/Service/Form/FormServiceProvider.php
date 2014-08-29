@@ -25,6 +25,9 @@ use Ttt\Panel\Service\Form\Idioma\IdiomaFormLaravelValidator;
 use Ttt\Panel\Service\Form\Fichero\FicheroForm;
 use Ttt\Panel\Service\Form\Fichero\FicheroFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Paginas\PaginasForm;
+use Ttt\Panel\Service\Form\Paginas\PaginasFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -43,6 +46,13 @@ class FormServiceProvider extends ServiceProvider {
                     $app->make('Ttt\Panel\Repo\Traducciones\TraduccionesInterface')
            );
         });        
+        
+        $app->bind('Ttt\Panel\Service\Form\Paginas\PaginasForm',function($app){
+            return new PaginasForm(
+                    new PaginasFormLaravelValidator($app['validator']), 
+                        $app->make('Ttt\Panel\Repo\Paginas\PaginasInterface')
+                    );
+        });
         
         $app->bind('Ttt\Panel\Service\Form\Modulo\ModuloForm', function($app)
         {
@@ -90,5 +100,7 @@ class FormServiceProvider extends ServiceProvider {
                     $app->make('Ttt\Panel\Repo\Fichero\FicheroInterface')
                     );
         });
+        
+        
     }
 }

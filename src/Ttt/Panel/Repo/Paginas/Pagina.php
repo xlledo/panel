@@ -14,11 +14,11 @@ class Pagina extends \Eloquent{
 
         //Atributos
 	   protected $fillable = array('creado_por',
-                                    'actualizado_por'
-                                    );
+                                       'actualizado_por'
+                                      );
 
         //Atributos Traducibles
-        public static $atributosTraducibles = array('texto');
+        public static $atributosTraducibles = array('titulo', 'texto');
 
 	public $validator = null;
 
@@ -48,7 +48,24 @@ class Pagina extends \Eloquent{
 
         public function traducciones()
         {
-                return $this->hasMany('Ttt\Panel\Repo\Paginas\PaginasI18n', 'item_id');
+                return $this->hasMany('Ttt\Panel\Repo\Paginas\PaginaI18n', 'item_id');
         }    
 
+
+        /**
+        * Devuelve una traduccion de un item, desde su Item principal
+        *
+        * @param  String $idioma
+        * @return
+        */
+
+        public function traduccion($idioma)
+        {
+                $traduccion = \DB::table(self::$table_i18n)
+                                        ->where('item_id', $this->id)
+                                        ->where('idioma', $idioma)
+                                        ->first();
+                return $traduccion;
+        }        
+        
 }

@@ -105,6 +105,14 @@
                 </a>
             </li>        
         @endif
+        @if(Sentry::getUser()->hasAccess('paginas::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Paginas">
+                    <i class="icon-file"></i>
+                    <span class="menu-text">Páginas</span>
+                </a>
+            </li>                
+        @endif
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">
