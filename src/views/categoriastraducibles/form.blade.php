@@ -90,10 +90,9 @@
 						@else
 
 							{{-- Creamos los forms de idiomas --}}
-							<?php $idioma_error =  (\Session::has('idioma_error')) ? \Session::get('idioma_error') : FALSE ?>
 							@foreach($item->traducciones as $trad)
 								@if($trad->idioma != 'new')
-									@include('packages/ttt/panel/categoriastraducibles/partialform', array('trad'=>$trad,'idioma_error'=>$idioma_error, 'action'=>$action, 'nueva_traduccion' => false, 'clave_idioma' => $trad->idioma))
+									@include('packages/ttt/panel/categoriastraducibles/partialform', array('trad'=>$trad, 'action'=>$action, 'nueva_traduccion' => false, 'clave_idioma' => $trad->idioma))
 								@endif
 							@endforeach
 
