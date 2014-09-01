@@ -87,6 +87,17 @@
                                     @endforeach
                                 @endif
                             </div>
+                            @if(!$item->isRoot())
+                                <div class="form-group @if( Input::old('valor_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('valor') ) has-error @endif">
+                                    <label for="nombre_{{ $clave_idioma }}">Valor</label>
+                                    <input type="text" class="form-control" name="valor_{{ $clave_idioma }}" id="valor_{{ $clave_idioma }}" value="{{ $item->valor }}" size="20"  data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común" />
+                                    @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('valor') )
+                                        @foreach($errors->get('valor') as $err)
+                                            <span class="help-block">{{ $err }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            @endif
                             @if(Sentry::getUser()->isSuperUser() && ! in_array($action, array('create', 'createArbol')))
                                 <div class="form-group">
                                     <label for="slug">Slug</label>

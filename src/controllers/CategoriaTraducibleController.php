@@ -196,7 +196,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+		return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@index');
 	}
 
 	/**
@@ -271,16 +271,25 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		$message = '';
 		try
 		{
+
+			$sufijo  = '_';
+			$sufijo .= Input::old('clave_idioma_campos') ?:'';
+
 			$root = $this->categoria->rootById($id);
 
-			$item = $this->categoria->createModel();
-			$item->nombre        = Input::old('nombre') ? Input::old('nombre') : '';
-			$item->valor         = Input::old('valor') ? Input::old('valor') : '';
-			$item->visible       = Input::old('visible') ? Input::old('visible') : FALSE;
-			$item->parent_id     = $id;
+			$fillData = array(
+				$this->_defaultIdioma->codigo_iso_2 => array(
+					'nombre' => Input::old('nombre' . $sufijo) ? Input::old('nombre' . $sufijo) : '',
+				),
+				'visible'                         => Input::old('visible' . $sufijo) ? Input::old('visible' . $sufijo) : FALSE,
+				'protegida'                       => Input::old('protegida' . $sufijo) ? Input::old('protegida' . $sufijo) : FALSE,
+				'parent_id'                       => $root->id,
+				'valor'                           => Input::old('valor' . $sufijo) ? Input::old('valor' . $sufijo) : '',
+			);
+			$item = $this->categoria->createNode($fillData);
 
 			View::share('title', 'Nueva categoría en ' . $root->nombre);
-			return View::make('panel::categorias.form')
+			return View::make('panel::categoriastraducibles.form')
 									->with('action', 'create')
 									->with('item', $item);
 
@@ -297,7 +306,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+		return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@index');
 	}
 
 	/**
@@ -313,11 +322,16 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 			$message = 'Nueva categoría creada correctamente en ' . $root->nombre;
 
+			$sufijo  = '_';
+			$sufijo .= Input::get('clave_idioma_campos') ?:'';
+
 			$data =  array(
-				'nombre'    => Input::get('nombre'),
-				'valor'     => Input::get('valor'),
-				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
-				'protegida' => $root->protegida
+				'nombre'              => Input::get('nombre' . $sufijo),
+				'valor'               => Input::get('valor' . $sufijo) == '' ? NULL : Input::get('valor' . $sufijo),
+				'visible'             => Input::has('visible' . $sufijo) ? Input::get('visible' . $sufijo) : FALSE,
+				'protegida'           => Input::has('protegida' . $sufijo) ? Input::get('protegida' . $sufijo) : FALSE,
+				'idioma'              => $this->_defaultIdioma->codigo_iso_2,
+				'clave_idioma_campos' => Input::get('clave_idioma_campos')
 			);
 
 			$nodo = $this->categoriaForm->createChild($data, $root);
@@ -329,7 +343,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 				)
 			));
 
-			return \Redirect::action('Ttt\Panel\CategoriaController@ver', $nodo->id);
+			return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@ver', $nodo->id);
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
@@ -343,7 +357,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@nuevo', $root->id)
+		return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@nuevo', $root->id)
 									->withInput()
 									->withErrors($this->categoriaForm->errors());
 	}
@@ -358,14 +372,32 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		$message = '';
 		try
 		{
+
+			$sufijo  = '_';
+			$sufijo .= Input::old('clave_idioma_campos') ?:'';
+
+
 			$item = $this->categoria->childById($id);
 
-			$item->nombre    = ! is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
-			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
-			$item->valor     = Input::old('valor') ? Input::old('valor') : $item->valor;
+			$idioma = Input::old('idioma' . $sufijo) ?: $this->_defaultIdioma->codigo_iso_2;
+
+			$esNuevaTraduccion = ! is_null(Input::old('nueva_traduccion')) && Input::old('nueva_traduccion');
+
+			if($esNuevaTraduccion)
+			{
+				$item->traduccion('new')->nombre = ! is_null(Input::old('nombre' . $sufijo)) ? Input::old('nombre' . $sufijo) : $item->traduccion($idioma)->nombre;
+				$item->traduccion('new')->idioma = 'new';
+			}else{
+				$item->traduccion($idioma)->nombre = ! is_null(Input::old('nombre' . $sufijo)) ? Input::old('nombre' . $sufijo) : $item->traduccion($idioma)->nombre;
+				$item->traduccion($idioma)->idioma = $idioma;
+			}
+			$item->visible   = Input::old('visible' . $sufijo) ? Input::old('visible' . $sufijo) : $item->visible;
+			$item->protegida = Input::old('protegida' . $sufijo) ? Input::old('protegida' . $sufijo) : $item->protegida;
+			$item->valor     = Input::old('valor' . $sufijo) ? Input::old('valor' . $sufijo) : $item->valor;
+
 
 			View::share('title', 'Edición de subcategoría ' . $item->nombre);
-			return View::make('panel::categorias.form')
+			return View::make('panel::categoriastraducibles.form')
 									->with('action', 'edit')
 									->with('item', $item);
 
@@ -382,7 +414,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@index');
+		return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@index');
 	}
 
 	/**
@@ -395,15 +427,22 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		$message = 'Categoría actualizada correctamente.';
 		try
 		{
+
+			$sufijo  = '_';
+			$sufijo .= Input::get('clave_idioma_campos') ?:'';
+
 			$item = $this->categoria->childById(Input::get('id'));
 
+			$idioma = Input::get('idioma' . $sufijo);
 			$data =  array(
-				'nombre'    => Input::get('nombre'),
-				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
-				'valor'     => Input::get('valor'),
+				'nombre'              => Input::get('nombre' . $sufijo),
+				'valor'               => Input::get('valor' . $sufijo),
+				'visible'             => Input::has('visible' . $sufijo) ? Input::get('visible' . $sufijo) : FALSE,
+				'protegida'           => Input::has('protegida' . $sufijo) ? Input::get('protegida' . $sufijo) : FALSE,
+				'idioma'              => $idioma,
+				'clave_idioma_campos' => Input::get('clave_idioma_campos')
 			);
-
-			$this->categoriaForm->updateChild($data, $item);
+			$item = $this->categoriaForm->updateChild($data, $item);
 
 			\Session::flash('messages', array(
 				array(
@@ -411,20 +450,30 @@ class CategoriaTraducibleController extends AbstractCrudController{
 					'msg'   => $message
 				)
 			));
+
+			return \Redirect::to('admin/categorias-traducibles/ver/' . $item->id . '#datos-' . $idioma);
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
 			$message = $e->getMessage();
-
-			\Session::flash('messages', array(
-				array(
-					'class' => 'alert-danger',
-					'msg'   => $message
-				)
-			));
 		}
 
-		return \Redirect::action('Ttt\Panel\CategoriaController@ver', $item->id)
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		$esNuevaTraduccion = ! is_null(Input::get('nueva_traduccion')) && Input::get('nueva_traduccion');
+
+		$pestania = $esNuevaTraduccion ? 'new' : $idioma;
+
+		/*echo '<pre>';
+		print_r($this->categoriaForm->errors());
+		echo '</pre>';exit;*/
+
+		return \Redirect::to('admin/categorias-traducibles/ver/' . $item->id . '#datos-' . $pestania)
 																		->withInput()
 																		->withErrors($this->categoriaForm->errors());
 	}
@@ -475,7 +524,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		));
 
 		//redirigimos a la estructura draggable del árbol
-		return \Redirect::action('Ttt\Panel\CategoriaController@verArbol', $root->id);
+		return \Redirect::action('Ttt\Panel\CategoriaTraducibleController@verArbol', $root->id);
 	}
 
 	/**

@@ -19,7 +19,7 @@ class Categoria extends \Ttt\Panel\Core\Database\Extensions\TranslatableNestable
 
 	// guard attributes from mass-assignment
 	//protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
-	protected $guarded = array('lft', 'rgt', 'parent_id', 'depth');
+	protected $guarded = array('lft', 'rgt', 'depth');
 
 	protected $modelI18n    = '\\Ttt\\Panel\\Repo\\Categoriatraducible\\CategoriaI18n';
 

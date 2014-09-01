@@ -103,7 +103,7 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
-    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
     public function updateRoot(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
     {
@@ -124,19 +124,20 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
-    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
     public function createChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $root)
     {
-        return $this->categoria->create(
-            array(
-                'nombre'    => $data['nombre'],
-                'slug'      => $this->slug($data['nombre']),
-                'valor'     => $data['valor'],
-                'visible'   => $data['visible'],
-                'protegida' => $data['protegida']
-            )
-        )->makeChildOf($root);
+        return $this->categoria->create(array(
+            $data['idioma']   => array(
+                'idioma' => $data['idioma'],
+                'nombre' => $data['nombre']
+            ),
+            'protegida'       => $data['protegida'],
+            'slug'            => $this->slug($data['nombre']),
+            'visible'         => $data['visible'],
+            'valor'           => $data['valor']
+        ))->makeChildOf($root);
     }
 
     /**
@@ -145,10 +146,16 @@ class EloquentCategoria implements CategoriaInterface{
     public function updateChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
     {
 
-        $categoria->nombre    = $data['nombre'];
-        $categoria->slug      = $this->slug($categoria->nombre, $categoria->id);
-        $categoria->visible   = $data['visible'];
-        $categoria->valor = $data['valor'];
+        $categoria->traduccion($data['idioma'])->nombre = $data['nombre'];
+        //el slug lo guardaremos tan solo cuando sea la traducción del idioma principal
+        if($data['idioma'] == \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2)
+        {
+            $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
+        }
+
+        $categoria->visible     = $data['visible'];
+        $categoria->protegida   = $data['protegida'];
+        $categoria->valor       = $data['valor'];
 
         $categoria->update();
 
