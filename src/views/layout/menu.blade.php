@@ -72,7 +72,7 @@
                 </a>
             </li>
         @endif
-        
+
         @if(Sentry::getUser()->hasAccess('traducciones::listar'))
         <li>
             <a href="{{action('Ttt\Panel\TraduccionesController@index') }}" title="Traducciones">
@@ -86,6 +86,14 @@
                 <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
                     <i class="icon-flag"></i>
                     <span class="menu-text">Categorías</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('categorias-traducibles::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Categorías traducibles">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Cat Traducibles</span>
                 </a>
             </li>
         @endif
