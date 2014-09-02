@@ -37,7 +37,6 @@ class CreatePaginasTable extends Migration {
                         $table->text('texto');
                         
                         $table->timestamps();
-                        
                 });
                 
                 Schema::create('paginas_ficheros', function(Blueprint $table){

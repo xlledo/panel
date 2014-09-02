@@ -39,10 +39,11 @@
 @stop
 @section('content')
 	<div class="row">
-	    <div class="col-xs-12">
+            <div class="col-xs-12">
 			<div id="tabs">
 				<ul id="aux" class="mi">
 				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
+                                     <li><a href="#ficheros" title="ficheros"><i class="icon-list"></i> Ficheros</a></li>
 				</ul>
     <div id="datos" class="no-padding">
         <div id="tabsI" class="clearfix">
@@ -83,8 +84,18 @@
                     @endif
                 </div>
             </div>
+                            
+                            <div id='ficheros'>
+                                            <div class="acciones pull-right">
+                                                <button data-toggle="modal" data-target="#modal_select_fichero"  class="btn btn-sm btn-success no-border">Añadir Fichero</button>
+					    </div>
+                            {{-- Ficheros --}}
+                            @if($action != 'create')
+                                @include('packages/ttt/panel/ficheros/_partial_listado')
+                                @include('packages/ttt/panel/ficheros/_partial_modal_seleccion')
+                            @endif                
+                            </div>
         </div>
-                
 	</div>
         </div>
 	@if(Sentry::getUser()->hasAccess('paginas::borrar'))
@@ -99,4 +110,6 @@
 
 @section('inline_js')
             @parent
+            
+            
 @stop

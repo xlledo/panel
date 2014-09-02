@@ -45,7 +45,15 @@ class PaginasController extends AbstractCrudController
         $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
 
         View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
-        View::share('todos_idiomas', $this->_todos_idiomas);        
+        View::share('todos_idiomas', $this->_todos_idiomas);      
+        
+        //Cargamos el config 
+         $this->_config_ficheros = Config::get('panel::ficheros');    
+         View::share('config_ficheros', $this->_config_ficheros);
+         
+         //Cargamos todos los ficheros
+         View::share('ficheros_todos', Repo\Fichero\Fichero::all());
+         
     }   
     
         public function index()
@@ -106,8 +114,16 @@ class PaginasController extends AbstractCrudController
                 $item = $this->pagina->byId($id);
                 
                 View::share('title', 'Editar elemento');
+                
+                //Adjuntos
+                View::share('ficheros', $item->ficheros());
+                
+                $params = $this->getParams();
+                
                 return View::make('panel::paginas.form')
+                                    //->with('params', $params)
                                     ->with('item',$item)
+                                    ->with('currentUrl', \URL::current())
                                     ->with('action','edit');
             }
         }
@@ -155,6 +171,80 @@ class PaginasController extends AbstractCrudController
                                         ->withInput()
                                         ->withErrores($this->paginaForm->errors());
             
+        }
+        
+        /**
+         * Actualizar un Item
+         * 
+         */
+        
+        public function actualizar()
+        {
+            $message = 'Página guardada correctamente';
+            
+            try{
+                
+                //Cogemos la tabla master
+                $this->pagina = $pagina = $this->pagina->byId(Input::get('item_id'));
+                
+                //Cogemos la traducción
+                $pagina_i18n = Pagina::find(Input::get('item_id'))
+                                                ->traducciones()
+                                                ->where('idioma','=',Input::get('idioma'))
+                                                ->first();
+                
+                
+                $data = array(
+                        'id'        => Input::get('item_id'),
+                        'titulo'    => Input::get('titulo'),
+                        'texto'     => Input::get('texto'),
+                        'idioma'    => Input::get('idioma'),
+                        'usuario'   => \Sentry::getUser()['id']
+                );
+                
+                //Campos traducibles
+                $pagina_i18n->texto  = Input::get('texto');
+                $pagina_i18n->titulo = Input::get('titulo');
+
+                if( $this->paginaForm->update($data)
+                    && $pagina_i18n->save() )
+                {
+                    
+                    //Paginas guardadas correctamente
+                    \Session::flash('messages', array(
+                                    array(
+                                        'class' => 'alert-success',
+                                        'msg'   => $message
+                                    )
+                    ));
+                    
+                    return \Redirect::to('admin/paginas/ver/' . $pagina->id);
+                    
+                }
+                
+            } catch (\Ttt\Panel\Exception\TttException $ex) {
+                    $message = 'Existen errores de validación' ;
+            }
+            
+            \Session::flash('messages', array(
+                                array(
+                                            'class' => 'alert-danger',
+                                            'msg'   => $message
+                                )
+            ));
+           
+
+            //-- Cargamos los errores en un array por idioma
+            //-- para luego mostrarlos en el form de idioma que toque
+            $errores = array();
+            $errores[Input::get('idioma')] = $this->paginaForm->errors();
+            
+            \Session::flash('idioma_error', Input::get('idioma'));
+            
+            $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
+            return \Redirect::to('admin/paginas/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
+                                                        ->withInput()
+                                                        ->withErrors($this->paginaForm->errors());
         }
         
         

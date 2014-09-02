@@ -55,7 +55,7 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 					<th scope="col">Texto</th>	
                                         <th scope="col">Idioma</th>
                                         <th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
@@ -73,7 +73,7 @@
 											@if(Sentry::getUser()->hasAccess('traducciones::editar'))
 												{{ link_to('admin/paginas/ver/' . $item->id, $item->clave) }}
 											@else
-												{{ $item->clave }}
+												{{ $item->traduccion('es')->titulo }}
 											@endif
 										</td>
                                                                                 

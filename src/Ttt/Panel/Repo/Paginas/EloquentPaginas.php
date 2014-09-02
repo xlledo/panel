@@ -119,18 +119,18 @@ class EloquentPaginas implements PaginasInterface{
     {
 
         //Idem del metodo anterior
-//        $pagina = $this->pagina->with('updater')->findOrFail($data['id']);
-//
-//        if(! $pagina)
-//        {
-//            return FALSE;
-//        }
-//
-//        $pagina->actualizado_por   = $data['usuario'];
-//        $pagina->clave             = $this->slug($data['clave'], $pagina->id);
-//        $pagina->update();
-//
-//        return $pagina->id;
+        $pagina = $this->pagina->with('updater')->findOrFail($data['id']);
+
+        if(! $pagina)
+        {
+            return FALSE;
+        }
+
+        $pagina->actualizado_por   = $data['usuario'];
+
+        $pagina->update();
+
+        return $pagina->id;
     }
 
     /**

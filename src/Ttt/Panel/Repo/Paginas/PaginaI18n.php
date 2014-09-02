@@ -10,6 +10,7 @@ class PaginaI18n extends \Eloquent{
         //Atributos
 	protected $fillable = array('item_id',
                                     'idioma',
+                                    'titulo',
                                     'texto');
 
 	public $validator = null;

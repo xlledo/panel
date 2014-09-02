@@ -22,6 +22,13 @@ class Fichero extends \Eloquent{
 
 	public $validator = null;
         
+        
+        //Relaciones Many to Many
+        public function paginas()
+        { 
+           return $this->belongsToMany('Ttt\Panel\Repo\Paginas\Pagina', 'paginas_ficheros', 'fichero_id', 'pagina_id');
+        }
+        
 	public function maker()
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'creado_por');

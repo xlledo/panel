@@ -12,6 +12,8 @@ class Pagina extends \Eloquent{
 
         protected $modelI18n    = 'PaginaI18n';
 
+        
+        
         //Atributos
 	   protected $fillable = array('creado_por',
                                        'actualizado_por'
@@ -30,6 +32,13 @@ class Pagina extends \Eloquent{
                             protected $controlDeVersiones = TRUE; //Activa o desactiva el control de versiones
                             */
 
+        
+        //Many to many para ficheros
+        public function ficheros()
+        {
+            return $this->belongsToMany('Ttt\Panel\Repo\Fichero\Fichero', 'paginas_ficheros', 'pagina_id', 'fichero_id');
+        }
+        
 	public function maker()
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'creado_por');

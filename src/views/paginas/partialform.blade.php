@@ -46,13 +46,11 @@
                                                                 </div>
                                                             </div>
                                                     @endif
-                                                    
                                                     <div class="col-md-3">
                                                         <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma)) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
-                                                                    <span class="input-group-addon"><i class="icon-flag"></i></span>
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{ $item->titulo }}" size="20" />
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{ $trad->titulo }}" size="20" />
                                                                 </div>
                                                             @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
                                                                         @foreach($errors->get('titulo') as $err)
