@@ -71,6 +71,14 @@ return array(
         'listar' => array('index'),
         'borrar' => array('borrar')
     ),
+   'menu' => array(
+        'listar' => array('index'),//muestra el listado de árboles existentes
+        'crear'  => array('nuevo', 'crear'),//crea un nuevo nodo dentro del árbol
+        'editar' => array('ver', 'actualizar'),//edita un nodo dentro del árbol
+        'editar-arbol' => array('ordenarAlfabeticamente', 'ordenar'),//edita el árbol o la raíz
+        'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
+    ),
+
     'paginas' => array(
         'listar' => array('index'),
         'crear'  => array('nuevo', 'crear'),

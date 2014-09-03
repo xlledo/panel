@@ -11,6 +11,13 @@ interface ModuloInterface{
     public function byId($id);
 
     /**
+    * Devuelve todos los módulos existentes
+    * @param $id int
+    * @return object Object con la información del módulo
+    */
+    public function getAll();
+
+    /**
     * Devuelve el listado de módulos y el total de los mismos
     * @param $page int
     * @param $limit int

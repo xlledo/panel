@@ -180,3 +180,90 @@ function toNestable($items, $slug)
     }
     return $out;
 }
+
+function render_menu($menu, &$output = '')
+{
+    $url_solicitada = \Request::segment(2);
+    $valores_vacios = array('', '#');
+    foreach ($menu as $item) {
+
+        $renderable = FALSE;
+        if(in_array($item->ruta, $valores_vacios))
+        {
+            //si la ruta de la opción está vacía vemos si tenemos permiso sobre cada uno de sus hijos
+            foreach($item->children as $chld)
+            {
+                $renderableChild = FALSE;
+                if($chld->modulo()->count())
+                {
+                    $renderableChild = \Sentry::getUser()->hasAccess($chld->modulo->slug . '::listar');
+                }else{
+                    if(! in_array($chld->ruta, $valores_vacios))
+                    {
+                        $renderableChild = \Sentry::getUser()->hasAccess($chld->ruta . '::listar');
+                    }
+                }
+                if($renderableChild)
+                {
+                    $renderable = TRUE;
+                    break;
+                }
+            }
+        }else{
+            //no está vacío por lo que debe tener permiso sobre la ruta
+            if($item->modulo()->count())
+            {
+                $renderable = \Sentry::getUser()->hasAccess($item->modulo->slug . '::listar');
+            }else{
+                if(! in_array($item->ruta, $valores_vacios))
+                {
+                    $renderable = \Sentry::getUser()->hasAccess($item->ruta . '::listar');
+                }
+            }
+        }
+
+        if(! $renderable && $item->ruta != 'dashboard')
+        {
+            continue;
+        }
+
+        if(strpos($url_solicitada, ! in_array($item->ruta, $valores_vacios) ? $item->ruta : 'vacio') === 0){
+            $output .= '<li class="active">';
+        }else{
+            $output .= '<li>';
+        }
+
+        $tmp_ruta = ! in_array($item->ruta, $valores_vacios) ? url('admin/' . $item->ruta . '/') : '#';
+
+        if ($item->parent->id == $item->getRoot()->id) {
+            if($item->children->count()){
+                $output .= '<a class="dropdown-toggle" href="' . $tmp_ruta . '" title="' . $item->nombre . '"><i class="'.$item->icono.'"></i>';
+            }else{
+                $output .= '<a href="' . $tmp_ruta . '" title="' . $item->nombre . '"><i class="'.$item->icono.'"></i>';
+            }
+        }else{
+            if($item->children->count()){
+                $output .= '<a class="dropdown-toggle" href="' . $tmp_ruta . '" title="' . $item->nombre . '"><i class="icon-double-angle-right"></i>';
+            }else{
+                $output .= '<a href="' . $tmp_ruta . '" title="' . $item->nombre . '"><i class="icon-double-angle-right"></i>';
+            }
+        }
+
+        $output .= '<span class="menu-text">'.$item->nombre.'</span>';
+        if($item->children->count()){
+            $output .='<b class="arrow icon-angle-down"></b>';
+        }
+        $output .= '</a>';
+
+        if($item->children->count()){
+            $output .= '<ul class="submenu">';
+            render_menu($item->children, $output);
+            $output .= '</ul>';
+        }
+
+        $output .= '</li>';
+
+    }
+//        echo 'return<br />';
+    return $output;
+}

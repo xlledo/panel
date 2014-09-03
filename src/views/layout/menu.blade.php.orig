@@ -12,6 +12,7 @@
             <button class="btn btn-info">
                 <i class="icon-gift"></i>
             </button>
+
             <button class="btn btn-warning">
                 <i class="icon-flag"></i>
             </button>
@@ -32,6 +33,7 @@
         </div>
     </div><!-- #sidebar-shortcuts -->
     <ul class="nav nav-list">
+<<<<<<< HEAD
         <!-- De momento lo construimos a mano -->
         <li class="active">
             <a href="{{ action('Ttt\Panel\DashboardController@index') }}" title="Dashboard">
@@ -71,8 +73,7 @@
                 </a>
             </li>
         @endif
-<<<<<<< HEAD
-        
+
         @if(Sentry::getUser()->hasAccess('traducciones::listar'))
         <li>
             <a href="{{action('Ttt\Panel\TraduccionesController@index') }}" title="Traducciones">
@@ -81,8 +82,6 @@
             </a>
         </li>
         @endif
-        
-=======
         @if(Sentry::getUser()->hasAccess('categorias::listar'))
             <li>
                 <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
@@ -91,13 +90,46 @@
                 </a>
             </li>
         @endif
+        @if(Sentry::getUser()->hasAccess('categorias-traducibles::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Categorías traducibles">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Cat Traducibles</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('idiomas::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Idiomas">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text">Idiomas</span>
+                </a>
+            </li>
+        @endif
+        @if(Sentry::getUser()->hasAccess('ficheros:listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Ficheros">
+                    <i class="icon-file"></i>
+                    <span class="menu-text">Ficheros</span>
+                </a>
+            </li>        
+        @endif
+        @if(Sentry::getUser()->hasAccess('paginas::listar'))
+            <li>
+                <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Paginas">
+                    <i class="icon-file"></i>
+                    <span class="menu-text">Páginas</span>
+                </a>
+            </li>                
+        @endif
+=======
+        {{ render_menu($menu) }}
 >>>>>>> xlledo/master
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">
         <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
     </div>
-
     <script type="text/javascript">
         try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
     </script>

@@ -86,6 +86,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
         Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
         Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
+
         Route::post('/traducciones/acciones_por_lote','Ttt\Panel\TraduccionesController@accionesPorLote');
         Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
         Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
@@ -142,7 +143,20 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/idiomas/actualizar', 'Ttt\Panel\IdiomaController@actualizar');
 	Route::post('/idiomas/cambiar_estado', 'Ttt\Panel\IdiomaController@visibleNoVisible');
 
-        //Gestion Ficheros
+	//Gestión de menú panel de control
+	Route::get('/menu', 'Ttt\Panel\MenuController@index');
+
+	Route::get('/menu/ordenar-arbol/{id}', 'Ttt\Panel\MenuController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::post('/menu/ordenar/', 'Ttt\Panel\MenuController@ordenar');//Ordena alfabéticamente un árbol
+
+	Route::get('/menu/ver/{id}', 'Ttt\Panel\MenuController@ver');
+	Route::get('/menu/nuevo/{id}', 'Ttt\Panel\MenuController@nuevo');
+	Route::post('/menu/crear', 'Ttt\Panel\MenuController@crear');
+	Route::post('/menu/actualizar', 'Ttt\Panel\MenuController@actualizar');
+
+	Route::get('/menu/borrar/{id}', 'Ttt\Panel\MenuController@borrar');
+
+  //Gestion Ficheros
         Route::get('/ficheros', 'Ttt\Panel\FicherosController@index');
         Route::get('/ficheros/nuevo', 'Ttt\Panel\FicherosController@nuevo');
         Route::post('/ficheros/crear', 'Ttt\Panel\FicherosController@crear');
@@ -165,6 +179,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
         Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
         
+
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

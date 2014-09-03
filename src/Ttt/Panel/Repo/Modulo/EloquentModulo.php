@@ -55,6 +55,12 @@ class EloquentModulo implements ModuloInterface{
         return $result;
     }
 
+    public function getAll()
+    {
+        return $this->modulo->newQuery()->orderBy('nombre', 'ASC')
+        ->get()->all();
+    }
+
     /**
     * Devuelve un módulo según su slug
     * @param $slug string

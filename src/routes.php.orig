@@ -52,15 +52,11 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-<<<<<<< HEAD
-       
-        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
-        
-=======
 
->>>>>>> 1ac1b14f45b63d382c130d68e6379d47a36655ae
+        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
+
         //Versiones
-        //Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
+        Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
         //Gestión de grupos
 	Route::get('/grupos', 'Ttt\Panel\GrupoController@index');//listado
@@ -90,7 +86,6 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/traducciones/ver/{id}','Ttt\Panel\TraduccionesController@ver');
         Route::get('/traducciones/borrar/{id}', 'Ttt\Panel\TraduccionesController@borrar');
         Route::get('/traducciones/borrarTraduccion/{id}', 'Ttt\Panel\TraduccionesController@borrarTraduccion');
-
         Route::post('/traducciones/acciones_por_lote','Ttt\Panel\TraduccionesController@accionesPorLote');
         Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
         Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
@@ -116,6 +111,26 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/categorias/borrar-arbol/{id}', 'Ttt\Panel\CategoriaController@borrarArbol');
 	Route::get('/categorias/borrar/{id}', 'Ttt\Panel\CategoriaController@borrar');
 
+	//Gestión de categorías traducibles
+	Route::get('/categorias-traducibles', 'Ttt\Panel\CategoriaTraducibleController@index');
+
+	Route::get('/categorias-traducibles/nuevo-arbol', 'Ttt\Panel\CategoriaTraducibleController@nuevoArbol');
+	Route::post('/categorias-traducibles/crear-arbol', 'Ttt\Panel\CategoriaTraducibleController@crearArbol');
+	Route::get('/categorias-traducibles/ver-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@verArbol');//drag-and-drop de todo el árbol
+	Route::get('/categorias-traducibles/ordenar-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::post('/categorias-traducibles/ordenar/', 'Ttt\Panel\CategoriaTraducibleController@ordenar');//Ordena alfabéticamente un árbol
+	Route::get('/categorias-traducibles/ver-raiz/{id}', 'Ttt\Panel\CategoriaTraducibleController@verRaiz');//formulario
+	Route::post('/categorias-traducibles/actualizar-raiz', 'Ttt\Panel\CategoriaTraducibleController@actualizarRaiz');//post para actualizar árbol
+
+	Route::get('/categorias-traducibles/ver/{id}', 'Ttt\Panel\CategoriaTraducibleController@ver');
+	Route::get('/categorias-traducibles/nuevo/{id}', 'Ttt\Panel\CategoriaTraducibleController@nuevo');
+	Route::post('/categorias-traducibles/crear', 'Ttt\Panel\CategoriaTraducibleController@crear');
+	Route::post('/categorias-traducibles/actualizar', 'Ttt\Panel\CategoriaTraducibleController@actualizar');
+
+	Route::get('/categorias-traducibles/borrar-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrarArbol');
+	Route::get('/categorias-traducibles/borrar/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrar');
+	Route::get('/categorias-traducibles/borrar-traduccion/{id}/{idioma}', 'Ttt\Panel\CategoriaTraducibleController@borrarTraduccion');
+
 	//Gestión de idiomas
 	Route::get('/idiomas', 'Ttt\Panel\IdiomaController@index');
 	Route::post('/idiomas', 'Ttt\Panel\IdiomaController@index');//los filtros
@@ -127,7 +142,46 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/idiomas/actualizar', 'Ttt\Panel\IdiomaController@actualizar');
 	Route::post('/idiomas/cambiar_estado', 'Ttt\Panel\IdiomaController@visibleNoVisible');
 
+<<<<<<< HEAD
+        //Gestion Ficheros
+        Route::get('/ficheros', 'Ttt\Panel\FicherosController@index');
+        Route::get('/ficheros/nuevo', 'Ttt\Panel\FicherosController@nuevo');
+        Route::post('/ficheros/crear', 'Ttt\Panel\FicherosController@crear');
+        Route::get('/ficheros/ver/{id}','Ttt\Panel\FicherosController@ver');
+      	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
+        Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
+        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote        
+        
+        
+        //Gestion Paginas
+        Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
+        Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
+        Route::get('/paginas/borrar/{id}','Ttt\Panel\PaginasControllers@borrar');
+        Route::get('/paginas/ver/{id}','Ttt\Panel\PaginasController@ver');
+        Route::get('/paginas/borrar/{id}', 'Ttt\Panel\PaginasController@borrar');
+        Route::get('/paginas/borrarTraduccion/{id}', 'Ttt\Panel\PaginasController@borrarTraduccion');
+        Route::post('/paginas/acciones_por_lote','Ttt\Panel\PaginasController@accionesPorLote');
+        Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
+        Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
+        Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
+        Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
+        
+=======
+	//Gestión de menú panel de control
+	Route::get('/menu', 'Ttt\Panel\MenuController@index');
 
+	Route::get('/menu/ordenar-arbol/{id}', 'Ttt\Panel\MenuController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::post('/menu/ordenar/', 'Ttt\Panel\MenuController@ordenar');//Ordena alfabéticamente un árbol
+
+	Route::get('/menu/ver/{id}', 'Ttt\Panel\MenuController@ver');
+	Route::get('/menu/nuevo/{id}', 'Ttt\Panel\MenuController@nuevo');
+	Route::post('/menu/crear', 'Ttt\Panel\MenuController@crear');
+	Route::post('/menu/actualizar', 'Ttt\Panel\MenuController@actualizar');
+
+	Route::get('/menu/borrar/{id}', 'Ttt\Panel\MenuController@borrar');
+
+
+>>>>>>> xlledo/master
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

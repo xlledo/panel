@@ -9,6 +9,8 @@ class PanelController extends \BaseController {
 
 	public static $moduleSlug = null;
 
+	public $menu;
+
 	/**
 	* Lista de métodos que no ejecutan el filtro que comprueba si se está logueado para acceder, por defecto lo ejecutan todos
 	* @var array
@@ -24,6 +26,7 @@ class PanelController extends \BaseController {
 		echo '</pre>';
 		echo \Route::currentRouteAction();exit;//el método invocado Ttt\Panel\LoginController@index
 		*/
+
 		//la única manera de poder establecer el parámetro página en la url
 		\App::make('paginator')->setPageName(\Config::get('ttt.pageName', 'pg'));
 
@@ -33,6 +36,8 @@ class PanelController extends \BaseController {
 		$this->beforeFilter( 'hasPermission');
 
 		$this->_setDefaultAssets();
+
+		$this->_setMenu();
 
 		//cualquier controlador del panel ejecuta filtro para ver si está logueado
 
@@ -59,6 +64,14 @@ class PanelController extends \BaseController {
 		}
 		exit;
 		*/
+	}
+
+	protected function _setMenu()
+	{
+		$root = \App::make('Ttt\Panel\Repo\Menu\MenuInterface')->byId(1);//recuperamos el menú
+		$this->menu = $root->getDescendants()->toHierarchy();
+
+		\View::share('menu', $this->menu);
 	}
 
 	protected function _sendMail($subject, $file, $data, $to, $bcc = null, $cc = null, $attachment = FALSE)
