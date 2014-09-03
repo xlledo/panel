@@ -26,6 +26,9 @@ use Ttt\Panel\Repo\Categoriatraducible\Categoria as CategoriaTraducible;
 use Ttt\Panel\Repo\Categoriatraducible\EloquentCategoria as EloquentCategoriaTraducible;
 use Ttt\Panel\Repo\Categoriatraducible\CategoriaI18n as CategoriaTraducibleI18n;
 
+use Ttt\Panel\Repo\Menu\Menu;
+use Ttt\Panel\Repo\Menu\EloquentMenu;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -91,6 +94,13 @@ class RepoServiceProvider extends ServiceProvider{
         {
             return new EloquentCategoriaTraducible(
                 new CategoriaTraducible, new CategoriaTraducibleI18n
+            );
+        });
+
+        $this->app->bind('Ttt\Panel\Repo\Menu\MenuInterface', function($app)
+        {
+            return new EloquentMenu(
+                new Menu
             );
         });
     }

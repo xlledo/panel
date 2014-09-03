@@ -67,5 +67,11 @@ return array(
         'editar' => array('ver', 'actualizar', 'accionesPorLote:accion.visible', 'accionesPorLote:accion.noVisible', 'visibleNoVisible'),
         'borrar' => array('borrar', 'accionesPorLote:accion.delete')
     ),
-
+    'menu' => array(
+        'listar' => array('index'),//muestra el listado de árboles existentes
+        'crear'  => array('nuevo', 'crear'),//crea un nuevo nodo dentro del árbol
+        'editar' => array('ver', 'actualizar'),//edita un nodo dentro del árbol
+        'editar-arbol' => array('ordenarAlfabeticamente', 'ordenar'),//edita el árbol o la raíz
+        'borrar' => array('borrar')//borra cualquier nodo del árbol y todo lo que cuelga de él
+    ),
 );

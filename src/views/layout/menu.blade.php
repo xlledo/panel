@@ -33,78 +33,7 @@
         </div>
     </div><!-- #sidebar-shortcuts -->
     <ul class="nav nav-list">
-        <!-- De momento lo construimos a mano -->
-        <li class="active">
-            <a href="{{ action('Ttt\Panel\DashboardController@index') }}" title="Dashboard">
-                <i class="icon-bar-chart"></i>
-                <span class="menu-text">Dashboard</span>
-            </a>
-        </li>
-        @if(Sentry::getUser()->hasAccess('modulos::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\ModuloController@index') }}" title="Módulos">
-                    <i class="icon-cogs"></i>
-                    <span class="menu-text">Módulos</span>
-                </a>
-            </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('variables-globales::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Variables Globales">
-                    <i class="icon-cogs"></i>
-                    <span class="menu-text">Variables Globales</span>
-                </a>
-            </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('grupos::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Grupos">
-                    <i class="icon-group"></i>
-                    <span class="menu-text">Grupos</span>
-                </a>
-            </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('usuarios::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Usuarios">
-                    <i class="icon-user"></i>
-                    <span class="menu-text">Usuarios</span>
-                </a>
-            </li>
-        @endif
-
-        @if(Sentry::getUser()->hasAccess('traducciones::listar'))
-        <li>
-            <a href="{{action('Ttt\Panel\TraduccionesController@index') }}" title="Traducciones">
-                <i class="icon-globe"></i>
-                <span class="menu-text">Traducciones</span>
-            </a>
-        </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('categorias::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Categorías">
-                    <i class="icon-flag"></i>
-                    <span class="menu-text">Categorías</span>
-                </a>
-            </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('categorias-traducibles::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Categorías traducibles">
-                    <i class="icon-flag"></i>
-                    <span class="menu-text">Cat Traducibles</span>
-                </a>
-            </li>
-        @endif
-        @if(Sentry::getUser()->hasAccess('idiomas::listar'))
-            <li>
-                <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Idiomas">
-                    <i class="icon-flag"></i>
-                    <span class="menu-text">Idiomas</span>
-                </a>
-            </li>
-        @endif
+        {{ render_menu($menu) }}
     </ul>
 
     <div class="sidebar-collapse" id="sidebar-collapse">

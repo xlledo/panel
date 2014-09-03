@@ -25,6 +25,9 @@ use Ttt\Panel\Service\Form\Idioma\IdiomaFormLaravelValidator;
 use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm as CategoriaTraducibleForm;
 use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaFormLaravelValidator as CategoriaTraducibleFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\Menu\MenuForm;
+use Ttt\Panel\Service\Form\Menu\MenuFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -89,6 +92,14 @@ class FormServiceProvider extends ServiceProvider {
             return new CategoriaTraducibleForm(
                 new CategoriaTraducibleFormLaravelValidator( $app['validator'] ),
                 $app->make('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface')
+            );
+        });
+
+        $app->bind('Ttt\Panel\Service\Form\Menu\MenuForm', function($app)
+        {
+            return new MenuForm(
+                new MenuFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Menu\MenuInterface')
             );
         });
 
