@@ -28,6 +28,9 @@ use Ttt\Panel\Service\Form\Fichero\FicheroFormLaravelValidator;
 use Ttt\Panel\Service\Form\Paginas\PaginasForm;
 use Ttt\Panel\Service\Form\Paginas\PaginasFormLaravelValidator;
 
+use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm as CategoriaTraducibleForm;
+use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaFormLaravelValidator as CategoriaTraducibleFormLaravelValidator;
+
 class FormServiceProvider extends ServiceProvider {
 
     /**
@@ -101,6 +104,15 @@ class FormServiceProvider extends ServiceProvider {
                     );
         });
         
-        
+        $app->bind('Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm', function($app)
+        {
+            return new CategoriaTraducibleForm(
+                new CategoriaTraducibleFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface')
+            );
+        });
+
+
     }
+
 }

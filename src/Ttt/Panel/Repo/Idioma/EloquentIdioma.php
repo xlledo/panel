@@ -23,6 +23,28 @@ class EloquentIdioma implements IdiomaInterface{
     }
 
     /**
+    * Devuelve el idioma principal
+    * @return object Object con la información del idioma
+    */
+    public function idiomaPrincipal()
+    {
+        return $this->idioma->where('principal', '=', 1)->get()->first();
+    }
+
+    /**
+    * @see \Ttt\Panel\Repo\Idioma\IdiomaInterface
+    */
+    public function all($orderBy = 'nombre', $orderDir = 'asc')
+    {
+
+        $idiomas = $this->idioma->newQuery()
+                                        ->orderBy($orderBy, $orderDir)
+                                        ->get();//->all() con el all nos devuelve un array, vaya tela
+
+        return $idiomas;
+    }
+
+    /**
     * Devuelve los módulos paginados
     * @param $page int
     * @param $limit int
@@ -179,9 +201,9 @@ class EloquentIdioma implements IdiomaInterface{
             }
         }
     }
-    
 
-            
+
+
     /**
     * Devuelve la consulta con las condiciones establecidas
     *

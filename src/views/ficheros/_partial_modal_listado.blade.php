@@ -6,7 +6,6 @@
             <th>Acciones</th>
         </tr>
     </thead>
-    
     @foreach($ficheros_todos as $index => $item)
     <tr class="@if($index % 2 == 0) par @else impar @endif">
         <td>
@@ -16,7 +15,7 @@
             {{ $item->nombre }}
         </td>
         <td>
-            <button class='btn btn-primary btn-xs'>Seleccionar</button>
+            <a href="{{ URL::to('admin/paginas/asociar_fichero/' . $item->id . '?from=' . $pagina->id) }}" class="btn btn-xs btn-primary">Seleccionar</a>
         </td>
     <tr/>
     @endforeach

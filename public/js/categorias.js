@@ -2,7 +2,8 @@ $(function(){
     tttjs.categorias = {
 
         $settings: {
-			url: BASE_URL
+			url: BASE_URL,
+            clave: 'categorias'
 		},
 
         /**
@@ -18,7 +19,7 @@ $(function(){
 
 				    $.ajax({
     					type: 'post',
-    					url: tttjs.categorias.$settings.url + "categorias/ordenar",
+    					url: tttjs.categorias.$settings.url + tttjs.categorias.$settings.clave + "/ordenar",
     					data: {
                             allTree: allTree,
                             root_id: rootId

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ttt\Panel\Repo;
 
 use Ttt\Panel\Repo\Modulo\Modulo;
@@ -22,6 +21,12 @@ use Ttt\Panel\Repo\Categoria\EloquentCategoria;
 
 use Ttt\Panel\Repo\Idioma\Idioma;
 use Ttt\Panel\Repo\Idioma\EloquentIdioma;
+
+
+use Ttt\Panel\Repo\Categoriatraducible\Categoria as CategoriaTraducible;
+use Ttt\Panel\Repo\Categoriatraducible\EloquentCategoria as EloquentCategoriaTraducible;
+use Ttt\Panel\Repo\Categoriatraducible\CategoriaI18n as CategoriaTraducibleI18n;
+
 
 use Ttt\Panel\Repo\Fichero\Fichero;
 use Ttt\Panel\Repo\Fichero\EloquentFichero;
@@ -87,7 +92,7 @@ class RepoServiceProvider extends ServiceProvider{
         $this->app->bind('Ttt\Panel\Repo\Idioma\IdiomaInterface', function($app)
         {
             return new EloquentIdioma(
-                    new Idioma
+                new Idioma
             );
         });
         
@@ -103,6 +108,13 @@ class RepoServiceProvider extends ServiceProvider{
             return new EloquentPaginas(
                     new Pagina, new PaginaI18n
                     );
+        });
+
+     $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
+        {
+            return new EloquentCategoriaTraducible(
+                new CategoriaTraducible, new CategoriaTraducibleI18n
+            );
         });
     }
 }

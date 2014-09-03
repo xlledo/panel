@@ -46,15 +46,15 @@ Route::group(array('prefix' => 'admin'), function()
         //Variables Globales
 	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
         Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
-        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');        
+        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
         Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
         Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
         Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
 	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
         Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
-       
+
         Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
-        
+
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');
 
@@ -90,8 +90,8 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/traducciones/crear','Ttt\Panel\TraduccionesController@crear');
         Route::post('/traducciones/actualizar', 'Ttt\Panel\TraduccionesController@actualizar');
         Route::post('/traducciones/', 'Ttt\Panel\TraduccionesController@index');
-        
-        
+
+
 	//Gestión de categorías
 	Route::get('/categorias', 'Ttt\Panel\CategoriaController@index');
 
@@ -110,6 +110,26 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::get('/categorias/borrar-arbol/{id}', 'Ttt\Panel\CategoriaController@borrarArbol');
 	Route::get('/categorias/borrar/{id}', 'Ttt\Panel\CategoriaController@borrar');
+
+	//Gestión de categorías traducibles
+	Route::get('/categorias-traducibles', 'Ttt\Panel\CategoriaTraducibleController@index');
+
+	Route::get('/categorias-traducibles/nuevo-arbol', 'Ttt\Panel\CategoriaTraducibleController@nuevoArbol');
+	Route::post('/categorias-traducibles/crear-arbol', 'Ttt\Panel\CategoriaTraducibleController@crearArbol');
+	Route::get('/categorias-traducibles/ver-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@verArbol');//drag-and-drop de todo el árbol
+	Route::get('/categorias-traducibles/ordenar-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente');//Ordena alfabéticamente un árbol
+	Route::post('/categorias-traducibles/ordenar/', 'Ttt\Panel\CategoriaTraducibleController@ordenar');//Ordena alfabéticamente un árbol
+	Route::get('/categorias-traducibles/ver-raiz/{id}', 'Ttt\Panel\CategoriaTraducibleController@verRaiz');//formulario
+	Route::post('/categorias-traducibles/actualizar-raiz', 'Ttt\Panel\CategoriaTraducibleController@actualizarRaiz');//post para actualizar árbol
+
+	Route::get('/categorias-traducibles/ver/{id}', 'Ttt\Panel\CategoriaTraducibleController@ver');
+	Route::get('/categorias-traducibles/nuevo/{id}', 'Ttt\Panel\CategoriaTraducibleController@nuevo');
+	Route::post('/categorias-traducibles/crear', 'Ttt\Panel\CategoriaTraducibleController@crear');
+	Route::post('/categorias-traducibles/actualizar', 'Ttt\Panel\CategoriaTraducibleController@actualizar');
+
+	Route::get('/categorias-traducibles/borrar-arbol/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrarArbol');
+	Route::get('/categorias-traducibles/borrar/{id}', 'Ttt\Panel\CategoriaTraducibleController@borrar');
+	Route::get('/categorias-traducibles/borrar-traduccion/{id}/{idioma}', 'Ttt\Panel\CategoriaTraducibleController@borrarTraduccion');
 
 	//Gestión de idiomas
 	Route::get('/idiomas', 'Ttt\Panel\IdiomaController@index');
@@ -143,6 +163,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
         Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
         Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
+        Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
         
 	Route::get('/hola', function()
 	{

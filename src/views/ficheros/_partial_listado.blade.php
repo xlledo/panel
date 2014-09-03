@@ -46,8 +46,8 @@
 	                            <tr>
 	                                <th scope="col">Nombre</th>
                                         <th scope="col">Preview</th>
-					<th scope="col"> - - </th>
-                                        <th scope="col">Actualizado por</th>
+					<th scope="col">Creado por </th>
+                                        <th scope="col">Actualizado por </th>
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
                                             <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
                                         @endif
@@ -70,8 +70,8 @@
                                                                                         No disponible
                                                                                     @endif
                                                                                 </td>
-										<td class="td_click">{{$item->maker}}</td>
-										<td class="td_click">{{$item->updater}}</td>
+										<td class="td_click">{{ $item->maker->first_name }}</td>
+										<td class="td_click">{{ $item->updater->first_name }}</td>
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 										@endif

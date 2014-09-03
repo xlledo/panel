@@ -14,4 +14,21 @@ abstract class AbstractCrudController extends PanelController {
 	static protected $_model          = null;//obligatorio para realizar el guardado de un elemento
 
 	protected $allowed_url_params = array();
+
+	protected $_defaultIdioma = null;
+
+	protected $_todosIdiomas;
+
+	public function __construct()
+	{
+		$idiomaData = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface');
+		if(is_null($this->_defaultIdioma))
+		{
+			$this->_defaultIdioma = $idiomaData->idiomaPrincipal();
+		}
+
+		$this->_todosIdiomas = $idiomaData->all();
+
+		parent::__construct();
+	}
 }

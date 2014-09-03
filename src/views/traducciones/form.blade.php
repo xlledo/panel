@@ -50,11 +50,11 @@
             @if($action != 'create')
                     @foreach($item->traducciones()->get() as $trad)
                         <li>
-                            
-                            <a href="#datos-{{$trad->idioma}}"> 
+
+                            <a href="#datos-{{$trad->idioma}}">
                                 {{ Ttt\Panel\Repo\Idioma\Idioma::getByCodigoIso2($trad->idioma)->nombre }}
                             </a>
-                            
+
                         </li>
                     @endforeach
                     @if(count($item->traducciones()->get())!= count($todos_idiomas))
@@ -63,19 +63,19 @@
             @else
                 <li><a href="#datos-{{ $idioma_predeterminado->codigo_iso_2 }}">{{ ucfirst($idioma_predeterminado->nombre) }}</a></li>
             @endif
-            </ul>            
+            </ul>
                             {{-- Formularios --}}
                             @if($action == 'create')
                                     {{-- Form elemento nuevo --}}
                                     @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
                             @else
-                            
+
                             {{-- Creamos los forms de idiomas --}}
                             <?php $idioma_error =  (\Session::has('idioma_error')) ? \Session::get('idioma_error') : FALSE ?>
                             @foreach($item->traducciones()->get() as $trad)
                                 @include('packages/ttt/panel/traducciones/partialform', array('trad'=>$trad,'idioma_error'=>$idioma_error, 'action'=>$action, 'nueva_traduccion' => false))
                             @endforeach
-                            
+
                             {{-- Form Nueva traduccion si es necesario --}}
                             @if(count($item->traducciones()->get()) != count($todos_idiomas))
                                 @include('packages/ttt/panel/traducciones/partialform', array('action'=>$action, 'nueva_traduccion' => true))
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-                
+
 	</div>
         </div>
 	@if(Sentry::getUser()->hasAccess('traducciones::borrar'))

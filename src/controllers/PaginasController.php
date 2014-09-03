@@ -117,6 +117,7 @@ class PaginasController extends AbstractCrudController
                 
                 //Adjuntos
                 View::share('ficheros', $item->ficheros());
+                View::share('pagina', $item);
                 
                 $params = $this->getParams();
                 
@@ -247,6 +248,37 @@ class PaginasController extends AbstractCrudController
                                                         ->withErrors($this->paginaForm->errors());
         }
         
+        
+        public function asociarFichero($id = null)
+        {
+            //-- Recuperamos el fichero
+            if($fichero = Repo\Fichero\Fichero::find($id) && $pagina = $this->pagina->byId(Input::get('from'))){
+                
+                //$pagina->ficheros()->associate($fichero);
+                
+                //die(var_dump($pagina->ficheros()));
+                
+                $fichero->associate($pagina);
+                
+                \Session::flash('messages', array(
+                                    array(
+                                            'class' => 'alert-success',
+                                            'msg'   => 'Asociación correcta'
+                                    )
+                ));
+                
+            }else{
+                
+                \Session::flash('messages', array(
+                                    array(
+                                            'class' => 'alert-danger',
+                                            'msg'   => 'Error'
+                                    )
+                ));
+                
+            }
+                \Redirect::to('admin/paginas/ver/' . Input::get('from'));
+        }
         
         protected function getParams()
         {

@@ -36,7 +36,7 @@
                                 </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary">Cerrar</button>
       </div>
     </div>
   </div>

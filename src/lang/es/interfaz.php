@@ -1,4 +1,5 @@
 <?php 
  return array( 
-'a-b-c' => '<p>a b c</p>', 
+'prueba' => '<p>Texto de prueba</p>', 
+'test-2' => '<p>Prueba 2</p>', 
 );

@@ -1,5 +1,5 @@
 <?php
-namespace Ttt\Panel\Repo\Categoria;
+namespace Ttt\Panel\Repo\Categoriatraducible;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,7 @@ class EloquentCategoria implements CategoriaInterface{
     public function rootById($id)
     {
         $element = $this->byId($id);
+
         if(! $element || ! $element->isRoot())
         {
             throw new \Ttt\Panel\Exception\TttException('El elemento indicado no existe');
@@ -53,11 +54,16 @@ class EloquentCategoria implements CategoriaInterface{
     */
     public function findAllRootsBy($orderBy = 'nombre', $orderDir = 'asc')
     {
-
+        $idioma = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal();
         $roots = $this->categoria->newQuery()
                                         ->whereNull('parent_id')
+                                        ->join('categorias_traducibles_i18n', function($join) use($idioma)
+                                        {
+                                            $join->on('categorias_traducibles.id', '=', 'categorias_traducibles_i18n.item_id')
+                                                ->where('idioma', '=', $idioma->codigo_iso_2);
+                                        })
                                         ->orderBy($orderBy, $orderDir)
-                                        ->get();//->all() con el all nos devuelve un array, vaya tela
+                                        ->get(array('categorias_traducibles.*', 'categorias_traducibles_i18n.nombre'));//->all() con el all nos devuelve un array, vaya tela
 
         return $roots;
     }
@@ -77,7 +83,10 @@ class EloquentCategoria implements CategoriaInterface{
     {
         //crea el módulo
         $categoria = $this->categoria->create(array(
-            'nombre'          => $data['nombre'],
+            $data['idioma']   => array(
+                'idioma' => $data['idioma'],
+                'nombre' => $data['nombre']
+            ),
             'protegida'       => $data['protegida'],
             'slug'            => $this->slug($data['nombre']),
             'visible'         => $data['visible'],
@@ -94,13 +103,17 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
-    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
-    public function updateRoot(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
+    public function updateRoot(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
     {
 
-        $categoria->nombre    = $data['nombre'];
-        $categoria->slug      = $this->slug($categoria->nombre, $categoria->id);
+        $categoria->traduccion($data['idioma'])->nombre = $data['nombre'];
+        //el slug lo guardaremos tan solo cuando sea la traducción del idioma principal
+        if($data['idioma'] == \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2)
+        {
+            $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
+        }
         $categoria->visible   = $data['visible'];
         $categoria->protegida = $data['protegida'];
 
@@ -111,31 +124,38 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
-    * @see \Ttt\Panel\Repo\Categoria\Categoria
+    * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
-    public function createChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $root)
+    public function createChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $root)
     {
-        return $this->categoria->create(
-            array(
-                'nombre'    => $data['nombre'],
-                'slug'      => $this->slug($data['nombre']),
-                'valor'     => $data['valor'],
-                'visible'   => $data['visible'],
-                'protegida' => $data['protegida']
-            )
-        )->makeChildOf($root);
+        return $this->categoria->create(array(
+            $data['idioma']   => array(
+                'idioma' => $data['idioma'],
+                'nombre' => $data['nombre']
+            ),
+            'protegida'       => $data['protegida'],
+            'slug'            => $this->slug($data['nombre']),
+            'visible'         => $data['visible'],
+            'valor'           => $data['valor']
+        ))->makeChildOf($root);
     }
 
     /**
     * @see \Ttt\Panel\Repo\Categoria\Categoria
     */
-    public function updateChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
+    public function updateChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
     {
 
-        $categoria->nombre    = $data['nombre'];
-        $categoria->slug      = $this->slug($categoria->nombre, $categoria->id);
-        $categoria->visible   = $data['visible'];
-        $categoria->valor = $data['valor'];
+        $categoria->traduccion($data['idioma'])->nombre = $data['nombre'];
+        //el slug lo guardaremos tan solo cuando sea la traducción del idioma principal
+        if($data['idioma'] == \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2)
+        {
+            $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
+        }
+
+        $categoria->visible     = $data['visible'];
+        $categoria->protegida   = $data['protegida'];
+        $categoria->valor       = $data['valor'];
 
         $categoria->update();
 
@@ -152,13 +172,23 @@ class EloquentCategoria implements CategoriaInterface{
     }
 
     /**
+    * @see \Ttt\Panel\Repo\Categoria\CategoriaInterface
+    */
+    public function deleteTranslation($id)
+    {
+
+    }
+
+    /**
      * @see \Ttt\Panel\Repo\Categoria\CategoriaInterface
      */
-    public function createModel()
+    public function createNode(array $fillData = array())
     {
-        $class = '\\Ttt\\Panel\\Repo\\Categoriatraducible\\Categoria';
+        $categoria = $this->categoria->emptyInstance();
 
-        return new $class;
+        $categoria->fill($fillData);
+
+        return $categoria;
     }
 
     /**

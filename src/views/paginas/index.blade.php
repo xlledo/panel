@@ -70,8 +70,8 @@
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
-											@if(Sentry::getUser()->hasAccess('traducciones::editar'))
-												{{ link_to('admin/paginas/ver/' . $item->id, $item->clave) }}
+											@if(Sentry::getUser()->hasAccess('paginas::editar'))
+												{{ link_to('admin/paginas/ver/' . $item->id, $item->traduccion('es')->titulo) }}
 											@else
 												{{ $item->traduccion('es')->titulo }}
 											@endif
