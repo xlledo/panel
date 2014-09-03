@@ -110,7 +110,7 @@ class RepoServiceProvider extends ServiceProvider{
                     );
         });
 
-     $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
+        $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
         {
             return new EloquentCategoriaTraducible(
                 new CategoriaTraducible, new CategoriaTraducibleI18n

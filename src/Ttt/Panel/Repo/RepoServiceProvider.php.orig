@@ -1,5 +1,4 @@
 <?php
-
 namespace Ttt\Panel\Repo;
 
 use Ttt\Panel\Repo\Modulo\Modulo;
@@ -24,18 +23,24 @@ use Ttt\Panel\Repo\Idioma\Idioma;
 use Ttt\Panel\Repo\Idioma\EloquentIdioma;
 
 <<<<<<< HEAD
+
+=======
+>>>>>>> xlledo/master
+use Ttt\Panel\Repo\Categoriatraducible\Categoria as CategoriaTraducible;
+use Ttt\Panel\Repo\Categoriatraducible\EloquentCategoria as EloquentCategoriaTraducible;
+use Ttt\Panel\Repo\Categoriatraducible\CategoriaI18n as CategoriaTraducibleI18n;
+
+<<<<<<< HEAD
+
 use Ttt\Panel\Repo\Fichero\Fichero;
 use Ttt\Panel\Repo\Fichero\EloquentFichero;
 
 use Ttt\Panel\Repo\Paginas\Pagina;
 use Ttt\Panel\Repo\Paginas\PaginaI18n;
 use Ttt\Panel\Repo\Paginas\EloquentPaginas;
-=======
-use Ttt\Panel\Repo\Categoriatraducible\Categoria as CategoriaTraducible;
-use Ttt\Panel\Repo\Categoriatraducible\EloquentCategoria as EloquentCategoriaTraducible;
-use Ttt\Panel\Repo\Categoriatraducible\CategoriaI18n as CategoriaTraducibleI18n;
->>>>>>> 183f1126cf468f3d18e3659f26718560e83756b2
 
+=======
+>>>>>>> xlledo/master
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -93,9 +98,10 @@ class RepoServiceProvider extends ServiceProvider{
         $this->app->bind('Ttt\Panel\Repo\Idioma\IdiomaInterface', function($app)
         {
             return new EloquentIdioma(
-                    new Idioma
+                new Idioma
             );
         });
+<<<<<<< HEAD
         
         $this->app->bind('Ttt\Panel\Repo\Fichero\FicheroInterface', function($app)
         {
@@ -103,21 +109,23 @@ class RepoServiceProvider extends ServiceProvider{
                     new Fichero
             );
         });
-<<<<<<< HEAD
         
         $this->app->bind('Ttt\Panel\Repo\Paginas\PaginasInterface', function($app)
         {
             return new EloquentPaginas(
                     new Pagina, new PaginaI18n
                     );
+        });
+
+     $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
 =======
 
         $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
+>>>>>>> xlledo/master
         {
             return new EloquentCategoriaTraducible(
                 new CategoriaTraducible, new CategoriaTraducibleI18n
             );
->>>>>>> 183f1126cf468f3d18e3659f26718560e83756b2
         });
     }
 }

@@ -28,10 +28,11 @@ use Ttt\Panel\Service\Form\Fichero\FicheroFormLaravelValidator;
 
 use Ttt\Panel\Service\Form\Paginas\PaginasForm;
 use Ttt\Panel\Service\Form\Paginas\PaginasFormLaravelValidator;
+
 =======
+>>>>>>> xlledo/master
 use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm as CategoriaTraducibleForm;
 use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaFormLaravelValidator as CategoriaTraducibleFormLaravelValidator;
->>>>>>> 183f1126cf468f3d18e3659f26718560e83756b2
 
 class FormServiceProvider extends ServiceProvider {
 
@@ -63,7 +64,7 @@ class FormServiceProvider extends ServiceProvider {
 =======
         });
 
->>>>>>> 183f1126cf468f3d18e3659f26718560e83756b2
+>>>>>>> xlledo/master
         $app->bind('Ttt\Panel\Service\Form\Modulo\ModuloForm', function($app)
         {
             return new ModuloForm(
@@ -103,7 +104,6 @@ class FormServiceProvider extends ServiceProvider {
                 $app->make('Ttt\Panel\Repo\Idioma\IdiomaInterface')
             );
         });
-<<<<<<< HEAD
         
         $app->bind('Ttt\Panel\Service\Form\Fichero\FicheroForm', function($app){
             return new FicheroForm(
@@ -112,8 +112,13 @@ class FormServiceProvider extends ServiceProvider {
                     );
         });
         
-        
-=======
+        $app->bind('Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm', function($app)
+        {
+            return new CategoriaTraducibleForm(
+                new CategoriaTraducibleFormLaravelValidator( $app['validator'] ),
+                $app->make('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface')
+            );
+        });
 
         $app->bind('Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm', function($app)
         {
@@ -124,6 +129,6 @@ class FormServiceProvider extends ServiceProvider {
         });
 
 
->>>>>>> 183f1126cf468f3d18e3659f26718560e83756b2
     }
+
 }
