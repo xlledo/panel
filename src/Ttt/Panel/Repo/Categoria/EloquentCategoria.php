@@ -156,7 +156,7 @@ class EloquentCategoria implements CategoriaInterface{
      */
     public function createModel()
     {
-        $class = '\\Ttt\\Panel\\Repo\\Categoriatraducible\\Categoria';
+        $class = '\\Ttt\\Panel\\Repo\\Categoria\\Categoria';
 
         return new $class;
     }
