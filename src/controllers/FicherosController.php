@@ -162,7 +162,7 @@ class FicherosController extends AbstractCrudController
                     'usuario' => \Sentry::getUser()['id'],
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
-                    'tipo'    => Input::get('tipo'),
+                    //'tipo'    => Input::get('tipo'), //El tipo de momento va a ir en la relacion
                     'titulo_defecto'        => Input::get('titulo_defecto'),
                     'alt_defecto'           => Input::get('alt_defecto'),
                     'enlace_defecto'        => Input::get('enlace_defecto'),
@@ -254,7 +254,7 @@ class FicherosController extends AbstractCrudController
                 
                 //--Guardamos el fichero
                 $fichero->nombre                = Input::get('nombre');
-                $fichero->tipo                  = Input::get('tipo');
+//                $fichero->tipo                  = Input::get('tipo');
                 $fichero->titulo_defecto        = Input::get('titulo_defecto');
                 $fichero->alt_defecto           = Input::get('alt_defecto');
                 $fichero->descripcion_defecto   = Input::get('descripcion_defecto');

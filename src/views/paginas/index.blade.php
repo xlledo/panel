@@ -5,7 +5,7 @@
 	@endif
 @stop
 @section('page_header')
-	<h1>Traducciones <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>Páginas <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
 @stop
 @section('content')
 
