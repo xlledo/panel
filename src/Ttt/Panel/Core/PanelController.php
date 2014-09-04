@@ -9,7 +9,7 @@ class PanelController extends \BaseController {
 
 	public static $moduleSlug = null;
 
-	public $menu;
+	public $menuNavegacion;
 
 	/**
 	* Lista de métodos que no ejecutan el filtro que comprueba si se está logueado para acceder, por defecto lo ejecutan todos
@@ -69,9 +69,9 @@ class PanelController extends \BaseController {
 	protected function _setMenu()
 	{
 		$root = \App::make('Ttt\Panel\Repo\Menu\MenuInterface')->byId(1);//recuperamos el menú
-		$this->menu = $root->getDescendants()->toHierarchy();
+		$this->menuNavegacion = $root->getDescendants()->toHierarchy();
 
-		\View::share('menu', $this->menu);
+		\View::share('menu', $this->menuNavegacion);
 	}
 
 	protected function _sendMail($subject, $file, $data, $to, $bcc = null, $cc = null, $attachment = FALSE)
