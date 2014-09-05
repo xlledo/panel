@@ -53,17 +53,20 @@ class EloquentFichero implements FicheroInterface{
                     'actualizado_por'   => $data['usuario'],
                     'ruta'              => $data['ruta'],
                     'mime'              => $data['mime'],
-                    'tipo'              => $data['tipo'],
+                    //'tipo'              => $data['tipo'],
                     'titulo_defecto'    => $data['titulo_defecto'],
                     'alt_defecto'       => $data['alt_defecto'],
                     'descripcion_defecto'   => $data['descripcion_defecto'],
                     'enlace_defecto'        => $data['enlace_defecto']
                 ));
+        
+        return $fichero->id;
+        
     }
 
     public function delete($id) {
         $deletedFichero = $this->fichero->findOrFail($id)
-                                ->delete();
+                                        ->delete();
         
         return ($deletedFichero === TRUE) ? TRUE : FALSE;
 

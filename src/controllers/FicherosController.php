@@ -43,10 +43,10 @@ class FicherosController extends AbstractCrudController
         $this->fichero = $fichero;
         $this->ficheroForm = $ficheroForm;
         
-//        if(! \Sentry::getUser()->hasAccess('ficheros::borrar'))
-//            {
-//                unset($this->acciones_por_lote['delete']);
-//            }        
+        if(! \Sentry::getUser()->hasAccess('ficheros::borrar'))
+            {
+                unset($this->acciones_por_lote['delete']);
+            }        
 
          $this->_config_ficheros = Config::get('panel::ficheros');    
          
@@ -97,6 +97,7 @@ class FicherosController extends AbstractCrudController
             View::share('title', 'Creacion de un nuevo fichero');
             return View::make('panel::ficheros.form')
                                     ->with('item', $item)
+                                    ->with('from_url', (Input::get('from_url')?: ''))
                                     ->with('action', 'create' );
             
         }
@@ -112,18 +113,8 @@ class FicherosController extends AbstractCrudController
                 
                 if(Input::hasFile('fichero'))
                 {
-                    //Validamos la extension del fichero, en función del tipo
-                    $validation_mimes = $this->_config_ficheros['tipos'][Input::get('tipo')]['validation'];
-                                      
-                    $validator_fichero = \Validator::make(
-                                                    array('fichero', Input::file('fichero')),
-                                                    array('fichero' => $validation_mimes)
-                                                    );
-                    
-                    $result_validation = $validator_fichero->passes();
-                    
-                    
-                    if($validator_fichero->passes())
+
+                    if(true)
                     {
                         $fichero = Input::file('fichero');
                         $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '.' . $fichero->getClientOriginalExtension();
@@ -183,6 +174,13 @@ class FicherosController extends AbstractCrudController
                             'msg'   => $message
                         )
                 ));
+
+                //-- Si el fichero se crea desde otro módulo 
+                //-- lo redirigimos de nuevo allí
+                if(Input::get('asociar')== 1){
+                    $url_redirect = \URL::to(Input::get('accion_asociar')) . '/' . $ficheroId . '?from=' . Input::get('from_id');
+                    return \Redirect::to( $url_redirect );
+                }
                 
                 return \Redirect::action('Ttt\Panel\FicherosController@index');
                 
@@ -202,6 +200,7 @@ class FicherosController extends AbstractCrudController
                                             ->withInput()
                                             ->withErrors($this->ficheroForm->errors());
                     
+            
         }
         
         public function ver($id = null)
@@ -221,6 +220,7 @@ class FicherosController extends AbstractCrudController
                 
                 return View::make('panel::ficheros.form')
                                 ->with('action', 'edit')
+                                ->with('from_url', (Input::get('from_url')?: ''))
                                 ->with('item', $fichero);
                 
             }else{
@@ -242,12 +242,12 @@ class FicherosController extends AbstractCrudController
                     $fic = Input::file('fichero');
                     //-- Mantenemos el nombre antiguo solo si no cambiamos la extensión
                     
-                    if($fichero->mime != $fic->getMimeType()){
-                        
-                            $fichero->fichero = \Illuminate\Support\Str::slug($fic->getClientOriginalName(),'-') . '.' . $fic->getClientOriginalExtension();
-                            $fichero->ruta   = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
-                            
-                    }
+                            //                    if($fichero->mime != $fic->getMimeType()){
+                            //                        
+                            //                            $fichero->fichero = \Illuminate\Support\Str::slug($fic->getClientOriginalName(),'-') . '.' . $fic->getClientOriginalExtension();
+                            //                            $fichero->ruta   = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
+                            //                            
+                            //                    }
                     
                     $fic->move($fichero->ruta, $fichero->fichero);
                 }
@@ -279,6 +279,10 @@ class FicherosController extends AbstractCrudController
                                     'msg' => $message
                                 )
                 ));
+                
+                if(Input::get('from_url')){
+                    return \Redirect::to(Input::get('from_url'));
+                }
                 
                 return \Redirect::action('Ttt\Panel\FicherosController@ver', $fichero->id);
                 

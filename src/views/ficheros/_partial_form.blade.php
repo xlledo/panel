@@ -1,24 +1,17 @@
-        <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\FicherosController@crear') : action('Ttt\Panel\FicherosController@actualizar') ; ?>" method="post"  enctype="multipart/form-data">
-						@if($action != 'create')
-							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
-						@endif
+        <form class="clearfix" action="{{ action('Ttt\Panel\FicherosController@crear');  }}" method="post"  enctype="multipart/form-data">
+
 					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
                                    	    <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
-                                                        @if($action != 'create')
-                                                            <div class='alert alert-block alert-info'>
-                                                                <span>La ruta del fichero es: {{$item->ruta . $item->fichero}}</span>
-                                                            </div>
-                                                        @endif
 					                <div class="widget-header widget-header-small">
 					                    <h4 class="smaller lighter">Datos</h4>
 					                </div>
 					                <div class="widget-body">
                                                             <div class="widget-main row"> <!-- Form Ficheros -->
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-6">
                                                                     <div class="form-group @if($errors->first('nombre')) has-error @endif">
                                                                         <label for='nombre'>Nombre *</label>
                                                                         <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
@@ -30,20 +23,9 @@
                                                                      </div>
                                                                 </div>
                                                                 
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="tipo">Tipo *</label>
-                                                                        <select name="tipo" class="form-control">
-                                                                            <?php foreach($config_ficheros['tipos'] as $k => $v): ?>
-                                                                                <option value="{{$k}}"
-                                                                                        <?php if($action!='create' && $k==$item->tipo): ?> selected="selected" <?php endif; ?>
-                                                                                        >{{ucfirst($k)}} - ( {{ $v['desc'] }} )</option>
-                                                                            <?php endforeach; ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+
                                                                 
-                                                                <div class='col-md-4'>
+                                                                <div class='col-md-6'>
                                                                     <div class='form-group'>
                                                                         <label for='fichero'>Fichero</label>
                                                                         <input type="file" name='fichero' class='form-cotrol' />
@@ -97,5 +79,9 @@
                                                 </div>
 					    </div>
 					    <div class="acciones pull-right">
-					        <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
-					    </div>
+                                            <input type="hidden" name="from_url" value="admin/paginas" />
+                                            <input type="hidden" name="asociar" value="1" />
+                                            <input type="hidden" name="accion_asociar" value="admin/paginas/asociar_fichero/" />
+                                            <input type="hidden" name="from_id" value="{{$item_id}}" />
+                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
+</div>

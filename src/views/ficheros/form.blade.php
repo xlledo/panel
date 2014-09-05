@@ -78,19 +78,7 @@
                                                                             @endif                                                                        
                                                                      </div>
                                                                 </div>
-                                                                
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="tipo">Tipo *</label>
-                                                                        <select name="tipo" class="form-control">
-                                                                            <?php foreach($config_ficheros['tipos'] as $k => $v): ?>
-                                                                                <option value="{{$k}}"
-                                                                                        <?php if($action!='create' && $k==$item->tipo): ?> selected="selected" <?php endif; ?>
-                                                                                        >{{ucfirst($k)}} - ( {{ $v['desc'] }} )</option>
-                                                                            <?php endforeach; ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+
                                                                 
                                                                 <div class='col-md-4'>
                                                                     <div class='form-group'>
@@ -146,6 +134,7 @@
                                                 </div>
 					    </div>
 					    <div class="acciones pull-right">
+                                                <input type="hidden" value="{{$from_url}}" name="from_url"/>
 					        <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
 					    </div>
 					</form>

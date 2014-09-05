@@ -54,6 +54,8 @@ class PaginasController extends AbstractCrudController
          //Cargamos todos los ficheros
          View::share('ficheros_todos', Repo\Fichero\Fichero::all());
          
+         
+         
     }   
     
         public function index()
@@ -97,6 +99,7 @@ class PaginasController extends AbstractCrudController
             $item->texto  = Input::old('texto') ? Input::old('texto') : '';
             
             View::share('title', 'Creacion de una nueva página');
+            
             return View::make('panel::paginas.form')
                                         ->with('item', $item)
                                         ->with('action','create');
@@ -124,6 +127,7 @@ class PaginasController extends AbstractCrudController
                 return View::make('panel::paginas.form')
                                     //->with('params', $params)
                                     ->with('item',$item)
+                                    ->with('item_id', $item->id)
                                     ->with('currentUrl', \URL::current())
                                     ->with('action','edit');
             }
@@ -203,9 +207,13 @@ class PaginasController extends AbstractCrudController
                         'usuario'   => \Sentry::getUser()['id']
                 );
                 
+                $pagina_i18n = $pagina_i18n?: new Repo\Paginas\PaginaI18n;
+                
                 //Campos traducibles
-                $pagina_i18n->texto  = Input::get('texto');
-                $pagina_i18n->titulo = Input::get('titulo');
+                $pagina_i18n->texto     = Input::get('texto');
+                $pagina_i18n->titulo    = Input::get('titulo');
+                $pagina_i18n->idioma    = Input::get('idioma');
+                $pagina_i18n->item_id   = Input::get('item_id');
 
                 if( $this->paginaForm->update($data)
                     && $pagina_i18n->save() )
@@ -252,10 +260,11 @@ class PaginasController extends AbstractCrudController
         public function asociarFichero($id = null)
         {
             //-- Recuperamos el fichero
-            if( $fichero = Repo\Fichero\Fichero::find($id) && $pagina = $this->pagina->byId(Input::get('from')) ){
-                
+            if(     $fichero = Repo\Fichero\Fichero::find($id) 
+                    && $pagina = $this->pagina->byId(Input::get('from')) ){
+
                 //-- Hay que pasar relaciones aquí
-                $pagina->ficheros()->attach($fichero);
+                $pagina->ficheros()->attach($id);
                 
                 \Session::flash('messages', array(
                                     array(
@@ -263,9 +272,7 @@ class PaginasController extends AbstractCrudController
                                             'msg'   => 'Fichero asociado correctamente'
                                     )
                 ));
-                
             }else{
-                
                 \Session::flash('messages', array(
                                     array(
                                             'class' => 'alert-danger',

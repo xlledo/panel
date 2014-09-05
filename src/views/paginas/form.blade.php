@@ -16,8 +16,8 @@
 			<li>
 			 <?php if ($action == 'create'): ?>
 				Nuevo elemento
-			<? else: ?>
-				Editar <?php echo $item->titulo; ?>
+			<?php else: ?>
+				Editar <?php echo $item->traduccion('es')->titulo; ?>
 			<?php endif; ?>
 			</li>
 		</ul>
@@ -34,7 +34,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a> <i class="icon-double-angle-right"></i></small> {{ $item->titulo }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a> <i class="icon-double-angle-right"></i></small> {{ $item->traduccion('es')->titulo }}</h1>
 	@endif
 @stop
 @section('content')

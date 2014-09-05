@@ -29,7 +29,7 @@
                                                 </div>
 
                                                 <div id="selecciona_fichero" class="tab-pane fade">
-                                                        @include('packages/ttt/panel/ficheros/_partial_modal_listado')     
+                                                        @include('packages/ttt/panel/ficheros/_partial_modal_listado')
                                                 </div>
 
                                         </div>

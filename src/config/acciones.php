@@ -69,7 +69,9 @@ return array(
     ),
     'ficheros' => array(
         'listar' => array('index'),
-        'borrar' => array('borrar')
+        'borrar' => array('borrar'),
+        'crear'  => array('nuevo', 'crear'),
+        'editar' => array('ver', 'actualizar')
     ),
    'menu' => array(
         'listar' => array('index'),//muestra el listado de árboles existentes
