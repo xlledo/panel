@@ -3,8 +3,6 @@
 	<div class="row">
 	    <div class="col-xs-12">
                 
-                
-                
                 <!--
                     <div class="widget-box">
                         <form method="POST" action="{{ url('admin/ficheros') }}">
@@ -39,7 +37,7 @@
 			@if($ficheros->count() === 0)
 				<div class="alert alert-info">Actualmente no hay elementos en la base de datos</div>
         	        @else
-                <form action="{{ url('admin/ficheros/acciones_por_lote') }}" method="post">
+                <form action="{{ url('admin/' . $modulo . '/acciones_por_lote') }}" method="post">
 	                <fieldset>
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
@@ -48,6 +46,7 @@
                                         <th scope="col">Preview</th>
 					<th scope="col">Creado por </th>
                                         <th scope="col">Actualizado por </th>
+                                        <th scope="col">Acciones</th>
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
                                             <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
                                         @endif
@@ -72,6 +71,11 @@
                                                                                 </td>
 										<td class="td_click">{{ $item->maker->first_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name }}</td>
+                                                                                <td class="td_click">
+                                                                                    <a href="{{ URL::to('/admin/'. $modulo . '/desasociar_fichero/' . $item->id)}}?from={{$item_id}}" class="btn btn-xs btn-warning">
+                                                                                        Desasociar
+                                                                                    </a>
+                                                                                </td>
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 										@endif
@@ -79,10 +83,25 @@
 								@endforeach
 	                        </tbody>
 	                    </table>
-	                    -<div class="selectAcciones row">
+	                    <div class="selectAcciones row">
 	                     
+                                    <div class="acciones col-sm-12">
+                                        <div class="pull-right form-inline selectAcciones">
+                                            <label for="acciones_por_lote">Accion:</label>
+                                            <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
+                                                <option value="0" selected="selected"> - Seleccionar - </option>
+                                                    @foreach($acciones_por_lote_ficheros as $key => $apl)
+                                                        <option value="{{$key}}">{{$apl}}</option>
+                                                    @endforeach
+                                            </select>
+                                            <input type="submit" name="ejecutar" class="btn btn-success btn-xs" value="Enviar" />
+                                        </div>
+                                        
+                                    </div>
+                                    
 	                    </div>
 	                </fieldset>
+                    <input name="from" type="hidden" value="{{$item_id}}" />
 	            </form>
 				<div class="center">
 					

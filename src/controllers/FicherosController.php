@@ -374,7 +374,7 @@ class FicherosController extends AbstractCrudController
             return \Redirect::action('Ttt\Panel\FicherosController@index');
 
         }
-            
+        
     	protected function getParams()
 	{	
                 $input = array_merge(Input::only($this->allowed_url_params));

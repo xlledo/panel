@@ -47,4 +47,13 @@ interface PaginasInterface{
     * @return boolean
     */
     public function delete($id);
+    
+    
+    /**
+     * Elimina la asociacion de un fichero con una pagina
+     * 
+     * @param type $id
+     */
+    public function desasociarFichero($idFichero, $usuario, $idPagina);
+    
 }

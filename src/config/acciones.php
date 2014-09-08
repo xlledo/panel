@@ -69,7 +69,7 @@ return array(
     ),
     'ficheros' => array(
         'listar' => array('index'),
-        'borrar' => array('borrar'),
+        'borrar' => array('borrar','accionesPorLote:accion.delete'),
         'crear'  => array('nuevo', 'crear'),
         'editar' => array('ver', 'actualizar')
     ),

@@ -105,20 +105,22 @@
 	                        <div class="elementos col-sm-6">
 	                            Mostrando de {{ $items->getFrom() }} a {{ $items->getTo() }} de un total de {{ $items->getTotal() }}
 	                        </div>
-							@if(count($accionesPorLote))
+                                
+                                @if(count($accionesPorLote))
 		                        <div class="acciones col-sm-6">
 		                            <div class="pull-right form-inline selectAcciones">
 		                                <label for="acciones_por_lote">Acción:</label>
 		                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
 		                                    <option value="0" selected="selected">-seleccionar-</option>
-											@foreach($accionesPorLote as $key => $apl)
-												<option value="{{ $key }}">{{ $apl }}</option>
-											@endforeach
+                                                                @foreach($accionesPorLote as $key => $apl)
+                                                                        <option value="{{ $key }}">{{ $apl }}</option>
+                                                                @endforeach
 		                                </select>
 		                                <input type="submit" name="ejecutar" class="btn btn-success btn-xs" value="Enviar" />
 		                            </div>
 		                        </div>
-							@endif
+                                @endif
+                                
 	                    </div>
 	                </fieldset>
 	            </form>

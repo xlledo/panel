@@ -34,6 +34,10 @@ class PaginasController extends AbstractCrudController
 		'delete'    => 'Borrar'
 	);
         
+        protected $acciones_por_lote_ficheros = array(
+                'desasociarFichero' => 'Desasociar'
+        );
+        
     public function __construct(    PaginasInterface $pagina, 
                                     PaginasForm $paginaForm ) {
         parent::__construct();
@@ -53,8 +57,6 @@ class PaginasController extends AbstractCrudController
          
          //Cargamos todos los ficheros
          View::share('ficheros_todos', Repo\Fichero\Fichero::all());
-         
-         
          
     }   
     
@@ -128,6 +130,7 @@ class PaginasController extends AbstractCrudController
                                     //->with('params', $params)
                                     ->with('item',$item)
                                     ->with('item_id', $item->id)
+                                    ->with('acciones_por_lote_ficheros', $this->acciones_por_lote_ficheros)
                                     ->with('currentUrl', \URL::current())
                                     ->with('action','edit');
             }
@@ -263,7 +266,7 @@ class PaginasController extends AbstractCrudController
             if(     $fichero = Repo\Fichero\Fichero::find($id) 
                     && $pagina = $this->pagina->byId(Input::get('from')) ){
 
-                //-- Hay que pasar relaciones aquí
+                //-- Creamos la relacion
                 $pagina->ficheros()->attach($id);
                 
                 \Session::flash('messages', array(
@@ -282,6 +285,148 @@ class PaginasController extends AbstractCrudController
             }
                 return \Redirect::to('admin/paginas/ver/' . Input::get('from'));
         }
+        
+        
+        /**
+         * 
+         * Elimina la asociación entre fichero y pagina
+         * 
+         * @param type $id
+         * @return type
+         */
+        
+        public function desasociarFichero($id = null)
+        {
+            //-- Recuperamos el fichero
+            if(     $fichero = Repo\Fichero\Fichero::find($id) 
+                    && $pagina = $this->pagina->byId(Input::get('from')) ){
+                
+                $pagina->ficheros()->detach($id);
+                \Session::flash('messages', array(
+                            array(
+                                'class' => 'alert-success',
+                                'msg'   => 'Fichero desasociado correctamente'
+                            )
+                ));
+                
+            }else{
+                \Session::flash('messages', array(
+                                    array(
+                                            'class' => 'alert-danger',
+                                            'msg'   => 'Error'
+                                    )
+                ));
+            }
+            return \Redirect::to('admin/paginas/ver/' . Input::get('from'));
+        }
+
+        /**
+	* Intenta actualizar un elemento existente
+	* @return void
+	*/
+        
+	public function borrar($id = null)
+	{
+		$message = 'Página eliminada correctamente.';
+		try
+		{
+
+			//$ent = $this->modulo->byId(Input::get('id'));
+			if(! $this->pagina->delete($id))
+			{
+				throw new \Ttt\Panel\Exception\TttException;
+			}
+
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => $message
+				)
+			));
+
+
+			return \Redirect::action('Ttt\Panel\PaginasController@index');
+
+		}
+		catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
+		{
+			$message = $e->getMessage();
+			return \Redirect::action('Ttt\Panel\PaginasController@index');
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$message = 'No puede eliminarse el elemento.';
+		}
+
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $message
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\PaginasController@ver', $id);
+	}
+
+        /**
+	* Ejecuta una acción sobre un conjunto de elementos
+	* @throws \Ttt\Exception\BatchActionException
+	* @return void
+	*/
+	public function accionesPorLote()
+	{
+		$input = Input::only('item', 'accion', 'from');
+
+		try{
+                    
+			if(     !array_key_exists($input['accion'], $this->acciones_por_lote) 
+                             && !array_key_exists($input['accion'], $this->acciones_por_lote_ficheros) ) 
+			{
+				throw new \Ttt\Panel\Exception\TttException;
+			}
+
+			foreach($input['item'] as $itemId)
+			{
+				if(! method_exists($this->pagina, $input['accion']))
+				{
+					throw new \Ttt\Exception\TttException;
+				} 
+
+				call_user_func_array(array($this->pagina, $input['accion']), array($itemId, \Sentry::getUser()['id'], Input::get('from')));
+			}
+
+                        if(array_key_exists($input['accion'], $this->acciones_por_lote)) { $accion = $this->acciones_por_lote[$input['accion']];  } 
+                        if(array_key_exists($input['accion'], $this->acciones_por_lote_ficheros)) { $accion = $this->acciones_por_lote_ficheros[$input['accion']]; }
+                        
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-success',
+					'msg'   => 'La acción ' . $accion . ' se ha ejecutado correctamente.'
+				)));
+
+			return \Redirect::action('Ttt\Panel\PaginasController@index');
+
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			$mensaje = 'La acción indicada no existe';
+		}
+		catch(\Ttt\Panel\Exception\BatchActionException $e)
+		{
+			$mensaje = $e->getMessage();
+		}
+
+		//error al intentar ejecutar la acción
+		\Session::flash('messages', array(
+			array(
+				'class' => 'alert-danger',
+				'msg'   => $mensaje
+			)
+		));
+
+		return \Redirect::action('Ttt\Panel\DashboardController@index');
+	}        
+        
         
         protected function getParams()
         {

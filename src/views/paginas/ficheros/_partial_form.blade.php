@@ -35,7 +35,7 @@
 					                </div>
 					            </div>
 					        </div>
-                                                
+                                                <!--
                                                 <div class="col-xs-12">
                                                     <div class="widget-box transparent">
                                                         <div class="widget-header widget-header-small">
@@ -77,11 +77,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                -->
+                                                
 					    </div>
 					    <div class="acciones pull-right">
+                                                
+                                                
                                             <input type="hidden" name="from_url" value="admin/paginas" />
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="accion_asociar" value="admin/paginas/asociar_fichero/" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
-                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
+                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar">
+                                            
 </div>

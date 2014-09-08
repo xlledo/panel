@@ -25,13 +25,11 @@
               
                                         <div class="tab-content">
                                                 <div id="agrega_fichero" class="tab-pane fade active in">
-                                                        @include('packages/ttt/panel/ficheros/_partial_form')
+                                                        @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form')
                                                 </div>
-
                                                 <div id="selecciona_fichero" class="tab-pane fade">
                                                         @include('packages/ttt/panel/ficheros/_partial_modal_listado')
                                                 </div>
-
                                         </div>
                                 </div>
       </div>

@@ -220,4 +220,22 @@ class EloquentPaginas implements PaginasInterface{
 
         return $query;
     }
+
+    
+    /**
+     * Eliminar la asociacion con un fichero
+     * 
+     * 
+     * @param type $idPagina
+     * @param type $idFichero
+     * @return type
+     */
+    public function desasociarFichero($idFichero, $usuario, $idPagina) {
+        
+        $pagina = $this->byId($idPagina);
+        
+        return $pagina->ficheros()->detach($idFichero);
+        
+    }
+
 }

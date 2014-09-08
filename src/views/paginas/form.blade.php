@@ -43,7 +43,12 @@
 			<div id="tabs">
 				<ul id="aux" class="mi">
 				     <li><a href="#datos" title="datos"><i class="icon-list"></i>  Datos</a></li>
+                                     
+                                    @if($action != 'create')
+                                    
                                      <li><a href="#ficheros" title="ficheros"><i class="icon-list"></i> Ficheros</a></li>
+                                     
+                                     @endif
 				</ul>
     <div id="datos" class="no-padding">
         <div id="tabsI" class="clearfix">
@@ -91,8 +96,8 @@
 					    </div>
                             {{-- Ficheros --}}
                             @if($action != 'create')
-                                @include('packages/ttt/panel/ficheros/_partial_listado')
-                                @include('packages/ttt/panel/ficheros/_partial_modal_seleccion')
+                                @include('packages/ttt/panel/ficheros/_partial_listado', array('modulo'=>'paginas'))
+                                @include('packages/ttt/panel/ficheros/_partial_modal_seleccion', array('modulo'=>'paginas'))
                             @endif                
                             </div>
         </div>
