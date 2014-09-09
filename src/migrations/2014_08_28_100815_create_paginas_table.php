@@ -40,7 +40,6 @@ class CreatePaginasTable extends Migration {
                 });
                 
                 Schema::create('paginas_ficheros', function(Blueprint $table){
-
                         $table->increments('id');
                         
                         $table->integer('pagina_id');
@@ -48,13 +47,12 @@ class CreatePaginasTable extends Migration {
                         
                         $table->string('idioma',4);
                         
-                        $table->string('titulo', 255);
-                        $table->string('alt', 255);
-                        $table->text('descripcion');
-                        $table->string('enlace',255);
+                        $table->string('titulo', 255)->nullable();
+                        $table->string('alt', 255)->nullable();
+                        $table->text('descripcion')->nullable();
+                        $table->string('enlace',255)->nullable();
                         
                         $table->timestamps();
-                        
                 });
 	}
 

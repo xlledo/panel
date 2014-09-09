@@ -6,7 +6,8 @@ use \Input;
 use \Paginator;
 use \Sentry;
 use \View;
-use Ttt\Panel\Repo\CategoriaTraducible\CategoriaInterface;
+
+use Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface;
 use Ttt\Panel\Service\Form\CategoriaTraducible\CategoriaForm;
 use Ttt\Panel\Core\AbstractCrudController;
 
@@ -24,8 +25,10 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		'nombre', 'ordenPor', 'ordenDir'
 	);
 
-	public function __construct(CategoriaInterface $categoria, CategoriaForm $categoriaForm)
+	public function __construct(CategoriaInterface $categoria, 
+								CategoriaForm $categoriaForm)
 	{
+
 		parent::__construct();
 
 		$this->categoria     = $categoria;

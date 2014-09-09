@@ -178,9 +178,10 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
         Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
         Route::get('/paginas/desasociar_fichero/{id}','Ttt\Panel\PaginasController@desasociarFichero');
+        Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
+        Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
+        Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
         
-        
-
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

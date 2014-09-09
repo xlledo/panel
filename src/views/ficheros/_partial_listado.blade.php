@@ -57,7 +57,7 @@
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
 											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												<?php echo link_to('admin/ficheros/ver/' . $item->id . '?from_url=admin/' . \Ttt\Panel\PaginasController::$moduleSlug . '/ver/' . $item_id , $item->nombre); ?>
+												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->id . '?from_url=admin/' . $modulo . '/ver/' . $item_id , $item->nombre); ?>
 											@else
 												{{ $item->nombre }}
 											@endif

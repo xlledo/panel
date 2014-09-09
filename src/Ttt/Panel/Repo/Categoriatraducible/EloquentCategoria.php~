@@ -4,6 +4,7 @@ namespace Ttt\Panel\Repo\Categoriatraducible;
 use Illuminate\Database\Eloquent\Model;
 
 class EloquentCategoria implements CategoriaInterface{
+
     protected $categoria;
 
     public function __construct(Model $categoria)

@@ -10,14 +10,21 @@ use \View;
 use Ttt\Panel\Repo\Paginas\PaginasInterface;
 use Ttt\Panel\Service\Form\Paginas\PaginasForm;
 
+use Ttt\Panel\Repo\Fichero\FicheroInterface;
+use Ttt\Panel\Service\Form\Fichero\FicheroForm;
+
 use Ttt\Panel\Repo\Paginas\Pagina;
 use Ttt\Panel\Repo\Paginas\PaginasI18n;
 
 use Ttt\Panel\Core\AbstractCrudController;
 
-class PaginasController extends AbstractCrudController
+use Ttt\Panel\Repo\Fichero\Extensions\FicheroControllerInterface;
+
+class PaginasController extends AbstractCrudController implements FicheroControllerInterface
 {
 
+        use \Ttt\Panel\Repo\Fichero\Extensions\FicheroTrait;
+    
 	protected $_views_dir = 'paginas';
 	protected $_titulo = 'Paginas';
 
@@ -25,6 +32,7 @@ class PaginasController extends AbstractCrudController
     
         protected $pagina;
         protected $paginaForm;
+        protected $fichero;
         
 	protected $allowed_url_params = array(
 		'clave', 'ordenPor', 'ordenDir', 'creado_por'
@@ -41,26 +49,32 @@ class PaginasController extends AbstractCrudController
         protected $_idioma_predeterminado;
         protected $_todos_idiomas;
         
-    public function __construct(    PaginasInterface $pagina, 
-                                    PaginasForm $paginaForm ) {
-        parent::__construct();
-
-        $this->pagina       = $pagina;
-        $this->paginaForm   = $paginaForm;
-
-        $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
-        $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
-
-        View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
-        View::share('todos_idiomas', $this->_todos_idiomas);      
+        public function __construct(    PaginasInterface $pagina, 
+                                        PaginasForm $paginaForm,
+                                        FicheroInterface $fichero,
+                                        FicheroForm $ficherosForm) 
+        {
         
-        //Cargamos el config 
-         $this->_config_ficheros = Config::get('panel::ficheros');    
-         View::share('config_ficheros', $this->_config_ficheros);
-         
-         //Cargamos todos los ficheros
-         View::share('ficheros_todos', Repo\Fichero\Fichero::all());
-         
+            parent::__construct();
+
+            $this->pagina       = $pagina;
+            $this->paginaForm   = $paginaForm;
+            $this->fichero      = $fichero;
+            $this->ficherosForm = $ficherosForm;
+
+            $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
+            $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
+
+            View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
+            View::share('todos_idiomas', $this->_todos_idiomas);      
+
+            //Cargamos el config 
+             $this->_config_ficheros = Config::get('panel::ficheros');    
+             View::share('config_ficheros', $this->_config_ficheros);
+
+             //Cargamos todos los ficheros
+             View::share('ficheros_todos', Repo\Fichero\Fichero::all());
+
     }   
     
         public function index()
@@ -443,5 +457,30 @@ class PaginasController extends AbstractCrudController
             $input[Config::get('panel::app.orderDir')] = !is_null($input[Config::get('panel::app.orderDir')]) ? $input[Config::get('panel::app.orderDir')] : 'asc';
 
             return $input;
+        }
+
+        public function guardarCamposEspecificos($id = null) {
+            
+                    $datosEspecificos = array(
+                        'titulo'      => \Input::get('titulo'),
+                        'alt'         => \Input::get('alt'),
+                        'enlace'      => \Input::get('enlace'),
+                        'descripcion' => \Input::get('descripcion')
+                    );
+            
+                    //-- Recuperamos el fichero
+                    if(    $fichero = Repo\Fichero\Fichero::find($id) 
+                        && $pagina = $this->pagina->byId(Input::get('from_id')) ){
+                            
+                            $pagina->ficheros()->attach($id, $datosEspecificos);
+                            return TRUE;
+                            
+                    }else{
+                        return FALSE;
+                    }
+        }
+
+        public function validarCamposEspecificos() {
+            //TODO 
         }
 }

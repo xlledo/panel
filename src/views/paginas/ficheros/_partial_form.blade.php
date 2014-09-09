@@ -1,4 +1,9 @@
-        <form class="clearfix" action="{{ action('Ttt\Panel\FicherosController@crear');  }}" method="post"  enctype="multipart/form-data">
+@if ($action=='create')
+    <form class="clearfix" action="{{ action('Ttt\Panel\PaginasController@crearFichero');  }}" method="post"  enctype="multipart/form-data">
+@else
+    <form class="clearfix" action="{{ action('Ttt\Panel\PaginasController@actualizarFichero');  }}" method="post"  enctype="multipart/form-data">
+@endif
+    
 					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
@@ -40,34 +45,34 @@
                                                         <div class="widget-main row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="titulo_defecto">Titulo</label>
-                                                                    <input type="text" name="titulo_defecto" class="form-control" 
+                                                                    <label for="titulo">Titulo</label>
+                                                                    <input type="text" name="titulo" class="form-control"
                                                                            value =""
-                                                                           >
+                                                                           id='titulo'>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="alt_defecto">Alt</label>
-                                                                    <input type="text" name="alt_defecto" class="form-control"
+                                                                    <label for="alt">Alt</label>
+                                                                    <input type="text" name="alt" class="form-control"
                                                                            value=""
-                                                                           >
+                                                                           id='alt'>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="descripcion_defecto">Descripcion</label>
-                                                                    <input type="text" name="descripcion_defecto" class="form-control"
+                                                                    <label for="descripcion">Descripcion</label>
+                                                                    <input type="text" name="descripcion" class="form-control"
                                                                            value=""
-                                                                           >
+                                                                           id='descripcion'>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="enlace_defecto">Enlace</label>
-                                                                    <input type="text" name="enlace_defecto" class="form-control"
+                                                                    <label for="enlace">Enlace</label>
+                                                                    <input type="text" name="enlace" class="form-control"
                                                                            value=""
-                                                                           >
+                                                                           id='enlace'>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -75,12 +80,7 @@
                                                 </div>
 					    </div>
 					    <div class="acciones pull-right">
-                                                
-                                                
-                                            <input type="hidden" name="from_url" value="admin/paginas" />
                                             <input type="hidden" name="asociar" value="1" />
-                                            <input type="hidden" name="accion_asociar" value="admin/paginas/asociar_fichero/" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
                                             <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar">
-                                            
 </div>

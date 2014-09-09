@@ -33,7 +33,7 @@ class FicherosController extends AbstractCrudController
     
     /* Para poner en un fichero de configuracion */
     protected $_validacion_fichero = array();
-    protected $_upload_folder = 'uploads/';
+    
     protected $_config_ficheros = array();
     
     public function __construct(FicheroInterface $fichero, FicheroForm $ficheroForm)

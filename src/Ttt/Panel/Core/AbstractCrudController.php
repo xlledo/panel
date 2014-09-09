@@ -19,6 +19,8 @@ abstract class AbstractCrudController extends PanelController {
 
 	protected $_todosIdiomas;
 
+        protected $_upload_folder = 'uploads/'; 
+        
 	public function __construct()
 	{
 		$idiomaData = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface');
