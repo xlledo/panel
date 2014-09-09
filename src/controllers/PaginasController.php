@@ -470,8 +470,11 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             
                     //-- Recuperamos el fichero
                     if(    $fichero = Repo\Fichero\Fichero::find($id) 
-                        && $pagina = $this->pagina->byId(Input::get('from_id')) ){
-                            
+                        && $pagina = $this->pagina->byId(Input::get('from_id')
+                        && $this->validarCamposEspecificos()->passes()
+                        )){
+                              
+
                             $pagina->ficheros()->attach($id, $datosEspecificos);
                             return TRUE;
                             
