@@ -126,17 +126,16 @@ trait FicheroTrait {
                 $fic = \Input::file('fichero');
                 
                 $fic->move($fichero->ruta, $fichero->fichero);
-                
             }
             
             $fichero->nombre        = \Input::get('nombre');
-
             $data = array(
                 'id'        => $fichero->id,
                 'nombre'    => $fichero->nombre
             );
             
             $this->ficheroForm->update($data);
+            $this->guardarCamposEspecificos($fichero->id);
             
             \Session::flash('messages', array(
                                 array(
@@ -145,7 +144,7 @@ trait FicheroTrait {
                                 )
             ));
             
-            return \Redirect::action(get_class().'@ver', \Input::get('item_id'));
+            return \Redirect::action(get_class().'@verFichero', $fichero->id);
             
         }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
                 $message = $ex->getMessage();

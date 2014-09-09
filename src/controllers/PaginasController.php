@@ -401,7 +401,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 		try{
                     
 			if(     !array_key_exists($input['accion'], $this->acciones_por_lote) 
-                             && !array_key_exists($input['accion'], $this->acciones_por_lote_ficheros) ) 
+                 && !array_key_exists($input['accion'], $this->acciones_por_lote_ficheros) ) 
 			{
 				throw new \Ttt\Panel\Exception\TttException;
 			}
@@ -481,6 +481,21 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         }
 
         public function validarCamposEspecificos() {
-            //TODO 
+
+            $validator = \Validator::make(
+                            array(
+                                'titulo' => \Input::get('titulo'),
+                                'alt'    => \Input::get('alt'),
+                                'enlace' => \Input::get('enlace'),
+                                'descripcion' => \Input::get('descripcion')),
+                            array(
+                                'titulo' => 'required',
+                                'alt'    => 'required',
+                                'enlace' => 'required',
+                                'descripcion' => 'required')
+
+                );
+
+            return $validator;
         }
 }
