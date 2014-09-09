@@ -160,6 +160,7 @@ class TraduccionesController extends AbstractCrudController
                     )
                 ));
                 return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccionId);
+                
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
             }

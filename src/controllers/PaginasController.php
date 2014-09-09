@@ -38,6 +38,9 @@ class PaginasController extends AbstractCrudController
                 'desasociarFichero' => 'Desasociar'
         );
         
+        protected $_idioma_predeterminado;
+        protected $_todos_idiomas;
+        
     public function __construct(    PaginasInterface $pagina, 
                                     PaginasForm $paginaForm ) {
         parent::__construct();
@@ -87,7 +90,7 @@ class PaginasController extends AbstractCrudController
                                 ->with('params', $params)
                                 ->with('currentUrl', \URL::current())
                                 ->with('accionesPorLote', $this->acciones_por_lote);
-        }    
+        }
 
         /*
          * Formulario de creacion de pagina
@@ -166,6 +169,9 @@ class PaginasController extends AbstractCrudController
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
                 $message = 'Existen errores de validación';
+                
+                // El idioma al crear nuevo siempre es el predeterminado
+                \Session::flash('idioma_error', $this->_idioma_predeterminado->first()->codigo_iso_2);
             }
             
             \Session::flash('messages', array(
@@ -177,7 +183,7 @@ class PaginasController extends AbstractCrudController
             
             return \Redirect::action('Ttt\Panel\PaginasController@nuevo')
                                         ->withInput()
-                                        ->withErrores($this->paginaForm->errors());
+                                        ->withErrors($this->paginaForm->errors());
             
         }
         
@@ -254,6 +260,7 @@ class PaginasController extends AbstractCrudController
             \Session::flash('idioma_error', Input::get('idioma'));
             
             $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
+            
             return \Redirect::to('admin/paginas/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
                                                         ->withInput()
                                                         ->withErrors($this->paginaForm->errors());

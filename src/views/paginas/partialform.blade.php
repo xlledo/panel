@@ -47,15 +47,16 @@
                                                             </div>
                                                     @endif
                                                     <div class="col-md-3">
-                                                        <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma)) has-error @endif">
+                                                        <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma)) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
                                                                     <input type="text" class="form-control" name="titulo" id="titulo" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->titulo }}" size="20" />
                                                                 </div>
                                                             @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
-                                                                        @foreach($errors->get('titulo') as $err)
+                                                                
+                                                                @foreach($errors->get('titulo') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
-                                                                        @endforeach
+                                                                @endforeach
                                                             @endif
                                                         </div>
                                                     </div>

@@ -27,15 +27,13 @@
                                                 <div id="agrega_fichero" class="tab-pane fade active in">
                                                         @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form')
                                                 </div>
-                                                <div id="selecciona_fichero" class="tab-pane fade">
+                                                <div id="selecciona_fichero" class="tab-pane fade" style="overflow:scroll; height:500px;">
                                                         @include('packages/ttt/panel/ficheros/_partial_modal_listado')
                                                 </div>
                                         </div>
                                 </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Cerrar</button>
-      </div>
+      
     </div>
   </div>
 </div>

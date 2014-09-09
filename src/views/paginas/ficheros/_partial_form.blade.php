@@ -1,5 +1,4 @@
         <form class="clearfix" action="{{ action('Ttt\Panel\FicherosController@crear');  }}" method="post"  enctype="multipart/form-data">
-
 					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
@@ -22,9 +21,6 @@
                                                                             @endif                                                                        
                                                                      </div>
                                                                 </div>
-                                                                
-
-                                                                
                                                                 <div class='col-md-6'>
                                                                     <div class='form-group'>
                                                                         <label for='fichero'>Fichero</label>
@@ -35,7 +31,7 @@
 					                </div>
 					            </div>
 					        </div>
-                                                <!--
+                                                
                                                 <div class="col-xs-12">
                                                     <div class="widget-box transparent">
                                                         <div class="widget-header widget-header-small">
@@ -46,7 +42,7 @@
                                                                 <div class="form-group">
                                                                     <label for="titulo_defecto">Titulo</label>
                                                                     <input type="text" name="titulo_defecto" class="form-control" 
-                                                                           value ="{{$item->titulo_defecto }}"
+                                                                           value =""
                                                                            >
                                                                 </div>
                                                             </div>
@@ -54,7 +50,7 @@
                                                                 <div class="form-group">
                                                                     <label for="alt_defecto">Alt</label>
                                                                     <input type="text" name="alt_defecto" class="form-control"
-                                                                           value="{{$item->alt_defecto}}"
+                                                                           value=""
                                                                            >
                                                                 </div>
                                                             </div>
@@ -62,7 +58,7 @@
                                                                 <div class="form-group">
                                                                     <label for="descripcion_defecto">Descripcion</label>
                                                                     <input type="text" name="descripcion_defecto" class="form-control"
-                                                                           value="{{$item->descripcion_defecto}}"
+                                                                           value=""
                                                                            >
                                                                 </div>
                                                             </div>
@@ -70,15 +66,13 @@
                                                                 <div class="form-group">
                                                                     <label for="enlace_defecto">Enlace</label>
                                                                     <input type="text" name="enlace_defecto" class="form-control"
-                                                                           value="{{$item->enlace_defecto}}"
+                                                                           value=""
                                                                            >
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                -->
-                                                
 					    </div>
 					    <div class="acciones pull-right">
                                                 

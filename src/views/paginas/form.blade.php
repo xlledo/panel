@@ -73,33 +73,34 @@
                             {{-- Formularios --}}
                             @if($action == 'create')
                                     {{-- Form elemento nuevo --}}
-                                    @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion'=>false))
+                                    @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion'=>false,'idioma_error'=>$idioma_predeterminado->codigo_iso_2))
                             @else
                             
                             {{-- Creamos los forms de idiomas --}}
-                            <?php $idioma_error =  (\Session::has('idioma_error')) ? \Session::get('idioma_error') : FALSE ?>
                             @foreach($item->traducciones()->get() as $trad)
-                                @include('packages/ttt/panel/paginas/partialform', array('trad'=>$trad,'idioma_error'=>$idioma_error, 'action'=>$action, 'nueva_traduccion' => false))
+                                @include('packages/ttt/panel/paginas/partialform', array('trad'=>$trad, 'action'=>$action, 'nueva_traduccion' => false, 'idioma_error' => \Session::get('idioma_error', FALSE)))
                             @endforeach
                             
                             {{-- Form Nueva traduccion si es necesario --}}
                             @if(count($item->traducciones()->get()) != count($todos_idiomas))
-                                @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion' => true))
+                                @include('packages/ttt/panel/paginas/partialform', array('action'=>$action, 'nueva_traduccion' => true,'idioma_error' => \Session::get('idioma_error', FALSE)))
                             @endif
                     @endif
                 </div>
             </div>
+                            {{-- Ficheros --}}
+                            @if($action != 'create')
                             
                             <div id='ficheros'>
+                            
                                             <div class="acciones pull-right">
                                                 <button data-toggle="modal" data-target="#modal_select_fichero"  class="btn btn-sm btn-success no-border">Añadir Fichero</button>
 					    </div>
-                            {{-- Ficheros --}}
-                            @if($action != 'create')
                                 @include('packages/ttt/panel/ficheros/_partial_listado', array('modulo'=>'paginas'))
                                 @include('packages/ttt/panel/ficheros/_partial_modal_seleccion', array('modulo'=>'paginas'))
-                            @endif                
+                            
                             </div>
+                            @endif                
         </div>
 	</div>
         </div>
