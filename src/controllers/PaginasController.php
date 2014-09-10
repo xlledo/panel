@@ -33,8 +33,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         protected $pagina;
         protected $paginaForm;
         protected $fichero;
-        
-	protected $allowed_url_params = array(
+        protected $ficheroForm;
+
+
+        protected $allowed_url_params = array(
 		'clave', 'ordenPor', 'ordenDir', 'creado_por'
 	);
 
@@ -60,7 +62,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $this->pagina       = $pagina;
             $this->paginaForm   = $paginaForm;
             $this->fichero      = $fichero;
-            $this->ficherosForm = $ficherosForm;
+            $this->ficheroForm = $ficherosForm;
 
             $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
             $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
@@ -74,6 +76,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
              //Cargamos todos los ficheros
              View::share('ficheros_todos', Repo\Fichero\Fichero::all());
+             
+             //Por defecto la accion para el fichero es "create"
+             View::share('action_fichero', 'create');
 
     }   
     
@@ -459,6 +464,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             return $input;
         }
 
+        
         public function guardarCamposEspecificos($id = null) {
             
                     $datosEspecificos = array(
@@ -468,18 +474,25 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'descripcion' => \Input::get('descripcion')
                     );
             
-                    //-- Recuperamos el fichero
-                    if(    $fichero = Repo\Fichero\Fichero::find($id) 
-                        && $pagina = $this->pagina->byId(Input::get('from_id')
-                        && $this->validarCamposEspecificos()->passes()
-                        )){
-                              
+                    //-- Obtenemos la página
+                    $pagina = $this->pagina->byId(Input::get('from_id'));
+                                        
+                    
+                        //-- Solo cuando actualizamos guardamos los campos directamente 
+                        if(\Input::get('pivot_id')!=''){
+                                //TODO Validar
+                                $pagina->ficheros()->sync(array(\Input::get('pivot_id') => $datosEspecificos ));
+                                return TRUE;
+                        }
 
+                    //-- Recuperamos el fichero y validamos campos especificos
+                    if( $fichero = Repo\Fichero\Fichero::find($id)
+                        && $this->validarCamposEspecificos()->passes()
+                        ){
                             $pagina->ficheros()->attach($id, $datosEspecificos);
                             return TRUE;
-                            
                     }else{
-                        return FALSE;
+                        return FALSE; // Igual hay que mandar una excepcion
                     }
         }
 
@@ -492,13 +505,42 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                 'enlace' => \Input::get('enlace'),
                                 'descripcion' => \Input::get('descripcion')),
                             array(
-                                'titulo' => 'required',
-                                'alt'    => 'required',
-                                'enlace' => 'required',
-                                'descripcion' => 'required')
-
+                                'titulo' => 'max:255',
+                                'alt'    => 'max:255',
+                                'enlace' => 'max:255',
+                                'descripcion' => 'max:255')
                 );
 
             return $validator;
         }
+
+    public function obtenerCamposEspecificos( $ficheroId = null, $itemId = null, $enviarAVista = FALSE ) {
+        
+            $pagina        = $this->pagina->byId($itemId);
+            $ficheros      = $pagina->ficheros()->getResults();
+            $ficherosPivot = Pagina::find($itemId)->ficheros()->where('paginas_ficheros.id',\Input::get('pivot_id'))->get();
+            
+            
+            
+            
+            if($ficherosPivot->count() > 0 )
+            {
+                $camposEspecificos = $ficherosPivot->first()->pivot->toArray();
+                
+                //-- Los mandamos a la vista
+                if($enviarAVista){
+                    \View::share('titulo', $camposEspecificos['titulo']);
+                    \View::share('alt', $camposEspecificos['alt']);
+                    \View::share('enlace', $camposEspecificos['enlace']);
+                    \View::share('descripcion', $camposEspecificos['descripcion']);
+                }
+                return $camposEspecificos;
+                
+            }else{
+                return FALSE;
+            }
+            
+            
+    }
+
 }

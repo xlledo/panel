@@ -1,10 +1,9 @@
-@if ($action=='create')
+@if ($action_fichero!='edit')
     <form class="clearfix" action="{{ action('Ttt\Panel\PaginasController@crearFichero');  }}" method="post"  enctype="multipart/form-data">
 @else
     <form class="clearfix" action="{{ action('Ttt\Panel\PaginasController@actualizarFichero');  }}" method="post"  enctype="multipart/form-data">
 @endif
-    
-					    <div class="acciones pull-right">
+    					    <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
                                    	    <div class="row">
@@ -47,7 +46,7 @@
                                                                 <div class="form-group">
                                                                     <label for="titulo">Titulo</label>
                                                                     <input type="text" name="titulo" class="form-control"
-                                                                           value =""
+                                                                           value ="{{ ($action_fichero == 'edit') ? $titulo : ''}}"
                                                                            id='titulo'>
                                                                 </div>
                                                             </div>
@@ -55,7 +54,7 @@
                                                                 <div class="form-group">
                                                                     <label for="alt">Alt</label>
                                                                     <input type="text" name="alt" class="form-control"
-                                                                           value=""
+                                                                           value="{{($action_fichero == 'edit') ? $alt : ''}}"
                                                                            id='alt'>
                                                                 </div>
                                                             </div>
@@ -63,7 +62,7 @@
                                                                 <div class="form-group">
                                                                     <label for="descripcion">Descripcion</label>
                                                                     <input type="text" name="descripcion" class="form-control"
-                                                                           value=""
+                                                                           value="{{($action_fichero == 'edit') ? $descripcion: ''}}"
                                                                            id='descripcion'>
                                                                 </div>
                                                             </div>
@@ -71,7 +70,7 @@
                                                                 <div class="form-group">
                                                                     <label for="enlace">Enlace</label>
                                                                     <input type="text" name="enlace" class="form-control"
-                                                                           value=""
+                                                                           value="{{($action_fichero == 'edit') ? $enlace: ''}}"
                                                                            id='enlace'>
                                                                 </div>
                                                             </div>
@@ -82,5 +81,10 @@
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
+                                            @if ($action_fichero == 'edit')
+                                                <input type='hidden' name='id' value='{{$item->id}}' />
+                                                <input type='hidden' name='pivot_id' value='{{$pivot_id }}'/>
+                                                <input type='hidden' name='item_id' value='{{$item_id}}' />
+                                            @endif
                                             <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar">
 </div>

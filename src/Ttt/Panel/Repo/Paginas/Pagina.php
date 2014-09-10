@@ -36,7 +36,8 @@ class Pagina extends \Eloquent{
         //Many to many para ficheros
         public function ficheros()
         {
-            return $this->belongsToMany('Ttt\Panel\Repo\Fichero\Fichero', 'paginas_ficheros', 'pagina_id', 'fichero_id');
+            return $this->belongsToMany('Ttt\Panel\Repo\Fichero\Fichero', 'paginas_ficheros', 'pagina_id', 'fichero_id')
+                                                            ->withPivot('id', 'titulo', 'alt', 'enlace', 'descripcion');
         }
         
 	public function maker()

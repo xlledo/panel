@@ -61,7 +61,7 @@ class EloquentFichero implements FicheroInterface{
                 ));
         
         return $fichero->id;
-        
+
     }
 
     public function delete($id) {
@@ -80,10 +80,11 @@ class EloquentFichero implements FicheroInterface{
         }
         
         $fichero->nombre                = $data['nombre'];
-        $fichero->titulo_defecto        = $data['titulo_defecto'];
-        $fichero->alt_defecto           = $data['alt_defecto'];
-        $fichero->enlace_defecto        = $data['enlace_defecto'];
-        $fichero->descripcion_defecto   = $data['descripcion_defecto'];
+        
+        $fichero->titulo_defecto        = (array_key_exists('titulo_defecto', $data))       ? $data['titulo_defecto'] : '' ;
+        $fichero->alt_defecto           = (array_key_exists('alt_defecto', $data))          ? $data['alt_defecto'] : '' ;
+        $fichero->enlace_defecto        = (array_key_exists('enlace_defecto', $data))       ? $data['enlace_defecto'] : '' ;
+        $fichero->descripcion_defecto   = (array_key_exists('descripcion_defecto', $data))  ? $data['descripcion_defecto'] : '' ;
         
         $fichero->update();
         
@@ -119,7 +120,6 @@ class EloquentFichero implements FicheroInterface{
         {
             $query->where('nombre', 'LIKE', '%' . $params['nombre'] . '%');
         }
-
         return $query;
     }
 

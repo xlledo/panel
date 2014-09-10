@@ -28,7 +28,6 @@ trait FicheroTrait {
                 }
                 //-- Guardamos el fichero en la ruta
                 $fichero->move($path_completo , $nombre_fichero);
-                
             }
             
             if($nombre_fichero == ''){
@@ -49,7 +48,7 @@ trait FicheroTrait {
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
                 );
             
-            $ficheroId = $this->ficherosForm->save($data);
+            $ficheroId = $this->ficheroForm->save($data);
             
             \Session::flash('messages', array(
                 array(
@@ -97,17 +96,23 @@ trait FicheroTrait {
             $fichero->descripcion_defecto   = ! is_null(\Input::old('descripcion_defecto')) ?: $fichero->descripcion_defecto;
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
 
-            //TODO: Cargar datos opcionales
-            //$this->cargarDatosOpcionales();
+            //-- Cargamos los datos especificos
+
+            $item_id    = \Input::get('item_id');
+            $pivot_id   = \Input::get('pivot_id');
+            
+            $this->obtenerCamposEspecificos($id, \Input::get('item_id'), TRUE);
             
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
-            \View::share('action', 'edit');
+            \View::share('action_fichero', 'edit');
+            
             \View::share('from_url', \Input::get('from_url')?:'');
             \View::share('item_id', \Input::get('item_id')?:'');
+            \View::share('pivot_id', \Input::get('pivot_id')?:'');
+            
             \View::share('item', $fichero);
             
             return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
-                                           
         }
         
     }
@@ -116,26 +121,23 @@ trait FicheroTrait {
     {
         $message = 'Fichero actualizado correctamente';
         
-        //TODO: Actualizar Fichero en el Trait
-        
         try{
             $fichero = $this->fichero->byId(\Input::get('id'));
             
             if(\Input::hasFile('fichero')){
-                
                 $fic = \Input::file('fichero');
-                
                 $fic->move($fichero->ruta, $fichero->fichero);
             }
             
-            $fichero->nombre        = \Input::get('nombre');
             $data = array(
                 'id'        => $fichero->id,
-                'nombre'    => $fichero->nombre
+                'nombre'    => \Input::get('nombre')
             );
             
+            
             $this->ficheroForm->update($data);
-            $this->guardarCamposEspecificos($fichero->id);
+            
+            $this->guardarCamposEspecificos(\Input::get('id'));
             
             \Session::flash('messages', array(
                                 array(
@@ -144,12 +146,16 @@ trait FicheroTrait {
                                 )
             ));
             
-            return \Redirect::action(get_class().'@verFichero', $fichero->id);
+            $this->verFichero($fichero->id);
             
-        }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
-                $message = $ex->getMessage();
-                return \Redirect::action('Ttt\Panel\FicherosController@index');
-            } catch(\Ttt\Panel\Exception\TttException $e){
+            //return \Redirect::action(get_class().'@verFichero', $fichero->id);
+            
+         }
+                catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
+                    $message = $ex->getMessage();
+                    return \Redirect::action( get_class() . '@verFichero', $fichero->id);
+                    } 
+            catch(\Ttt\Panel\Exception\TttException $e){
                 $message = 'Existen errores de validación';
             }
             
@@ -161,9 +167,8 @@ trait FicheroTrait {
             ));
             
             return \Redirect::action(get_class() . '@verFichero', $fichero->id)
-                                                        ->withInput()
-                                                        ->withErrors($this->ficheroForm->errors());
+                                                ->withInput()
+                                                ->withErrors($this->ficheroForm->errors());
     }
-    
     
 }

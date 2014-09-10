@@ -1,5 +1,3 @@
-
-
 	<div class="row">
 	    <div class="col-xs-12">
                 
@@ -46,7 +44,7 @@
                                         <th scope="col">Preview</th>
 					<th scope="col">Creado por </th>
                                         <th scope="col">Actualizado por </th>
-                                        <th scope="col">Acciones</th>
+                                        
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
                                             <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
                                         @endif
@@ -56,8 +54,9 @@
 								@foreach($ficheros->getResults() as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
+                                                                   
 											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->id . '?from_url=admin/' . $modulo . '/ver/' . $item_id , $item->nombre); ?>
+												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->id . '?from_url=admin/' . $modulo . '/ver/' . $item_id .'&item_id=' . $item_id . '&pivot_id=' . $item->pivot->id, $item->nombre); ?>
 											@else
 												{{ $item->nombre }}
 											@endif
@@ -71,11 +70,6 @@
                                                                                 </td>
 										<td class="td_click">{{ $item->maker->first_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name }}</td>
-                                                                                <td class="td_click">
-                                                                                    <a href="{{ URL::to('/admin/'. $modulo . '/desasociar_fichero/' . $item->id)}}?from={{$item_id}}" class="btn btn-xs btn-warning">
-                                                                                        Desasociar
-                                                                                    </a>
-                                                                                </td>
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 										@endif

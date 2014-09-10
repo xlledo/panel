@@ -10,4 +10,7 @@ interface FicheroControllerInterface {
     /* Validación de los campos específicos de las relaciones*/
     function validarCamposEspecificos();
     
+    /* Obtener campos especificos */
+    function obtenerCamposEspecificos($ficheroId, $itemId, $enviarAVista);
+    
 }
