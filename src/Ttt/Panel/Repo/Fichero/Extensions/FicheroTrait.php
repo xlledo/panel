@@ -101,7 +101,7 @@ trait FicheroTrait {
             $item_id    = \Input::get('item_id');
             $pivot_id   = \Input::get('pivot_id');
             
-            $this->obtenerCamposEspecificos($id, \Input::get('item_id'), TRUE);
+            $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
             
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
             \View::share('action_fichero', 'edit');
@@ -113,13 +113,14 @@ trait FicheroTrait {
             \View::share('item', $fichero);
             
             return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
-        }
         
+        }
     }
     
     function actualizarFichero()
     {
         $message = 'Fichero actualizado correctamente';
+        $actualizacionOK = FALSE;
         
         try{
             $fichero = $this->fichero->byId(\Input::get('id'));
@@ -134,7 +135,6 @@ trait FicheroTrait {
                 'nombre'    => \Input::get('nombre')
             );
             
-            
             $this->ficheroForm->update($data);
             
             $this->guardarCamposEspecificos(\Input::get('id'));
@@ -146,29 +146,30 @@ trait FicheroTrait {
                                 )
             ));
             
-            $this->verFichero($fichero->id);
             
-            //return \Redirect::action(get_class().'@verFichero', $fichero->id);
+            return $this->verFichero($fichero->id);
             
          }
                 catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
                     $message = $ex->getMessage();
                     return \Redirect::action( get_class() . '@verFichero', $fichero->id);
                     } 
-            catch(\Ttt\Panel\Exception\TttException $e){
-                $message = 'Existen errores de validación';
-            }
+                catch(\Ttt\Panel\Exception\TttException $e){
+                    $message = 'Existen errores de validación';
+                }
+
+
+                \Session::flash('messages', array(
+                                    array(
+                                        'class' => 'alert-danger',
+                                        'msg'   => $message
+                                    )
+                ));
             
-            \Session::flash('messages', array(
-                                array(
-                                    'class' => 'alert-danger',
-                                    'msg'   => $message
-                                )
-            ));
-            
-            return \Redirect::action(get_class() . '@verFichero', $fichero->id)
+               return \Redirect::action(get_class() . '@verFichero', $fichero->id)
                                                 ->withInput()
                                                 ->withErrors($this->ficheroForm->errors());
+
     }
     
 }

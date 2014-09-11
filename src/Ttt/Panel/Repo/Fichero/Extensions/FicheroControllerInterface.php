@@ -11,6 +11,6 @@ interface FicheroControllerInterface {
     function validarCamposEspecificos();
     
     /* Obtener campos especificos */
-    function obtenerCamposEspecificos($ficheroId, $itemId, $enviarAVista);
+    function obtenerCamposEspecificos($ficheroId, $itemId, $pivot_id, $enviarAVista);
     
 }

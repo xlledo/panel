@@ -474,14 +474,25 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'descripcion' => \Input::get('descripcion')
                     );
             
-                    //-- Obtenemos la página
-                    $pagina = $this->pagina->byId(Input::get('from_id'));
-                                        
+                        //-- Obtenemos la página
+                        $pagina = $this->pagina->byId(Input::get('from_id'));
                     
                         //-- Solo cuando actualizamos guardamos los campos directamente 
                         if(\Input::get('pivot_id')!=''){
                                 //TODO Validar
-                                $pagina->ficheros()->sync(array(\Input::get('pivot_id') => $datosEspecificos ));
+                                $pivot_id = \Input::get('pivot_id');
+                                
+                                $ficherosPivot = Pagina::find(\Input::get('from_id'))
+                                        ->ficheros()
+                                        ->where('paginas_ficheros.id', $pivot_id)
+                                        ->get();                            
+                                
+                                $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
+                                $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
+                                $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
+                                $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
+                                $ficherosPivot->first()->pivot->save();
+                                
                                 return TRUE;
                         }
 
@@ -514,13 +525,11 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             return $validator;
         }
 
-    public function obtenerCamposEspecificos( $ficheroId = null, $itemId = null, $enviarAVista = FALSE ) {
+    public function obtenerCamposEspecificos( $ficheroId = null, $itemId = null, $pivot_id = null, $enviarAVista = FALSE ) {
         
-            $pagina        = $this->pagina->byId($itemId);
+                $pagina        = $this->pagina->byId($itemId);
             $ficheros      = $pagina->ficheros()->getResults();
-            $ficherosPivot = Pagina::find($itemId)->ficheros()->where('paginas_ficheros.id',\Input::get('pivot_id'))->get();
-            
-            
+            $ficherosPivot = Pagina::find($itemId)->ficheros()->where('paginas_ficheros.id', $pivot_id)->get();
             
             
             if($ficherosPivot->count() > 0 )
