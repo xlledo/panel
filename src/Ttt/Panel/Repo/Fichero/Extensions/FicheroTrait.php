@@ -97,11 +97,16 @@ trait FicheroTrait {
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
 
             //-- Cargamos los datos especificos
-
             $item_id    = \Input::get('item_id');
             $pivot_id   = \Input::get('pivot_id');
             
-            $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
+            //TODO: Comprobar entrada item_id / pivot_id
+            try{
+                $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
+                
+            }catch(\Ttt\Panel\Exception\TttException $e){
+                    $message = 'Existen errores de validación';
+            }
             
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
             \View::share('action_fichero', 'edit');
@@ -113,6 +118,7 @@ trait FicheroTrait {
             \View::share('item', $fichero);
             
             return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
+                                
         
         }
     }
@@ -135,7 +141,8 @@ trait FicheroTrait {
                 'nombre'    => \Input::get('nombre')
             );
             
-            $this->ficheroForm->update($data);
+            //-- No guardamos los datos del fichero "maestro"
+            // $this->ficheroForm->update($data);
             
             $this->guardarCamposEspecificos(\Input::get('id'));
             
@@ -150,14 +157,16 @@ trait FicheroTrait {
             return $this->verFichero($fichero->id);
             
          }
-                catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
+            catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
                     $message = $ex->getMessage();
                     return \Redirect::action( get_class() . '@verFichero', $fichero->id);
                     } 
-                catch(\Ttt\Panel\Exception\TttException $e){
+            catch(\Ttt\Panel\Exception\TttException $e){
                     $message = 'Existen errores de validación';
+                    
+                    
+                    
                 }
-
 
                 \Session::flash('messages', array(
                                     array(
@@ -169,7 +178,6 @@ trait FicheroTrait {
                return \Redirect::action(get_class() . '@verFichero', $fichero->id)
                                                 ->withInput()
                                                 ->withErrors($this->ficheroForm->errors());
-
     }
     
 }

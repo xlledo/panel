@@ -7,6 +7,8 @@
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
                                    	    <div class="row">
+                                                
+                                                <?php /*
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
 					                <div class="widget-header widget-header-small">
@@ -35,6 +37,7 @@
 					                </div>
 					            </div>
 					        </div>
+                                                */ ?>
                                                 
                                                 <div class="col-xs-12">
                                                     <div class="widget-box transparent">
@@ -43,15 +46,20 @@
                                                         </div>
                                                         <div class="widget-main row">
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="input-group @if($errors->first('titulo)) has-errors  @endif">
                                                                     <label for="titulo">Titulo</label>
                                                                     <input type="text" name="titulo" class="form-control"
                                                                            value ="{{ ($action_fichero == 'edit') ? $titulo : ''}}"
                                                                            id='titulo'>
+                                                                    @if($errors->first('titulo'))
+                                                                        @foreach($errors->get('titulo') as $err)
+                                                                        <span class="help-block">{{$err}}</span>
+                                                                        @endforeach
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="input-group">
                                                                     <label for="alt">Alt</label>
                                                                     <input type="text" name="alt" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $alt : ''}}"
@@ -59,7 +67,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="input-group">
                                                                     <label for="descripcion">Descripcion</label>
                                                                     <input type="text" name="descripcion" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $descripcion: ''}}"
@@ -67,7 +75,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="input-group">
                                                                     <label for="enlace">Enlace</label>
                                                                     <input type="text" name="enlace" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $enlace: ''}}"
