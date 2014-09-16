@@ -486,16 +486,22 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                     $ficherosPivot = $this->pagina->byId(\Input::get('from_id'))
                                                 ->ficheros()
                                                 ->where('paginas_ficheros.id', $pivot_id)
-                                                ->get();   
-
-                                    $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
-                                    $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
-                                    $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
-                                    $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
-                                    $ficherosPivot->first()->pivot->save();
-
-                                    return TRUE;
+                                                ->get();
                                     
+                                    //Si cambiamos la relación, creamos una nueva
+                                    if($id != $ficherosPivot->first()->pivot->fichero_id){
+                                        //Borramos la relacion y creamos uno nuevo
+                                        $ficherosPivot->first()->pivot->delete();
+                                        $pagina->ficheros()->attach($id, $datosEspecificos);
+                                        return TRUE;
+                                    }else{
+                                        $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
+                                        $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
+                                        $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
+                                        $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
+                                        $ficherosPivot->first()->pivot->save();
+                                    return TRUE;
+                                    }
                                 }else{
                                     throw new \Ttt\Panel\Exception\TttException('Errores de validacion');
                                 }
@@ -521,7 +527,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                 'enlace' => \Input::get('enlace'),
                                 'descripcion' => \Input::get('descripcion')),
                             array(
-                                'titulo' => 'required|max:255',
+                                'titulo' => 'max:255',
                                 'alt'    => 'max:255',
                                 'enlace' => 'max:255',
                                 'descripcion' => 'max:255')
@@ -539,34 +545,33 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             if( $ficherosPivot->count() > 0 )
             {
                 $camposEspecificos = $ficherosPivot->first()->pivot->toArray();
+   
+            }else{ //Si no tiene tabla pivote es que hemos cambiado el fichero
+                $camposEspecificos = array('titulo'         => \Input::old('titulo'),
+                                            'alt'           => \Input::old('alt'),
+                                            'enlace'        => \Input::old('enlace'),
+                                            'descripcion'   => \Input::old('descripcion'));
                 
-                //-- Los mandamos a la vista
-                if($enviarAVista){
-                    \View::share('titulo', $camposEspecificos['titulo']);
-                    \View::share('alt', $camposEspecificos['alt']);
-                    \View::share('enlace', $camposEspecificos['enlace']);
-                    \View::share('descripcion', $camposEspecificos['descripcion']);
-                }
-                return $camposEspecificos;
-            }else{
-                
-                return FALSE;
             }
         }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
                 
-                //Si no encuentra los modelos repopulamos los datos de la vista
-                
-                $camposEspecificos = array('titulo'     => \Input::old('titulo'),
-                                            'alt'       => \Input::old('alt'),
-                                            'enlace'    => \Input::old('enlace'),
-                                            'descripcion' => \Input::old('descripcion'));
-                
+                //-- Si no encuentra los modelos, repopulamos los datos de la vista
+                $camposEspecificos = array('titulo'         => \Input::old('titulo'),
+                                            'alt'           => \Input::old('alt'),
+                                            'enlace'        => \Input::old('enlace'),
+                                            'descripcion'   => \Input::old('descripcion'));
+            
+                return $camposEspecificos;
+        }
+        
+        if($enviarAVista){
                 \View::share('titulo',      $camposEspecificos['titulo']);
                 \View::share('alt',         $camposEspecificos['alt']);
                 \View::share('enlace',      $camposEspecificos['enlace']);
                 \View::share('descripcion', $camposEspecificos['descripcion']);
                 
-                return $camposEspecificos;
         }
+        
+        return $camposEspecificos;
     }
 }

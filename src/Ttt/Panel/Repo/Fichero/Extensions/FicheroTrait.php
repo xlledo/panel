@@ -85,7 +85,7 @@ trait FicheroTrait {
     
     function verFichero($id = null)
     {
-        $message = '';
+            $message = '';
         
         if( $fichero = $this->fichero->byId($id)){
 
@@ -95,17 +95,17 @@ trait FicheroTrait {
             $fichero->alt_defecto           = ! is_null(\Input::old('alt_defecto')) ?: $fichero->alt_defecto;
             $fichero->descripcion_defecto   = ! is_null(\Input::old('descripcion_defecto')) ?: $fichero->descripcion_defecto;
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
-
-            //-- Cargamos los datos especificos
-            $item_id    = \Input::get('item_id');
-            $pivot_id   = \Input::get('pivot_id');
             
+            $item_id    = \Input::get('item_id');
+            $pivot_id   = \Input::get('pivot_id');    
+ 
             //TODO: Comprobar entrada item_id / pivot_id
             try{
                 $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
                 
             }catch(\Ttt\Panel\Exception\TttException $e){
-                    $message = 'Existen errores de validación';
+                $message = 'Existen errores de validación';
+                
             }
             
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
@@ -141,18 +141,20 @@ trait FicheroTrait {
                 'nombre'    => \Input::get('nombre')
             );
             
-            //-- No guardamos los datos del fichero "maestro"
-            // $this->ficheroForm->update($data);
-            
+            $item_id    = \Input::get('item_id');
+            $pivot_id   = \Input::get('pivot_id');  
+                        
             $this->guardarCamposEspecificos(\Input::get('id'));
             
+            \View::share('item_id', $item_id);
+            \View::share('pivot_id', $pivot_id);
+                        
             \Session::flash('messages', array(
                                 array(
                                     'class' => 'alert-success',
                                     'msg'   => $message
                                 )
             ));
-            
             
             return $this->verFichero($fichero->id);
             
@@ -163,8 +165,15 @@ trait FicheroTrait {
                     } 
             catch(\Ttt\Panel\Exception\TttException $e){
                     $message = 'Existen errores de validación';
+
+                    \Session::flash('messages', array(
+                                        array(
+                                            'class' => 'alert-danger',
+                                            'msg'   => $message
+                                        )
+                    ));
                     
-                    
+                    return $this->verFichero($fichero->id);
                     
                 }
 

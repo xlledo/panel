@@ -90,15 +90,12 @@
             </div>
                             {{-- Ficheros --}}
                             @if($action != 'create')
-                            
                             <div id='ficheros'>
-                            
                                             <div class="acciones pull-right">
                                                 <button data-toggle="modal" data-target="#modal_select_fichero"  class="btn btn-sm btn-success no-border">Añadir Fichero</button>
 					    </div>
                                 @include('packages/ttt/panel/ficheros/_partial_listado', array('modulo'=>'paginas'))
-                                @include('packages/ttt/panel/ficheros/_partial_modal_seleccion', array('modulo'=>'paginas'))
-                            
+                                @include('packages/ttt/panel/ficheros/_partial_modal_seleccion', array('modulo'=>'paginas','add'=>true))
                             </div>
                             @endif                
         </div>
@@ -116,6 +113,4 @@
 
 @section('inline_js')
             @parent
-            
-            
 @stop
