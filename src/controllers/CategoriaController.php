@@ -78,6 +78,27 @@ class CategoriaController extends AbstractCrudController{
 		$item->visible       = Input::old('visible') ? Input::old('visible') : FALSE;
 		$item->protegida     = Input::old('protegida') ? Input::old('protegida') : FALSE;
 
+		\Pila::reset()
+			->push(array(
+				'titulo'          => 'Categorías',
+				'url'             => action('Ttt\Panel\CategoriaController@index'),
+				'eloquent'        => NULL,
+				'eloquentMethod'  => NULL,
+				'retrievingField' => NULL,
+				'retrievingValue' => NULL,
+				'reference'       => FALSE,
+				'pestania'        => FALSE
+			))->push(array(
+				'titulo'          => 'Nuevo árbol de categorías',
+				'url'             => action('Ttt\Panel\CategoriaController@nuevoArbol'),
+				'eloquent'        => NULL,
+				'eloquentMethod'  => NULL,
+				'retrievingField' => NULL,
+				'retrievingValue' => NULL,
+				'reference'       => FALSE,
+				'pestania'        => FALSE
+			))->store();
+
 		View::share('title', 'Crear árbol de categorías.');
 		return View::make('panel::categorias.form')
 								->with('item', $item)
@@ -144,6 +165,36 @@ class CategoriaController extends AbstractCrudController{
 			$item->nombre    = !is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
 			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
 			$item->protegida = Input::old('protegida') ? Input::old('protegida') : $item->protegida;
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías',
+					'url'             => action('Ttt\Panel\CategoriaController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => 'Ver raíz',
+					'url'             => action('Ttt\Panel\CategoriaController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Edición del árbol ' . $item->nombre);
 			return View::make('panel::categorias.form')
@@ -225,6 +276,36 @@ class CategoriaController extends AbstractCrudController{
 		try
 		{
 			$root = $this->categoria->rootById($id);
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías',
+					'url'             => action('Ttt\Panel\CategoriaController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $root->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => 'Nueva categoría en ' . $root->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@nuevo', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			$item = $this->categoria->createModel();
 			$item->nombre        = Input::old('nombre') ? Input::old('nombre') : '';
@@ -316,6 +397,36 @@ class CategoriaController extends AbstractCrudController{
 			$item->nombre    = ! is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
 			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
 			$item->valor     = Input::old('valor') ? Input::old('valor') : $item->valor;
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías',
+					'url'             => action('Ttt\Panel\CategoriaController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->getRoot()->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@verArbol', $item->getRoot()->id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@nuevo', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Edición de subcategoría ' . $item->nombre);
 			return View::make('panel::categorias.form')
@@ -452,7 +563,29 @@ class CategoriaController extends AbstractCrudController{
 			$morocco->moveToLeftOf($uganda);
 			*/
 
+
 			$item = $this->categoria->rootById($id);
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías',
+					'url'             => action('Ttt\Panel\CategoriaController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Vista completa del árbol ' . $item->nombre);
 			return View::make('panel::categorias.ver')

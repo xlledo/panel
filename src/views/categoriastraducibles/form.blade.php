@@ -1,40 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Volver al listado de árboles">Árboles de categorías</a>
-			</li>
-			@if(! $item->isRoot())
-				<li>
-					{{ link_to('admin/categorias-traducibles/ver-arbol/' . $item->getRoot()->id, $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}
-				</li>
-			@endif
-			<li>
-				@if(! $item->isRoot())
-					<?php if ($action == 'create'): ?>
-						Nueva categoría en {{ $item->getRoot()->nombre }}
-					<? else: ?>
-						Editar <?php echo $item->nombre; ?>
-					<?php endif; ?>
-				@else
-					<?php if ($action == 'createArbol'): ?>
-						Nuevo árbol de categorías
-					<? else: ?>
-						Editar <?php echo $item->nombre; ?>
-					<?php endif; ?>
-				@endif
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
 	@if($action == 'edit' || $action == 'editArbol')

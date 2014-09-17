@@ -1,27 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				<a href="{{ action('Ttt\Panel\ModuloController@index') }}" title="Volver al listado">Módulos</a>
-			</li>
-			<li>
-			 <?php if ($action == 'create'): ?>
-				Nuevo elemento
-			<? else: ?>
-				Editar <?php echo $item->nombre; ?>
-			<?php endif; ?>
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('modulos::crear'))

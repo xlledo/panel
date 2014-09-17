@@ -25,7 +25,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		'nombre', 'ordenPor', 'ordenDir'
 	);
 
-	public function __construct(CategoriaInterface $categoria, 
+	public function __construct(CategoriaInterface $categoria,
 								CategoriaForm $categoriaForm)
 	{
 
@@ -89,6 +89,27 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			'protegida'                       => Input::old('protegida' . $sufijo) ? Input::old('protegida' . $sufijo) : FALSE
 		);
 		$item = $this->categoria->createNode($fillData);
+
+		\Pila::reset()
+			->push(array(
+				'titulo'          => 'Categorías traducibles',
+				'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
+				'eloquent'        => NULL,
+				'eloquentMethod'  => NULL,
+				'retrievingField' => NULL,
+				'retrievingValue' => NULL,
+				'reference'       => FALSE,
+				'pestania'        => FALSE
+			))->push(array(
+				'titulo'          => 'Nuevo árbol de categorías',
+				'url'             => action('Ttt\Panel\CategoriaTraducibleController@nuevoArbol'),
+				'eloquent'        => NULL,
+				'eloquentMethod'  => NULL,
+				'retrievingField' => NULL,
+				'retrievingValue' => NULL,
+				'reference'       => FALSE,
+				'pestania'        => FALSE
+			))->store();
 
 		View::share('title', 'Crear árbol de categorías.');
 		View::share('action', 'createArbol');
@@ -180,6 +201,36 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			/*echo '<pre>';
 			print_r($item->toArray());
 			echo '</pre>';exit;*/
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías traducibles',
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => 'Ver raíz',
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Edición del árbol ' . $item->nombre);
 			View::share('action', 'editArbol');
@@ -291,6 +342,36 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			);
 			$item = $this->categoria->createNode($fillData);
 
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías traducibles',
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $root->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => 'Nueva categoría en ' . $root->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@nuevo', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
+
 			View::share('title', 'Nueva categoría en ' . $root->nombre);
 			return View::make('panel::categoriastraducibles.form')
 									->with('action', 'create')
@@ -397,6 +478,36 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			$item->visible   = Input::old('visible' . $sufijo) ? Input::old('visible' . $sufijo) : $item->visible;
 			$item->protegida = Input::old('protegida' . $sufijo) ? Input::old('protegida' . $sufijo) : $item->protegida;
 			$item->valor     = Input::old('valor' . $sufijo) ? Input::old('valor' . $sufijo) : $item->valor;
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías traducibles',
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->getRoot()->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@verArbol', $item->getRoot()->id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@nuevo', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 
 			View::share('title', 'Edición de subcategoría ' . $item->nombre);
@@ -574,6 +685,27 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		{
 
 			$item = $this->categoria->rootById($id);
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Categorías traducibles',
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\CategoriaTraducibleController@verArbol', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Vista completa del árbol ' . $item->nombre);
 			return View::make('panel::categoriastraducibles.ver')

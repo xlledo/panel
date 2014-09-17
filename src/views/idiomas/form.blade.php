@@ -1,27 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				<a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Volver al listado">Idiomas</a>
-			</li>
-			<li>
-			 <?php if ($action == 'create'): ?>
-				Nuevo elemento
-			<? else: ?>
-				Editar <?php echo $item->nombre; ?>
-			<?php endif; ?>
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('idiomas::crear'))
@@ -50,11 +27,11 @@
 						@if($action != 'create')
 							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
 						@endif
-					    
+
                                             <div class="acciones pull-right">
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
-                                                
+
 					    <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">

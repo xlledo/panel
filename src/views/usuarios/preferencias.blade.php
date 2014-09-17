@@ -1,20 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				Mis preferencias, usuario '{{ $item->full_name }} [{{ $item->email }}]'
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('page_header')
 	<h1><small>Mis preferencias <i class="icon-double-angle-right"></i></small> {{ $item->full_name }}</h1>

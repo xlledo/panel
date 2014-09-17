@@ -334,10 +334,24 @@ class UsuarioController extends AbstractCrudController {
 		$message = '';
 		try
 		{
+
 			/*echo '<pre>';
 			print_r(Input::old());
 			echo '</pre>';exit;*/
 			$sentryUser = Sentry::getUser();
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => 'Mis Preferencias, usuario ' . $sentryUser->fullName . '[' . $sentryUser->email . ']',
+					'url'             => action('Ttt\Panel\UsuarioController@verPreferencias'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
+
 			$item = $this->usuario->findById($sentryUser->id);
 			$item->first_name   = ! is_null(Input::old('first_name')) ? Input::old('first_name') : $item->first_name;
 			$item->last_name    = ! is_null(Input::old('last_name')) ? Input::old('last_name') : $item->last_name;

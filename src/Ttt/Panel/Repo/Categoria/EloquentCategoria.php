@@ -1,5 +1,5 @@
 <?php
-namespace Ttt\Panel\Repo\Categoriatraducible;
+namespace Ttt\Panel\Repo\Categoria;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,13 +56,8 @@ class EloquentCategoria implements CategoriaInterface{
         $idioma = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal();
         $roots = $this->categoria->newQuery()
                                         ->whereNull('parent_id')
-                                        ->join('categorias_traducibles_i18n', function($join) use($idioma)
-                                        {
-                                            $join->on('categorias_traducibles.id', '=', 'categorias_traducibles_i18n.item_id')
-                                                ->where('idioma', '=', $idioma->codigo_iso_2);
-                                        })
                                         ->orderBy($orderBy, $orderDir)
-                                        ->get(array('categorias_traducibles.*', 'categorias_traducibles_i18n.nombre'));//->all() con el all nos devuelve un array, vaya tela
+                                        ->get();//->all() con el all nos devuelve un array, vaya tela
 
         return $roots;
     }
@@ -82,10 +77,7 @@ class EloquentCategoria implements CategoriaInterface{
     {
         //crea el módulo
         $categoria = $this->categoria->create(array(
-            $data['idioma']   => array(
-                'idioma' => $data['idioma'],
-                'nombre' => $data['nombre']
-            ),
+            'nombre' => $data['nombre'],
             'protegida'       => $data['protegida'],
             'slug'            => $this->slug($data['nombre']),
             'visible'         => $data['visible'],
@@ -104,15 +96,11 @@ class EloquentCategoria implements CategoriaInterface{
     /**
     * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
-    public function updateRoot(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
+    public function updateRoot(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
     {
 
-        $categoria->traduccion($data['idioma'])->nombre = $data['nombre'];
-        //el slug lo guardaremos tan solo cuando sea la traducción del idioma principal
-        if($data['idioma'] == \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2)
-        {
-            $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
-        }
+        $categoria->nombre = $data['nombre'];
+        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
         $categoria->visible   = $data['visible'];
         $categoria->protegida = $data['protegida'];
 
@@ -125,13 +113,10 @@ class EloquentCategoria implements CategoriaInterface{
     /**
     * @see \Ttt\Panel\Repo\Categoriatraducible\Categoria
     */
-    public function createChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $root)
+    public function createChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $root)
     {
         return $this->categoria->create(array(
-            $data['idioma']   => array(
-                'idioma' => $data['idioma'],
-                'nombre' => $data['nombre']
-            ),
+            'nombre'       => $data['nombre'],
             'protegida'       => $data['protegida'],
             'slug'            => $this->slug($data['nombre']),
             'visible'         => $data['visible'],
@@ -142,18 +127,11 @@ class EloquentCategoria implements CategoriaInterface{
     /**
     * @see \Ttt\Panel\Repo\Categoria\Categoria
     */
-    public function updateChild(array $data, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
+    public function updateChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
     {
-
-        $categoria->traduccion($data['idioma'])->nombre = $data['nombre'];
-        //el slug lo guardaremos tan solo cuando sea la traducción del idioma principal
-        if($data['idioma'] == \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2)
-        {
-            $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
-        }
+        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
 
         $categoria->visible     = $data['visible'];
-        $categoria->protegida   = $data['protegida'];
         $categoria->valor       = $data['valor'];
 
         $categoria->update();
@@ -226,5 +204,10 @@ class EloquentCategoria implements CategoriaInterface{
         }
 
         return $candidateSlug;
+    }
+
+    public function createModel()
+    {
+        return $this->categoria->newInstance();
     }
 }

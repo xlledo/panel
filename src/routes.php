@@ -15,6 +15,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::filter('notLogged', 'Ttt\Panel\Filters\Panel@notLogged');
 	Route::filter('logged', 'Ttt\Panel\Filters\Panel@logged');
 	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
+	Route::filter('pila', 'Ttt\Panel\Filters\Panel@pila');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
 

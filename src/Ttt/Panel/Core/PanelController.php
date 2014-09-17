@@ -34,6 +34,7 @@ class PanelController extends \BaseController {
 		$this->beforeFilter( 'notLogged' , array('except' => $this->whitelist));
 
 		$this->beforeFilter( 'hasPermission');
+		$this->beforeFilter( 'pila');
 
 		$this->_setDefaultAssets();
 
