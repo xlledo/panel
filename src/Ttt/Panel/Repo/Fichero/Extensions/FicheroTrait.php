@@ -31,6 +31,7 @@ trait FicheroTrait {
             }
             
             if($nombre_fichero == ''){
+                
                 throw new \Ttt\Panel\Exception\TttException('Error fichero no seleccionado');
             }
             
@@ -47,6 +48,8 @@ trait FicheroTrait {
                     'descripcion_defecto'   => \Input::get('descripcion_defecto'),
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
                 );
+            
+            //TODO: VALIDAMOS ANTES EN EL MODULO ESPECIFICO!
             
             $ficheroId = $this->ficheroForm->save($data);
             
@@ -66,8 +69,9 @@ trait FicheroTrait {
                 
             return \Redirect::action(get_class() . '@index');
 
-        } catch (Exception $ex) {
-            $message = $e->getMessage();
+        } catch (\Ttt\Panel\Exception\TttException $ex) {
+            
+            $message = $ex->getMessage();
         }
         
         \Session::flash('messages', array(
@@ -77,7 +81,7 @@ trait FicheroTrait {
             )
         ));
         
-        return \Redirect::action('Ttt\Panel\FicherosController@nuevo')
+        return \Redirect::action(get_class() . '@nuevoFichero')
                                     ->withInput()
                                     ->withErrors($this->ficheroForm->errors());
         
@@ -91,6 +95,7 @@ trait FicheroTrait {
 
             $fichero  = $this->fichero->byId($id);
             $fichero->nombre = ! is_null(\Input::old('nombre')) ?: $fichero->nombre;
+            
             $fichero->titulo_defecto        = ! is_null(\Input::old('titulo_defecto')) ?: $fichero->titulo_defecto;
             $fichero->alt_defecto           = ! is_null(\Input::old('alt_defecto')) ?: $fichero->alt_defecto;
             $fichero->descripcion_defecto   = ! is_null(\Input::old('descripcion_defecto')) ?: $fichero->descripcion_defecto;
@@ -188,5 +193,28 @@ trait FicheroTrait {
                                                 ->withInput()
                                                 ->withErrors($this->ficheroForm->errors());
     }
+    
+    
+        public function nuevoFichero()
+        {
+            $item = new \stdClass();
+            $item->nombre = \Input::old('nombre') ?: '';
+            
+            $item->titulo_defecto   = \Input::old('titulo_defecto')?:'';
+            $item->alt_defecto      = \Input::old('alt_defecto')?:'';
+            $item->descripcion_defecto = \Input::old('descripcion_defecto')?:'';
+            $item->enlace_defecto      = \Input::old('enlace_defecto')?:'';
+            
+            $item_id = \Input::old('from_id');
+            
+            \View::share('title', 'Creacion de un nuevo fichero');
+            
+            return \View::make('panel::' . $this->_views_dir .  '.ficheros._add')
+                                    ->with('item', $item)
+                                    ->with('item_id', $item_id)
+                                    ->with('from_id', $item_id)
+                                    ->with('from_url', (\Input::get('from_url')?: ''))
+                                    ->with('action', 'create' );
+        }
     
 }

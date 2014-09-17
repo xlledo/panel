@@ -16,7 +16,9 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group @if($errors->first('nombre')) has-error @endif">
                                                                         <label for='nombre'>Nombre *</label>
-                                                                        <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
+                                                                        <input type='text' class='form-control' name='nombre' id='nombre' 
+                                                                                value='{{$item->nombre}}' 
+                                                                                size='20' />
                                                                             @if ($errors->first('nombre'))
                                                                                 @foreach($errors->get('nombre') as $err)
                                                                                     <span class="help-block">{{ $err }}</span>
@@ -67,6 +69,11 @@
                                                                     <input type="text" name="alt" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $alt : ''}}"
                                                                            id='alt'>
+                                                                    @if($errors->first('alt'))
+                                                                        @foreach($errors->get('alt') as $err)
+                                                                        <span class="help-block">{{$err}}</span>
+                                                                        @endforeach
+                                                                    @endif                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -75,6 +82,11 @@
                                                                     <input type="text" name="descripcion" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $descripcion: ''}}"
                                                                            id='descripcion'>
+                                                                    @if($errors->first('descripcion'))
+                                                                        @foreach($errors->get('descripcion') as $err)
+                                                                        <span class="help-block">{{$err}}</span>
+                                                                        @endforeach
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -83,6 +95,11 @@
                                                                     <input type="text" name="enlace" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $enlace: ''}}"
                                                                            id='enlace'>
+                                                                    @if($errors->first('enlace'))
+                                                                        @foreach($errors->get('enlace') as $err)
+                                                                        <span class="help-block">{{$err}}</span>
+                                                                        @endforeach
+                                                                    @endif                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>

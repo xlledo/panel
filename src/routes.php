@@ -176,11 +176,14 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
         Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
         Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
+        
+        //Ficheros Paginas
         Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
         Route::get('/paginas/desasociar_fichero/{id}','Ttt\Panel\PaginasController@desasociarFichero');
         Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
         Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
         Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
+        Route::get('/paginas/nuevo_fichero','Ttt\Panel\PaginasController@nuevoFichero');
         
 	Route::get('/hola', function()
 	{
