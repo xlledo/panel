@@ -51,7 +51,7 @@
                                                         </div>
                                                         <div class="widget-main row">
                                                             <div class="col-md-6">
-                                                                <div class="form-group @if($errors->first('titulo')) has-errors  @endif">
+                                                                <div class="form-group @if($errors->first('titulo')) has-error  @endif">
                                                                     <label for="titulo">Titulo</label>
                                                                     <input type="text" name="titulo" class="form-control"
                                                                            value ="{{ ($action_fichero == 'edit') ? $titulo : ''}}"
@@ -64,7 +64,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="form-group @if($errors->first('alt')) has-error @endif ">
                                                                     <label for="alt">Alt</label>
                                                                     <input type="text" name="alt" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $alt : ''}}"
@@ -77,7 +77,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="form-group @if($errors->first('descripcion')) has-error @endif ">
                                                                     <label for="descripcion">Descripcion</label>
                                                                     <input type="text" name="descripcion" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $descripcion: ''}}"
@@ -90,7 +90,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="form-group  @if($errors->first('enlace')) has-error @endif ">
                                                                     <label for="enlace">Enlace</label>
                                                                     <input type="text" name="enlace" class="form-control"
                                                                            value="{{($action_fichero == 'edit') ? $enlace: ''}}"

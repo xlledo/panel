@@ -48,6 +48,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 'desasociarFichero' => 'Desasociar'
         );
         
+        protected $_fichero_nombre = '';
+        protected $_fichero_original;
+
+
         protected $_idioma_predeterminado;
         protected $_todos_idiomas;
         
@@ -522,15 +526,17 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
             $validator = \Validator::make(
                             array(
+                                'nombre' => $this->_fichero_nombre,
                                 'titulo' => \Input::get('titulo'),
                                 'alt'    => \Input::get('alt'),
                                 'enlace' => \Input::get('enlace'),
                                 'descripcion' => \Input::get('descripcion')),
                             array(
-                                'titulo' => 'max:255',
-                                'alt'    => 'max:255',
-                                'enlace' => 'max:255',
-                                'descripcion' => 'max:255')
+                                'nombre' => 'required|max:255',
+                                'titulo' => 'required|max:255',
+                                'alt'    => 'required|max:255',
+                                'enlace' => 'required|max:255',
+                                'descripcion' => 'required|max:255')
                 );
             return $validator;
         }
@@ -540,7 +546,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         try{
             $pagina        = $this->pagina->byId($itemId);
             $ficheros      = $pagina->ficheros()->getResults();
-            $ficherosPivot = Pagina::find($itemId)->ficheros()->where('paginas_ficheros.id', $pivot_id)->get();
+            $ficherosPivot = Pagina::find($itemId)->ficheros()
+                                        ->where('paginas_ficheros.id', $pivot_id)
+                                        ->get();
             
             if( $ficherosPivot->count() > 0 )
             {
@@ -573,5 +581,6 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         }
         
         return $camposEspecificos;
+        
     }
 }

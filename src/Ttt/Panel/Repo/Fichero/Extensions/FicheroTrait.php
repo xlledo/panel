@@ -35,6 +35,7 @@ trait FicheroTrait {
                 throw new \Ttt\Panel\Exception\TttException('Error fichero no seleccionado');
             }
             
+            $this->_fichero_nombre = $nombre_fichero;
                 
             $data = array(
                     'nombre'  => \Input::get('nombre'),
@@ -49,7 +50,12 @@ trait FicheroTrait {
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
                 );
             
-            //TODO: VALIDAMOS ANTES EN EL MODULO ESPECIFICO!
+            // Hay que validar los campos concretos de la relación
+            // En esta validación tambien entran los campos comunes de los ficheros
+            
+            if(!$this->validarCamposEspecificos()->passes()){
+                throw new \Ttt\Panel\Exception\TttException('Errores de validación');
+            }
             
             $ficheroId = $this->ficheroForm->save($data);
             
@@ -104,6 +110,8 @@ trait FicheroTrait {
             $item_id    = \Input::get('item_id');
             $pivot_id   = \Input::get('pivot_id');    
  
+            $this->_fichero_nombre = $fichero->nombre; 
+            
             //TODO: Comprobar entrada item_id / pivot_id
             try{
                 $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
@@ -135,6 +143,7 @@ trait FicheroTrait {
         
         try{
             $fichero = $this->fichero->byId(\Input::get('id'));
+            $this->_fichero_nombre = $fichero->nombre;
             
             if(\Input::hasFile('fichero')){
                 $fic = \Input::file('fichero');
@@ -207,14 +216,17 @@ trait FicheroTrait {
             
             $item_id = \Input::old('from_id');
             
+            $this->_fichero_nombre = $item->nombre;
+            
             \View::share('title', 'Creacion de un nuevo fichero');
             
+            //Hay que pasar los errores
             return \View::make('panel::' . $this->_views_dir .  '.ficheros._add')
                                     ->with('item', $item)
                                     ->with('item_id', $item_id)
                                     ->with('from_id', $item_id)
+                                    ->withErrors($this->validarCamposEspecificos())
                                     ->with('from_url', (\Input::get('from_url')?: ''))
                                     ->with('action', 'create' );
         }
-    
 }
