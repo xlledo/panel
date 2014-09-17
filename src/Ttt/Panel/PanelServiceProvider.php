@@ -2,6 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
+use Ttt\Panel\Core\Pila;
+
 class PanelServiceProvider extends ServiceProvider {
 
 	/**
@@ -33,6 +35,7 @@ class PanelServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->registerAdmin();
+		$this->registerPila();
 	}
 
 	/**
@@ -56,6 +59,14 @@ class PanelServiceProvider extends ServiceProvider {
 		$this->app['panel'] = $this->app->share(function($app)
 		{
 			return new Panel();
+		});
+	}
+
+	protected function registerPila()
+	{
+		$this->app['pila'] = $this->app->share(function($app)
+		{
+			return new Pila();
 		});
 	}
 

@@ -15,6 +15,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::filter('notLogged', 'Ttt\Panel\Filters\Panel@notLogged');
 	Route::filter('logged', 'Ttt\Panel\Filters\Panel@logged');
 	Route::filter('hasPermission', 'Ttt\Panel\Filters\Panel@hasPermission');
+	Route::filter('pila', 'Ttt\Panel\Filters\Panel@pila');
 
 	Route::get('/', 'Ttt\Panel\LoginController@index');
 
@@ -163,8 +164,8 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/ficheros/ver/{id}','Ttt\Panel\FicherosController@ver');
       	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
         Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
-        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote        
-        
+        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote
+
         //Gestion Paginas
         Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
         Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
@@ -181,7 +182,7 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
         Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
         Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
-        
+
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

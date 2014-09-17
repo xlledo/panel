@@ -52,6 +52,7 @@ class Panel{
 		$fullNameClass = '\\' . ltrim($routeActionArray[0], '\\');
 		$methodName    = $routeActionArray[1];
 		$moduleSlug = $fullNameClass::$moduleSlug;
+
 		//si es nula se trata de un módulo permisible (accesible por cualquiera)
 		if(! is_null($moduleSlug))
 		{
@@ -135,5 +136,94 @@ class Panel{
 			}
 		}
 		return $permission;
+	}
+
+	/**
+	* Se encarga de controlar la Pila usada para las referencias y construir las migas
+	*/
+	public function pila($route, $request)
+	{
+		$routeAction = $route->getActionName();//p.e: Ttt\Panel\LoginController@index
+
+		//extraemos Controller y método
+		list($controller, $method) = explode('@', $routeAction);
+
+		/*comprobamos si tenemos que trabajar con la Pila
+		1 - Si controlador es Dashboard: Reseteamos Pila
+		2 - Si controlador es Login y método es logout: Vaciamos Pila
+		3 - Si controlador no es Login ni Dashboard
+		*/
+		$tratamosPila = FALSE;
+		switch($controller)
+		{
+			case 'Ttt\Panel\DashboardController':
+				//Inicializamos Pila con el Dashboard
+				\Pila::reset();
+				return;
+				break;
+			case 'Ttt\Panel\LoginController':
+				if($method === 'logout')
+				{
+					//Limpiamos la pila y la dejamos vacía
+					\Pila::clean();
+					return;
+				}
+				break;
+			default:
+				//cualquier otro controlador, vemos si está llamando a un método que debe tratar la Pila
+				if(in_array($method, array(
+					'ver', 'nuevo', 'index'
+				)) || preg_match('/^referencia(.+)$/', $method, $matches))
+				{
+					$tratamosPila = TRUE;
+				}
+				break;
+		}
+
+		if(! $tratamosPila)
+		{
+			return;
+		}
+		$moduleSlug = $controller::$moduleSlug;//propiedad del controlador
+
+		$configPila = \Config::get('panel::pila');
+		if(! isset($configPila[$moduleSlug]))
+		{
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-danger',
+					'msg'   => 'Falta información en la configuración de la Pila [' . $moduleSlug . ']'
+				)
+			));
+			return \Redirect::guest(\Config::get('panel::app.access_url') . '/dashboard');
+		}
+
+		try{
+			\Pila::guessStructure(
+				$controller,
+				$method,
+				$configPila[$moduleSlug],
+				$route->parameters()
+			)->store();
+		}
+		catch(\Ttt\Panel\Exception\TttException $e)
+		{
+			\Session::flash('messages', array(
+				array(
+					'class' => 'alert-danger',
+					'msg'   => $e->getMessage()
+				)
+			));
+			return \Redirect::guest(\Config::get('panel::app.access_url') . '/dashboard');
+		}
+
+		/*echo '<pre>';
+		print_r(array_keys($route->getAction()));
+		echo '</pre>';exit;
+
+		echo '<pre>';
+		var_dump($route->parameter('id'));exit;
+		echo '</pre>';
+		echo $routeAction;exit;*/
 	}
 }

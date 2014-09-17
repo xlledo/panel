@@ -12,7 +12,18 @@
                 </a>
                 @include('packages/ttt/panel/layout/menu')
                 <div class="main-content">
-                    @yield('migas')
+
+                    <div class="breadcrumbs" id="breadcrumbs">
+                            <script type="text/javascript">
+                                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                            </script>
+                            <ul class="breadcrumb">
+                                @section('migas')
+                                    {{ \Pila::render() }}
+                                @show
+                            </ul>
+                    </div>
+
                     <div class="page-content">
                         @include('packages/ttt/panel/layout/flash_messages')
                         <div id="tools" class="acciones pull-right">

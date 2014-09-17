@@ -1,29 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			@if(! $item->isRoot())
-				<li>
-					{{ link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}
-				</li>
-			@endif
-			<li>
-				<?php if ($action == 'create'): ?>
-					Nueva opción de menú en {{ $item->getRoot()->nombre }}
-				<? else: ?>
-					Editar <?php echo $item->nombre; ?>
-				<?php endif; ?>
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
 	@if($action == 'edit')

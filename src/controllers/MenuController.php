@@ -61,6 +61,18 @@ class MenuController extends AbstractCrudController{
 				));
 			}
 
+			\Pila::reset()
+				->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\MenuController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
+
 			View::share('title', 'Estructura de navegación del panel de control');
 			return View::make('panel::menu.ver')
 									->with('root', $item)
@@ -111,6 +123,27 @@ class MenuController extends AbstractCrudController{
 			View::share('title', 'Nueva opción de menú en ' . $root->nombre);
 
 			View::share('modulos', \App::make('Ttt\Panel\Repo\Modulo\ModuloInterface')->getAll());
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => $root->nombre,
+					'url'             => action('Ttt\Panel\MenuController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => 'Nueva opción de menú en ' . $root->nombre,
+					'url'             => action('Ttt\Panel\MenuController@nuevo'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			return View::make('panel::menu.form')
 									->with('action', 'create')
@@ -198,6 +231,27 @@ class MenuController extends AbstractCrudController{
 			$item->ruta      = ! is_null(Input::old('ruta')) ? Input::old('ruta') : $item->ruta;
 			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
 			$item->modulo_id = Input::old('modulo_id') ? Input::old('modulo_id') : $item->modulo_id;
+
+			\Pila::reset()
+				->push(array(
+					'titulo'          => $item->getRoot()->nombre,
+					'url'             => action('Ttt\Panel\MenuController@index'),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->push(array(
+					'titulo'          => $item->nombre,
+					'url'             => action('Ttt\Panel\MenuController@ver', $id),
+					'eloquent'        => NULL,
+					'eloquentMethod'  => NULL,
+					'retrievingField' => NULL,
+					'retrievingValue' => NULL,
+					'reference'       => FALSE,
+					'pestania'        => FALSE
+				))->store();
 
 			View::share('title', 'Edición de opción de menú ' . $item->nombre);
 			View::share('modulos', \App::make('Ttt\Panel\Repo\Modulo\ModuloInterface')->getAll());

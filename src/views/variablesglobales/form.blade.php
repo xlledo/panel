@@ -1,27 +1,4 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				<a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables Globales</a>
-			</li>
-			<li>
-			 <?php if ($action == 'create'): ?>
-				Nuevo elemento
-			<? else: ?>
-				Editar <?php echo $item->clave; ?>
-			<?php endif; ?>
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
@@ -59,30 +36,30 @@
 					                </div>
 					                <div class="widget-body">
 					                    <div class="widget-main row">
-					                        
+
 					                        <div class="col-md-3">
 					                            <div class="input-group @if ($errors->first('clave')) has-error @endif">
 					                                <label for="clave">Clave *</label>
 					                                <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
-                                                                        
+
                                                                     <div class='input-group-btn'>
                                                                             <button type="button" class="btn  boton dropdown-toggle "  style="border:none; margin-top: 24px;" data-toggle="dropdown">
                                                                                 Versiones <span class="caret"></span>
                                                                             </button>
                                                                             <ul class="dropdown-menu pull-right" role="menu">
                                                                             <!-- Version Actual -->
-                                                                            <li><a  class="selector_versiones" href="#" data-version="-1" data-formelement="clave" data-content="{{ $item->clave}}">Version Actual</a></li> 
+                                                                            <li><a  class="selector_versiones" href="#" data-version="-1" data-formelement="clave" data-content="{{ $item->clave}}">Version Actual</a></li>
                                                                                     @if($action!='create')
                                                                                         @foreach($item->versionesByClave('clave') as $version)
                                                                                                     <li>
-                                                                                                        <a class="selector_versiones" href="#"  data-module="variablesglobales" 
-                                                                                                                                                data-version="{{$version->id}}" 
+                                                                                                        <a class="selector_versiones" href="#"  data-module="variablesglobales"
+                                                                                                                                                data-version="{{$version->id}}"
                                                                                                                                                 data-formelement="clave">[{{$version->id}}] Revision {{ $version->created_at }}</a>
                                                                                                     </li>
                                                                                         @endforeach
                                                                                     @endif
                                                                             </ul>
-                                                                        </div>                                                                        
+                                                                        </div>
 										@if ($errors->first('clave'))
                                                                                         @foreach($errors->get('clave') as $err)
                                                                                                 <span class="help-block">{{ $err }}</span>
@@ -99,13 +76,13 @@
                                                                                 Versiones <span class="caret"></span>
                                                                             </button>
                                                                             <ul class="dropdown-menu pull-right" role="menu">
-                                                                                <!-- Version Actual --><li><a class="selector_versiones" href="#" data-version="-1" data-formelement="valor" data-content="{{ $item->valor}}">Version Actual</a></li> 
-                                                                                    @if($action!='create')    
+                                                                                <!-- Version Actual --><li><a class="selector_versiones" href="#" data-version="-1" data-formelement="valor" data-content="{{ $item->valor}}">Version Actual</a></li>
+                                                                                    @if($action!='create')
                                                                                         @foreach($item->versionesByClave('valor') as $version)
                                                                                                     <li>
-                                                                                                        <a class="selector_versiones" href="#" 
+                                                                                                        <a class="selector_versiones" href="#"
                                                                                                            data-module="variablesglobales"
-                                                                                                           data-version="{{$version->id}}" 
+                                                                                                           data-version="{{$version->id}}"
                                                                                                            data-formelement="valor">[{{$version->id}}] Revision {{ $version->created_at }}</a>
                                                                                                     </li>
                                                                                         @endforeach
@@ -118,7 +95,7 @@
 														@endforeach
 													@endif
 					                            </div>
-					                        </div>                                                                
+					                        </div>
 					                    </div>
 					                </div>
 					            </div>
