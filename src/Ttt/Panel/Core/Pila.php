@@ -201,24 +201,16 @@ class Pila {
 					if($metodo === 'ver')
 					{
 						//se deben eliminar todos los elementos de la pila hasta que lleguemos al que estamos editando
-						$element = \App::make($config['eloquent'])->{$config['metodo']}($parametros[$config['param']]);
 
-						$titulo = '';
-						foreach($config['readFields'] as $rf)
-						{
-							if(property_exists($element, $rf))
-							{
-								$titulo .= $element->{$rf} . ' ';
-							}
-						}
+						$element = $this->getElement($parametros, $config);
 
 						$newElm = array(
-							'titulo'          => rtrim($titulo),
+							'titulo'          => $element['titulo'],
 							'url'             => action($controlador . '@ver', $parametros[$config['param']]),
 							'eloquent'        => $config['eloquent'],
 							'eloquentMethod'  => $config['metodo'],
 							'retrievingField' => $config['param'],
-							'retrievingValue' => $element->{$config['param']},
+							'retrievingValue' => $element['retrievingValue'],
 							'reference'       => TRUE,
 							'pestania'        => FALSE
 						);
