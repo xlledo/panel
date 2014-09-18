@@ -71,31 +71,33 @@ class Pila {
 		$parametros)
 	{
 
-		//aquí tenemos la rave montada
-		if($metodo === 'index')
+		if($this->isFileRelatedCall($metodo))
 		{
-			$this->reset()->push(
-				array(
-					'titulo'          => $config['tituloCanonico'],
-					'url'             => action($controlador . '@' . $metodo),
-					'eloquent'        => NULL,
-					'eloquentMethod'  => NULL,
-					'retrievingField' => NULL,
-					'retrievingValue' => NULL,
-					'reference'       => FALSE,
-					'pestania'        => FALSE
-				)
-			);
-		}else{
-			//es nuevo, ver o referenciaPestaña
-			//SI no tenemos dirección, que indica navegación por Miga (reference == null || ! reference || (referencia !== forwardData || referencia !== backwardData))
-			if(! \Input::has('direction') || ! in_array(\Input::get('direction'), array('forward', 'backward')))
+			//el caso de los ficheros relacionados es especial
+
+			$ultimaReferencia = $this->getUltimaReferencia();
+			if($ultimaReferencia === FALSE)
 			{
-				//Limpiamos la pila dejando solo Dashboard y añadimos la url con el título del módulo para el método index
+				//no ha accedido de manera correcta, que es desde el ver de un elemento
+				throw new \Ttt\Panel\Exception\TttException('No existe referencia en la Pila, para poder acceder ha de pasar por una vista de edición');
+			}
+
+			if($metodo === 'nuevoFichero')
+			{
+
+			}else{
+				//solo puede ser verFichero
+
+			}
+		}else{
+
+			//aquí tenemos la rave montada
+			if($metodo === 'index')
+			{
 				$this->reset()->push(
 					array(
 						'titulo'          => $config['tituloCanonico'],
-						'url'             => action($controlador . '@index'),
+						'url'             => action($controlador . '@' . $metodo),
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
@@ -104,12 +106,16 @@ class Pila {
 						'pestania'        => FALSE
 					)
 				);
-				if($metodo === 'nuevo')
+			}else{
+				//es nuevo, ver o referenciaPestaña
+				//SI no tenemos dirección, que indica navegación por Miga (reference == null || ! reference || (referencia !== forwardData || referencia !== backwardData))
+				if(! \Input::has('direction') || ! in_array(\Input::get('direction'), array('forward', 'backward', 'keep')))
 				{
-					$this->push(
+					//Limpiamos la pila dejando solo Dashboard y añadimos la url con el título del módulo para el método index
+					$this->reset()->push(
 						array(
-							'titulo'          => 'Nuevo',
-							'url'             => action($controlador . '@nuevo'),
+							'titulo'          => $config['tituloCanonico'],
+							'url'             => action($controlador . '@index'),
 							'eloquent'        => NULL,
 							'eloquentMethod'  => NULL,
 							'retrievingField' => NULL,
@@ -118,105 +124,132 @@ class Pila {
 							'pestania'        => FALSE
 						)
 					);
-				}else{
-
-					$element = $this->getElement($parametros, $config);
-					//solo puede ser Ver
-
-					$this->push(
-						array(
-							'titulo'          => $element['titulo'],
-							'url'             => action($controlador . '@ver', $parametros[$config['param']]),
-							'eloquent'        => $config['eloquent'],
-							'eloquentMethod'  => $config['metodo'],
-							'retrievingField' => $config['param'],
-							'retrievingValue' => $element['retrievingValue'],
-							'reference'       => TRUE,
-							'pestania'        => FALSE
-						)
-					);
-				}
-			}else{
-				//tenemos dirección de navegación y es forward o backward
-				$direction = \Input::get('direction');
-				if($direction === 'forward')
-				{
-					//por narices ha de tener una referencia
-					$ultimaReferencia = $this->getUltimaReferencia();
-					if($ultimaReferencia === FALSE)
+					if($metodo === 'nuevo')
 					{
-						//no ha accedido de manera correcta, que es desde el ver de un elemento
-						throw new \Ttt\Panel\Exception\TttException('No existe referencia en la Pila, para poder acceder ha de pasar por una vista de edición');
-					}
-					if(preg_match('/^referencia(.+)$/', $method, $matches))
-					{
-						//Apilamos la URL para la Pestaña, cuyo nombre se extrae del nombre del método quitándole la cadena referencia y haciendo un strtolower.
-						//En la pestaña indicamos los datos de la propia referencia para recuperarlos a continuación.
-						//Marcamos este elemento de la Pila como referencia = TRUE
-
-						$pestania = strtolower(str_replace('referencia', ''));
-						$ultimaReferencia['titulo'] .= str_replace('referencia', '');
-						$ultimaReferencia['pestania'] = $pestania;
-
+						$this->push(
+							array(
+								'titulo'          => 'Nuevo',
+								'url'             => action($controlador . '@nuevo'),
+								'eloquent'        => NULL,
+								'eloquentMethod'  => NULL,
+								'retrievingField' => NULL,
+								'retrievingValue' => NULL,
+								'reference'       => FALSE,
+								'pestania'        => FALSE
+							)
+						);
 					}else{
-						//nuevo o ver
-						$this->popToReference();
-						if($metodo === 'nuevo')
-						{
-							$this->push(
-								array(
-									'titulo'          => 'Nuevo',
-									'url'             => action($controlador . '@nuevo'),
-									'eloquent'        => NULL,
-									'eloquentMethod'  => NULL,
-									'retrievingField' => NULL,
-									'retrievingValue' => NULL,
-									'reference'       => FALSE,
-									'pestania'        => FALSE
-								)
-							);
-						}else{
-							//es ver
-							//solo puede ser Ver
-							$element = $this->getElement($parametros, $config);
-
-							$this->push(
-								array(
-									'titulo'          => $element['titulo'],
-									'url'             => action($controlador . '@ver', $parametros[$config['param']]),
-									'eloquent'        => $config['eloquent'],
-									'eloquentMethod'  => $config['metodo'],
-									'retrievingField' => $config['param'],
-									'retrievingValue' => $element['retrievingValue'],
-									'reference'       => TRUE,
-									'pestania'        => FALSE
-								)
-							);
-						}
-
-					}
-				}else{
-					//es del tipo backward
-					//solo contemplaremos el ver, ya que si es el Nuevo no queremos saber nada
-					if($metodo === 'ver')
-					{
-						//se deben eliminar todos los elementos de la pila hasta que lleguemos al que estamos editando
 
 						$element = $this->getElement($parametros, $config);
+						//solo puede ser Ver
 
-						$newElm = array(
-							'titulo'          => $element['titulo'],
-							'url'             => action($controlador . '@ver', $parametros[$config['param']]),
-							'eloquent'        => $config['eloquent'],
-							'eloquentMethod'  => $config['metodo'],
-							'retrievingField' => $config['param'],
-							'retrievingValue' => $element['retrievingValue'],
-							'reference'       => TRUE,
-							'pestania'        => FALSE
+						$this->push(
+							array(
+								'titulo'          => $element['titulo'],
+								'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+								'eloquent'        => $config['eloquent'],
+								'eloquentMethod'  => $config['metodo'],
+								'retrievingField' => $config['param'],
+								'retrievingValue' => $element['retrievingValue'],
+								'reference'       => TRUE,
+								'pestania'        => FALSE
+							)
 						);
-
-						$this->popToElement($newElm);
 					}
+				}else{
+					//tenemos dirección de navegación y es forward o backward
+					$direction = \Input::get('direction');
+					if($direction === 'forward')
+					{
+						//por narices ha de tener una referencia
+						$ultimaReferencia = $this->getUltimaReferencia();
+						if($ultimaReferencia === FALSE)
+						{
+							//no ha accedido de manera correcta, que es desde el ver de un elemento
+							throw new \Ttt\Panel\Exception\TttException('No existe referencia en la Pila, para poder acceder ha de pasar por una vista de edición');
+						}
+						if(preg_match('/^referencia(.+)$/', $method, $matches))
+						{
+							//Apilamos la URL para la Pestaña, cuyo nombre se extrae del nombre del método quitándole la cadena referencia y haciendo un strtolower.
+							//En la pestaña indicamos los datos de la propia referencia para recuperarlos a continuación.
+							//Marcamos este elemento de la Pila como referencia = TRUE
+
+							$pestania = strtolower(str_replace('referencia', '', $method));
+
+							$this->push(
+								array(
+									'titulo'          => ucwords($pestania),
+									'url'             => action($controlador . '@ver', $ultimaReferencia['retrievingValue']) . '#' . $pestania,
+									'eloquent'        => $ultimaReferencia['eloquent'],
+									'eloquentMethod'  => $ultimaReferencia['eloquentMethod'],
+									'retrievingField' => $ultimaReferencia['retrievingField'],
+									'retrievingValue' => $ultimaReferencia['retrievingValue'],
+									'reference'       => TRUE,
+									'pestania'        => $pestania
+								)
+							);
+
+						}else{
+							//nuevo o ver
+							$this->popToReference();
+							if($metodo === 'nuevo')
+							{
+								$this->push(
+									array(
+										'titulo'          => 'Nuevo',
+										'url'             => action($controlador . '@nuevo'),
+										'eloquent'        => NULL,
+										'eloquentMethod'  => NULL,
+										'retrievingField' => NULL,
+										'retrievingValue' => NULL,
+										'reference'       => FALSE,
+										'pestania'        => FALSE
+									)
+								);
+							}else{
+								//es ver
+								//solo puede ser Ver
+								$element = $this->getElement($parametros, $config);
+
+								$this->push(
+									array(
+										'titulo'          => $element['titulo'],
+										'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+										'eloquent'        => $config['eloquent'],
+										'eloquentMethod'  => $config['metodo'],
+										'retrievingField' => $config['param'],
+										'retrievingValue' => $element['retrievingValue'],
+										'reference'       => TRUE,
+										'pestania'        => FALSE
+									)
+								);
+							}
+
+						}
+					}elseif($direction === 'backward'){
+						//es del tipo backward
+						//solo contemplaremos el ver, ya que si es el Nuevo no queremos saber nada
+						if($metodo === 'ver')
+						{
+							//se deben eliminar todos los elementos de la pila hasta que lleguemos al que estamos editando
+
+							$element = $this->getElement($parametros, $config);
+
+							$newElm = array(
+								'titulo'          => $element['titulo'],
+								'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+								'eloquent'        => $config['eloquent'],
+								'eloquentMethod'  => $config['metodo'],
+								'retrievingField' => $config['param'],
+								'retrievingValue' => $element['retrievingValue'],
+								'reference'       => TRUE,
+								'pestania'        => FALSE
+							);
+
+							$this->popToElement($newElm);
+						}
+					}
+					//el tipo keep no hace nada, mantiene la Pila tal cual
 				}
 			}
 		}
@@ -234,13 +267,23 @@ class Pila {
 				break;
 			}
 			$keys = array_keys($rs);
+
+			$totalKeys    = count($keys);
+			$totalMatches = 1;
 			foreach($keys as $k)
 			{
-				if($element[$k] !== $rs[$k])
+				if($element[$k] === $rs[$k])
 				{
-					unset($rs);
-					continue 2;
+					$totalMatches ++;
 				}
+			}
+
+			if($totalMatches === $totalKeys)
+			{
+				//se ha encontrado el elemento
+				break;
+			}else{
+				unset($rs);
 			}
 		}
 
@@ -267,17 +310,29 @@ class Pila {
 		return $this->stack;
 	}
 
-	public function getUltimaReferencia()
+	public function getUltimaReferencia($asModel = FALSE)
 	{
 		$reversedStack = array_reverse($this->stack);
 		foreach($reversedStack as $rs)
 		{
 			if($rs['reference'])
 			{
-				return $rs;
+				return $asModel ? $this->getModelObject($rs) : $rs;
 			}
 		}
+
 		return FALSE;
+	}
+
+	protected function getModelObject(array $referencia)
+	{
+		$obj = \App::make($referencia['eloquent'])->{$referencia['eloquentMethod']}($referencia['retrievingValue']);//Model|NULL
+		if(! $obj)
+		{
+			throw new \Ttt\Panel\Exception\TttException('No se ha podido recuperar el objeto desde la referencia [' . $referencia['titulo'] . ']');
+		}
+
+		return $obj;
 	}
 
 	public function getPila()
@@ -331,5 +386,10 @@ class Pila {
 			'titulo'          => rtrim($titulo),
 			'retrievingValue' => $element->{$config['param']}
 		);
+	}
+
+	protected function isFileRelatedCall($metodo)
+	{
+		return in_array($metodo, array('verFichero', 'nuevoFichero'));
 	}
 }
