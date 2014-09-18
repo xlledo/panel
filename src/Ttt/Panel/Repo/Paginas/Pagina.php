@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\File;
 
 class Pagina extends \Eloquent{
 
-        protected $table            = 'paginas';
-        public static $table_i18n     = 'paginas_i18n';
+        protected $table             = 'paginas';
+        public static $table_i18n    = 'paginas_i18n';
 
         protected $modelI18n    = 'PaginaI18n';
         

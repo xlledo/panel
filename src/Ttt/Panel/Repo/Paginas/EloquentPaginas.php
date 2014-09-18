@@ -11,6 +11,8 @@ class EloquentPaginas implements PaginasInterface{
     protected $pagina;
     protected $pagina_i18n;
 
+   
+    
     public function __construct(Model $Pagina, Model $Pagina_i18n)
     {
         $this->pagina = $Pagina;

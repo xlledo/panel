@@ -97,8 +97,11 @@ trait FicheroTrait {
     {
         $message = '';
         
-        //Cogemos el elemento de la tabla pivot
-        //$rowPilot = 
+        //-- Cogemos el elemento de la tabla pivot
+        
+        $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id);
+        
+        die(var_dump($pivot));
             
         if( $fichero = $this->fichero->byId($id)){
 
@@ -134,7 +137,6 @@ trait FicheroTrait {
             \View::share('item', $fichero);
             
             return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
-                                
         
         }
     }
@@ -225,7 +227,6 @@ trait FicheroTrait {
             
             \View::share('title', 'Creacion de un nuevo fichero');
             
-            //Hay que pasar los errores
             return \View::make('panel::' . $this->_views_dir .  '.ficheros._add')
                                     ->with('item', $item)
                                     ->with('item_id', $item_id)
