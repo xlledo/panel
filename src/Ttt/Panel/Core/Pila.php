@@ -309,7 +309,7 @@ class Pila {
 				//se ha encontrado el elemento
 				break;
 			}else{
-				unset($reverserStack[$key]);
+				unset($reversedStack[$key]);
 			}
 		}
 
@@ -328,7 +328,7 @@ class Pila {
 				break;
 			}
 
-			unset($reverserStack[$key]);
+			unset($reversedStack[$key]);
 		}
 
 		$this->stack = array_reverse($reversedStack);
