@@ -86,7 +86,7 @@ class Pila {
 			{
 				$this->push(
 					array(
-						'titulo'          => 'Nuevo',
+						'titulo'          => 'Nuevo Fichero',
 						'url'             => action($controlador . '@nuevo'),
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
