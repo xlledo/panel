@@ -172,7 +172,7 @@ class Panel{
 			default:
 				//cualquier otro controlador, vemos si está llamando a un método que debe tratar la Pila
 				if(in_array($method, array(
-					'ver', 'nuevo', 'index'
+					'ver', 'nuevo', 'index', 'verFichero', 'nuevoFichero'
 				)) || preg_match('/^referencia(.+)$/', $method, $matches))
 				{
 					$tratamosPila = TRUE;
