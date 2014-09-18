@@ -179,7 +179,9 @@ trait FicheroTrait {
                     } 
             catch(\Ttt\Panel\Exception\TttException $e){
                     $message = 'Existen errores de validación';
-
+                    
+                    $this->mandarALaVista();
+                    
                     \Session::flash('messages', array(
                                         array(
                                             'class' => 'alert-danger',
@@ -187,7 +189,7 @@ trait FicheroTrait {
                                         )
                     ));
                     
-                    return $this->verFichero($fichero->id);
+                    return $this->verFichero($fichero->id)->withErrors($this->validarCamposEspecificos()    );
                     
                 }
 

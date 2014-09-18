@@ -536,8 +536,14 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                 'titulo' => 'required|max:255',
                                 'alt'    => 'required|max:255',
                                 'enlace' => 'required|max:255',
-                                'descripcion' => 'required|max:255')
+                                'descripcion' => 'required|max:255'),
+                            array(
+                                'required'          => 'El campo :attribute es obligatorio',
+                                'max'               => 'El :attribute no puede ser mayor de :max caracteres.',
+                                'mimes'             => 'Tipo no permitido, compruebe la extensión del fichero'
+                            )
                 );
+            
             return $validator;
         }
 
@@ -568,19 +574,31 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                             'alt'           => \Input::old('alt'),
                                             'enlace'        => \Input::old('enlace'),
                                             'descripcion'   => \Input::old('descripcion'));
-            
+                
                 return $camposEspecificos;
         }
         
         if($enviarAVista){
-                \View::share('titulo',      $camposEspecificos['titulo']);
-                \View::share('alt',         $camposEspecificos['alt']);
-                \View::share('enlace',      $camposEspecificos['enlace']);
-                \View::share('descripcion', $camposEspecificos['descripcion']);
-                
+               $this->mandarALaVista($camposEspecificos);
         }
-        
         return $camposEspecificos;
         
+    }
+    
+    function mandarALaVista($data = null)
+    {
+        if( !$data ){
+            $data = array(  'titulo'         => \Input::old('titulo'),
+                            'alt'           => \Input::old('alt'),
+                            'enlace'        => \Input::old('enlace'),
+                            'descripcion'   => \Input::old('descripcion'));
+        }
+        
+                \View::share('titulo',      $data['titulo']);
+                \View::share('alt',         $data['alt']);
+                \View::share('enlace',      $data['enlace']);
+                \View::share('descripcion', $data['descripcion']);
+                
+                return $data;
     }
 }
