@@ -238,4 +238,10 @@ class EloquentPaginas implements PaginasInterface{
         
     }
 
+  
+
+    public function getFicherosTable() {
+        
+    }
+
 }

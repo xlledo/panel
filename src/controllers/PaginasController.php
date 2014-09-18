@@ -29,7 +29,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 	protected $_titulo = 'Paginas';
 
 	public static $moduleSlug = 'paginas';    
-    
+
+        public static $tablaFicheros = 'paginas_ficheros';
+        
         protected $pagina;
         protected $paginaForm;
         protected $fichero;

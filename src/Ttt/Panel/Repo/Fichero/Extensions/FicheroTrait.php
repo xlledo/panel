@@ -95,8 +95,11 @@ trait FicheroTrait {
     
     function verFichero($id = null)
     {
-            $message = '';
+        $message = '';
         
+        //Cogemos el elemento de la tabla pivot
+        //$rowPilot = 
+            
         if( $fichero = $this->fichero->byId($id)){
 
             $fichero  = $this->fichero->byId($id);

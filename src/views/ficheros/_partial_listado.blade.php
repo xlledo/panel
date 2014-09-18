@@ -56,7 +56,7 @@
 										<td class="td_click">
                                                                    
 											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->id . '?from_url=admin/' . $modulo . '/ver/' . $item_id .'&item_id=' . $item_id . '&pivot_id=' . $item->pivot->id, $item->nombre); ?>
+												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->pivot->id . '?from_url=admin/' . $modulo . '/ver/'.  '&item_id=' . $item_id . '&pivot_id=' . $item->pivot->id, $item->nombre); ?>
 											@else
 												{{ $item->nombre }}
 											@endif

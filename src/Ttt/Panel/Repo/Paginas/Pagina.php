@@ -11,9 +11,9 @@ class Pagina extends \Eloquent{
         public static $table_i18n     = 'paginas_i18n';
 
         protected $modelI18n    = 'PaginaI18n';
+        
+        protected $tablaFicheros = 'paginas_ficheros';
 
-        
-        
         //Atributos
 	   protected $fillable = array('creado_por',
                                        'actualizado_por'
