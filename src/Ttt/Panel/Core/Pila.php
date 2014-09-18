@@ -87,7 +87,7 @@ class Pila {
 				$this->push(
 					array(
 						'titulo'          => 'Nuevo Fichero',
-						'url'             => action($controlador . '@nuevo'),
+						'url'             => action($controlador . '@nuevoFichero'),
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
@@ -98,7 +98,10 @@ class Pila {
 				);
 			}else{
 				//solo puede ser verFichero
-				$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
+				//$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
+				$ficheroRelacionado = $ultimaReferencia->ficheros()
+						->where('paginas_ficheros.id', $parametros['id'])
+						->get()->first()->pivot;//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(
 						'titulo'          => $ficheroRelacionado->titulo,
