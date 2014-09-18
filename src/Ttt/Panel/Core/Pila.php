@@ -286,7 +286,7 @@ class Pila {
 	function popToElement($element)
 	{
 		$reversedStack = array_reverse($this->stack);
-		foreach($reversedStack as $rs)
+		foreach($reversedStack as $key => $rs)
 		{
 			if($rs['titulo'] === 'Inicio')
 			{
@@ -309,7 +309,7 @@ class Pila {
 				//se ha encontrado el elemento
 				break;
 			}else{
-				unset($rs);
+				unset($reverserStack[$key]);
 			}
 		}
 
@@ -321,14 +321,14 @@ class Pila {
 	public function popToReference()
 	{
 		$reversedStack = array_reverse($this->stack);
-		foreach($reversedStack as $rs)
+		foreach($reversedStack as $key => $rs)
 		{
 			if($rs['reference'] || $rs['titulo'] == 'Inicio')
 			{
 				break;
 			}
 
-			unset($rs);
+			unset($reverserStack[$key]);
 		}
 
 		$this->stack = array_reverse($reversedStack);
