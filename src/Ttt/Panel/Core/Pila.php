@@ -74,8 +74,8 @@ class Pila {
 		if($this->isFileRelatedCall($metodo))
 		{
 			//el caso de los ficheros relacionados es especial
-
-			$ultimaReferencia = $this->getUltimaReferencia();
+			$this->popToReference();
+			$ultimaReferencia = $this->getUltimaReferencia(TRUE);
 			if($ultimaReferencia === FALSE)
 			{
 				//no ha accedido de manera correcta, que es desde el ver de un elemento
@@ -84,10 +84,33 @@ class Pila {
 
 			if($metodo === 'nuevoFichero')
 			{
-
+				$this->push(
+					array(
+						'titulo'          => 'Nuevo',
+						'url'             => action($controlador . '@nuevo'),
+						'eloquent'        => NULL,
+						'eloquentMethod'  => NULL,
+						'retrievingField' => NULL,
+						'retrievingValue' => NULL,
+						'reference'       => FALSE,
+						'pestania'        => FALSE
+					)
+				);
 			}else{
 				//solo puede ser verFichero
-
+				$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
+				$this->push(
+					array(
+						'titulo'          => $ficheroRelacionado->titulo,
+						'url'             => $ultimaReferencia->url . '#ficheros',
+						'eloquent'        => NULL,
+						'eloquentMethod'  => NULL,
+						'retrievingField' => NULL,
+						'retrievingValue' => NULL,
+						'reference'       => FALSE,
+						'pestania'        => 'ficheros'
+					)
+				);
 			}
 		}else{
 
