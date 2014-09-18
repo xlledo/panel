@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Ttt\Panel\Repo\Paginas;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaginasFicheros extends \Eloquent{
     
-      protected $table = 'paginas';
+      protected $table = 'paginas_ficheros';
       
         //Atributos
       protected $fillable = array('idioma',

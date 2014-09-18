@@ -97,15 +97,13 @@ trait FicheroTrait {
     {
         $message = '';
         
-        //-- Cogemos el elemento de la tabla pivot
+        //-- Cogemos el elemento de la tabla pivote
         
         $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id);
         
-        die(var_dump($pivot));
-            
-        if( $fichero = $this->fichero->byId($id)){
-
-            $fichero  = $this->fichero->byId($id);
+        if( $fichero = $this->fichero->byId($pivot->fichero()->first()->id)){
+           
+//          $fichero  = $this->fichero->byId($id);
             $fichero->nombre = ! is_null(\Input::old('nombre')) ?: $fichero->nombre;
             
             $fichero->titulo_defecto        = ! is_null(\Input::old('titulo_defecto')) ?: $fichero->titulo_defecto;
@@ -113,8 +111,8 @@ trait FicheroTrait {
             $fichero->descripcion_defecto   = ! is_null(\Input::old('descripcion_defecto')) ?: $fichero->descripcion_defecto;
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
             
-            $item_id    = \Input::get('item_id');
-            $pivot_id   = \Input::get('pivot_id');    
+            $item_id    = $pivot->pagina()->first()->id;
+            $pivot_id   = $id; 
  
             $this->_fichero_nombre = $fichero->nombre; 
             
@@ -132,7 +130,7 @@ trait FicheroTrait {
             
             \View::share('from_url', \Input::get('from_url')?:'');
             \View::share('item_id', \Input::get('item_id')?:'');
-            \View::share('pivot_id', \Input::get('pivot_id')?:'');
+            \View::share('pivot_id', $id);
             
             \View::share('item', $fichero);
             
@@ -146,8 +144,15 @@ trait FicheroTrait {
         $message = 'Fichero actualizado correctamente';
         $actualizacionOK = FALSE;
         
+        $id = \Input::get('id');
+        $pivot_id = \Input::get('pivot_id');
+        
         try{
-            $fichero = $this->fichero->byId(\Input::get('id'));
+            
+            $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($pivot_id);    
+            //$fichero = $this->fichero->byId(\Input::get('id'));
+            $fichero = $this->fichero->byId($pivot->fichero()->first()->id);
+            
             $this->_fichero_nombre = $fichero->nombre;
             
             if(\Input::hasFile('fichero')){
@@ -161,9 +166,8 @@ trait FicheroTrait {
             );
             
             $item_id    = \Input::get('item_id');
-            $pivot_id   = \Input::get('pivot_id');  
                         
-            $this->guardarCamposEspecificos(\Input::get('id'));
+            $this->guardarCamposEspecificos($pivot_id);
             
             \View::share('item_id', $item_id);
             \View::share('pivot_id', $pivot_id);
@@ -175,12 +179,12 @@ trait FicheroTrait {
                                 )
             ));
             
-            return $this->verFichero($fichero->id);
+            return $this->verFichero($pivot_id);
             
          }
             catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){
                     $message = $ex->getMessage();
-                    return \Redirect::action( get_class() . '@verFichero', $fichero->id);
+                    return \Redirect::action( get_class() . '@verFichero', $pivot_id);
                     } 
             catch(\Ttt\Panel\Exception\TttException $e){
                     $message = 'Existen errores de validación';
@@ -194,7 +198,8 @@ trait FicheroTrait {
                                         )
                     ));
                     
-                    return $this->verFichero($fichero->id)->withErrors($this->validarCamposEspecificos()    );
+                    return $this->verFichero($fichero->id)
+                                 ->withErrors($this->validarCamposEspecificos());
                     
                 }
 

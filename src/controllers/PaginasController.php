@@ -479,23 +479,26 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'enlace'      => \Input::get('enlace'),
                         'descripcion' => \Input::get('descripcion')
                     );
-            
-                        //-- Obtenemos la página
-                        $pagina = $this->pagina->byId(Input::get('from_id'));
                     
+                        //-- Obtenemos el elemento de la tabla Pivote
+                        $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id);
+                        
+                        //-- Obtenemos la página
+                        $pagina = $pivot->pagina()->first();
+                        
                         //-- Solo cuando actualizamos guardamos los campos directamente 
-                        if(\Input::get('pivot_id')!=''){
+                        if( $id ){
                                 if($this->validarCamposEspecificos()->passes())
                                 {
-                                    $pivot_id = \Input::get('pivot_id');
+                                    $pivot_id = $id;
 
-                                    $ficherosPivot = $this->pagina->byId(\Input::get('from_id'))
-                                                ->ficheros()
-                                                ->where('paginas_ficheros.id', $pivot_id)
-                                                ->get();
+                                    $ficherosPivot = $pagina
+                                                        ->ficheros()
+                                                        ->where('paginas_ficheros.id', $pivot_id)
+                                                        ->get();
                                     
                                     //Si cambiamos la relación, creamos una nueva
-                                    if($id != $ficherosPivot->first()->pivot->fichero_id){
+                                    if($pivot->fichero_id != $ficherosPivot->first()->pivot->fichero_id){
                                         //Borramos la relacion y creamos uno nuevo
                                         $ficherosPivot->first()->pivot->delete();
                                         $pagina->ficheros()->attach($id, $datosEspecificos);

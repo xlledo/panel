@@ -25,7 +25,7 @@ class Fichero extends \Eloquent{
         
         //Relaciones Many to Many
         public function paginas()
-        { 
+        {
            return $this->belongsToMany('Ttt\Panel\Repo\Paginas\Pagina', 'paginas_ficheros', 'fichero_id', 'pagina_id');
         }
         

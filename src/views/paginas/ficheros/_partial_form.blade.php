@@ -101,12 +101,13 @@
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
                                             
                                             @if ($action_fichero == 'edit')
+                                                <input type="hidden" name='id' value='{{$item->id}}' />
                                                 <input id='fichero_id' type='hidden' name='id' value='{{$item->id}}' />
                                                 <input type='hidden' name='pivot_id' value='{{$pivot_id }}'/>
                                                 <input type='hidden' name='item_id' value='{{$item_id}}' />
                                             @endif
                                             
-                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar">
+                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" guardar">
             </form>
 </div>
                                                 
