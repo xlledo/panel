@@ -68,7 +68,8 @@ class Pila {
 		$controlador,
 		$metodo,
 		$config,
-		$parametros)
+		$parametros,
+		$moduleSlug)
 	{
 
 		if($this->isFileRelatedCall($metodo))
@@ -100,7 +101,7 @@ class Pila {
 				//solo puede ser verFichero
 				//$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$ficheroRelacionado = $ultimaReferencia->ficheros()
-						->where('paginas_ficheros.id', $parametros['id'])
+						->where($module_slug . '_ficheros.id', $parametros['id'])
 						->get()->first()->pivot;//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(

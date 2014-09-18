@@ -203,7 +203,8 @@ class Panel{
 				$controller,
 				$method,
 				$configPila[$moduleSlug],
-				$route->parameters()
+				$route->parameters(),
+				$moduleSlug
 			)->store();
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
