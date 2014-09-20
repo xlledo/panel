@@ -411,8 +411,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
 		try{
                     
-			if(     !array_key_exists($input['accion'], $this->acciones_por_lote) 
-                 && !array_key_exists($input['accion'], $this->acciones_por_lote_ficheros) ) 
+			if(    !array_key_exists($input['accion'], $this->acciones_por_lote) 
+                            && !array_key_exists($input['accion'], $this->acciones_por_lote_ficheros) ) 
 			{
 				throw new \Ttt\Panel\Exception\TttException;
 			}
@@ -471,7 +471,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         }
 
         
-        public function guardarCamposEspecificos($id = null) {
+        public function guardarCamposEspecificos($id = null, $fichero_id = null) {
             
                     $datosEspecificos = array(
                         'titulo'      => \Input::get('titulo'),
@@ -483,54 +483,73 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         //-- Obtenemos el elemento de la tabla Pivote
                         $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id);
                         
-                        //-- Obtenemos la página
-                        $pagina = $pivot->pagina()->first();
+                        //-- Si hay elemento Pivot, es por que la relación ya existe
+                        if($pivot){
                         
-                        //-- Solo cuando actualizamos guardamos los campos directamente 
-                        if( $id ){
-                                if($this->validarCamposEspecificos()->passes())
-                                {
-                                    $pivot_id = $id;
+                                //-- Obtenemos la página
+                                $pagina = $pivot->pagina()->first();
 
-                                    $ficherosPivot = $pagina
-                                                        ->ficheros()
-                                                        ->where('paginas_ficheros.id', $pivot_id)
-                                                        ->get();
-                                    
-                                    //Si cambiamos la relación, creamos una nueva
-                                    if($pivot->fichero_id != $ficherosPivot->first()->pivot->fichero_id){
-                                        //Borramos la relacion y creamos uno nuevo
-                                        $ficherosPivot->first()->pivot->delete();
-                                        $pagina->ficheros()->attach($id, $datosEspecificos);
-                                        return TRUE;
-                                    }else{
-                                        $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
-                                        $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
-                                        $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
-                                        $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
-                                        $ficherosPivot->first()->pivot->save();
-                                    return TRUE;
-                                    }
-                                }else{
-                                    throw new \Ttt\Panel\Exception\TttException('Errores de validacion');
+                                //-- Solo cuando actualizamos guardamos los campos directamente 
+                                if( $id ){
+                                        if($this->validarCamposEspecificos()->passes())
+                                        {
+                                            $pivot_id = $id;
+
+                                            $ficherosPivot = $pagina
+                                                                ->ficheros()
+                                                                ->where(self::$moduleSlug . '_ficheros.id', $pivot_id)
+                                                                ->get();
+
+                                            //Si cambiamos la relación, creamos una nueva
+                                            
+                                            if($pivot->fichero_id != \Input::get('fichero_id')){
+                                                //Borramos la relacion y creamos uno nuevo
+                                                $ficherosPivot->first()->pivot->delete();
+                                                $r = $pagina->ficheros()->attach(\Input::get('fichero_id'), $datosEspecificos);
+                                                return \Input::get('fichero_id');
+                                            }else{
+                                                $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
+                                                $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
+                                                $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
+                                                $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
+                                                $ficherosPivot->first()->pivot->save();
+                                            return TRUE;
+                                            }
+                                        }else{
+                                            throw new \Ttt\Panel\Exception\TttException('Errores de validacion');
+                                        }
                                 }
-                        }
 
-                    //-- Recuperamos el fichero y validamos campos especificos
-                    if( $fichero = $this->fichero->byId($id)
-                        && $this->validarCamposEspecificos()->passes()
-                        ){
-                            $pagina->ficheros()->attach($id, $datosEspecificos);
-                            return TRUE;
-                    }else{
-                        return FALSE; // Igual hay que mandar una excepcion
+                            //-- Recuperamos el fichero y validamos campos especificos
+                            if( $fichero = $this->fichero->byId($pivot->fichero->first()->id)
+                                && $this->validarCamposEspecificos()->passes()
+                                ){
+                                    $pagina->ficheros()->attach($id, $datosEspecificos);
+                                    return TRUE;
+                            }else{
+                                return FALSE; // Igual hay que mandar una excepcion
+                            }
+                    }else{ //-- Si no la hay es un elemento nuevo
+                        
+                        $pagina_id = \Input::get('from_id');
+                        $datosEspecificos = $this->obtenerCamposEspecificos(NULL, $pagina_id, NULL, TRUE);
+                        
+                        //¿Validacion? 
+                        
+                        unset($datosEspecificos['nombre']);
+                        
+                        $pagina = $this->pagina->byId($pagina_id)
+                                       ->ficheros()
+                                       ->attach($fichero_id, $datosEspecificos);
+                                        
+                        return TRUE;
                     }
         }
 
         public function validarCamposEspecificos() {
 
             $validator = \Validator::make(
-                            array(
+                            array( //La validacion siempre se hará sobre un get
                                 'nombre' => $this->_fichero_nombre,
                                 'titulo' => \Input::get('titulo'),
                                 'alt'    => \Input::get('alt'),
@@ -538,10 +557,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                 'descripcion' => \Input::get('descripcion')),
                             array(
                                 'nombre' => 'required|max:255',
-                                'titulo' => 'required|max:255',
-                                'alt'    => 'required|max:255',
-                                'enlace' => 'required|max:255',
-                                'descripcion' => 'required|max:255'),
+                                'titulo' => 'max:255',
+                                'alt'    => 'max:255',
+                                'enlace' => 'max:255',
+                                'descripcion' => 'max:255'),
                             array(
                                 'required'          => 'El campo :attribute es obligatorio',
                                 'max'               => 'El :attribute no puede ser mayor de :max caracteres.',
@@ -555,36 +574,38 @@ class PaginasController extends AbstractCrudController implements FicheroControl
     public function obtenerCamposEspecificos( $ficheroId = null, $itemId = null, $pivot_id = null, $enviarAVista = FALSE ) {
         
         try{
-            $pagina        = $this->pagina->byId($itemId);
-            $ficheros      = $pagina->ficheros()->getResults();
-            $ficherosPivot = Pagina::find($itemId)->ficheros()
-                                        ->where('paginas_ficheros.id', $pivot_id)
-                                        ->get();
+                $pagina        = $this->pagina->byId($itemId);
+                $ficheros      = $pagina->ficheros()->getResults();
+                $ficherosPivot = Pagina::find($itemId)
+                                            ->ficheros()
+                                            ->where(self::$moduleSlug . '_ficheros.id', $pivot_id)
+                                            ->get();
             
             if( $ficherosPivot->count() > 0 )
             {
                 $camposEspecificos = $ficherosPivot->first()->pivot->toArray();
    
             }else{ //Si no tiene tabla pivote es que hemos cambiado el fichero
-                $camposEspecificos = array('titulo'         => \Input::old('titulo'),
-                                            'alt'           => \Input::old('alt'),
-                                            'enlace'        => \Input::old('enlace'),
-                                            'descripcion'   => \Input::old('descripcion'));
+                $camposEspecificos = array( 'nombre'        => \Input::old('nombre')?:\Input::get('nombre'),
+                                            'titulo'        => \Input::old('titulo')?:\Input::get('titulo'),
+                                            'alt'           => \Input::old('alt')?:\Input::get('alt'),
+                                            'enlace'        => \Input::old('enlace')?:\Input::get('enlace'),
+                                            'descripcion'   => \Input::old('descripcion')?:\Input::get('descripcion'));
                 
             }
         }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-                
                 //-- Si no encuentra los modelos, repopulamos los datos de la vista
-                $camposEspecificos = array('titulo'         => \Input::old('titulo'),
-                                            'alt'           => \Input::old('alt'),
-                                            'enlace'        => \Input::old('enlace'),
-                                            'descripcion'   => \Input::old('descripcion'));
-                
+                $camposEspecificos = array( 'nombre'        => (\Input::old('nombre'))?:\Input::get('nombre'),
+                                            'titulo'        => (\Input::old('titulo'))?:\Input::get('titulo'),
+                                            'alt'           => (\Input::old('alt'))?:\Input::get('alt'),
+                                            'enlace'        => (\Input::old('enlace'))?:\Input::get('enlace'),
+                                            'descripcion'   => (\Input::old('descripcion')))?:\Input::get('descripcion');
                 return $camposEspecificos;
         }
         
         if($enviarAVista){
-               $this->mandarALaVista($camposEspecificos);
+               
+            $this->mandarALaVista($camposEspecificos);
         }
         return $camposEspecificos;
         
@@ -593,7 +614,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
     function mandarALaVista($data = null)
     {
         if( !$data ){
-            $data = array(  'titulo'         => \Input::old('titulo'),
+            $data = array(  'titulo'        => \Input::old('titulo'),
                             'alt'           => \Input::old('alt'),
                             'enlace'        => \Input::old('enlace'),
                             'descripcion'   => \Input::old('descripcion'));

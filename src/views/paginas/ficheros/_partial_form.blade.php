@@ -99,10 +99,9 @@
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
-                                            
                                             @if ($action_fichero == 'edit')
                                                 <input type="hidden" name='id' value='{{$item->id}}' />
-                                                <input id='fichero_id' type='hidden' name='id' value='{{$item->id}}' />
+                                                <input id='fichero_id' type='hidden' name='fichero_id' value='{{$item->id}}' />
                                                 <input type='hidden' name='pivot_id' value='{{$pivot_id }}'/>
                                                 <input type='hidden' name='item_id' value='{{$item_id}}' />
                                             @endif

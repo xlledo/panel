@@ -70,7 +70,7 @@ trait FicheroTrait {
             //-- lo redirigimos de nuevo allí
             
             if(\Input::get('asociar') == 1){
-                    $this->guardarCamposEspecificos($ficheroId);
+                    $this->guardarCamposEspecificos(NULL, $ficheroId);
             }
                 
             return \Redirect::action(get_class() . '@index');
@@ -97,10 +97,13 @@ trait FicheroTrait {
     {
         $message = '';
         
+        $pila = new \Ttt\Panel\Core\Pila;
+        $ultimaReferencia = $pila->getUltimaReferencia();
+        
         //-- Cogemos el elemento de la tabla pivote
         
-        $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id);
-        
+        $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id); // ***
+
         if( $fichero = $this->fichero->byId($pivot->fichero()->first()->id)){
            
 //          $fichero  = $this->fichero->byId($id);
@@ -112,7 +115,7 @@ trait FicheroTrait {
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
             
             $item_id    = $pivot->pagina()->first()->id;
-            $pivot_id   = $id; 
+            $pivot_id   = $id;
  
             $this->_fichero_nombre = $fichero->nombre; 
             
@@ -125,11 +128,13 @@ trait FicheroTrait {
                 
             }
             
+            
+            
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
             \View::share('action_fichero', 'edit');
             
             \View::share('from_url', \Input::get('from_url')?:'');
-            \View::share('item_id', \Input::get('item_id')?:'');
+            \View::share('item_id', ($ultimaReferencia['retrievingValue'])?:'');
             \View::share('pivot_id', $id);
             
             \View::share('item', $fichero);
@@ -155,7 +160,7 @@ trait FicheroTrait {
             
             $this->_fichero_nombre = $fichero->nombre;
             
-            if(\Input::hasFile('fichero')){
+            if(\Input::hasFile('fichero')){ 
                 $fic = \Input::file('fichero');
                 $fic->move($fichero->ruta, $fichero->fichero);
             }
@@ -167,7 +172,7 @@ trait FicheroTrait {
             
             $item_id    = \Input::get('item_id');
                         
-            $this->guardarCamposEspecificos($pivot_id);
+            $result = $this->guardarCamposEspecificos($pivot_id);
             
             \View::share('item_id', $item_id);
             \View::share('pivot_id', $pivot_id);
@@ -179,7 +184,11 @@ trait FicheroTrait {
                                 )
             ));
             
-            return $this->verFichero($pivot_id);
+            //Si se cambia el ID del fichero
+            //Se genera un nuevo ID para la tabla Pivot
+            $id_resultado = (is_numeric($result))? $pivot_id + 1 : $pivot_id;
+            
+            return $this->verFichero($id_resultado);
             
          }
             catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex){

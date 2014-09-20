@@ -109,6 +109,7 @@
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
+
                                             
                                             <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar">
             </form>
