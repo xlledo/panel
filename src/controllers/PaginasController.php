@@ -16,6 +16,8 @@ use Ttt\Panel\Service\Form\Fichero\FicheroForm;
 use Ttt\Panel\Repo\Paginas\Pagina;
 use Ttt\Panel\Repo\Paginas\PaginasI18n;
 
+use Ttt\Panel\Repo\Fichero\Extensions\FicheroPivotInterface;
+
 use Ttt\Panel\Core\AbstractCrudController;
 
 use Ttt\Panel\Repo\Fichero\Extensions\FicheroControllerInterface;
@@ -36,6 +38,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         protected $paginaForm;
         protected $fichero;
         protected $ficheroForm;
+        protected $ficheroPivot;
 
 
         protected $allowed_url_params = array(
@@ -60,7 +63,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         public function __construct(    PaginasInterface $pagina, 
                                         PaginasForm $paginaForm,
                                         FicheroInterface $fichero,
-                                        FicheroForm $ficherosForm) 
+                                        FicheroForm $ficherosForm
+                                        ) 
         {
         
             parent::__construct();
@@ -68,7 +72,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $this->pagina       = $pagina;
             $this->paginaForm   = $paginaForm;
             $this->fichero      = $fichero;
-            $this->ficheroForm = $ficherosForm;
+            $this->ficheroForm  = $ficherosForm;
+            //$this->ficheroPivot = $ficheroPivot;
 
             $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
             $this->_todos_idiomas         = Repo\Idioma\Idioma::all();

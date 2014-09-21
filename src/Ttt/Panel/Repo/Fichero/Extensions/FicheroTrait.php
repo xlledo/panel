@@ -8,6 +8,8 @@ trait FicheroTrait {
     {
         $message = 'Fichero creado correctamente';
         
+        $pila = new \Ttt\Panel\Core\Pila;
+        
         try{
             $fichero = \Input::file('fichero');
             $nombre_fichero='';
@@ -72,8 +74,8 @@ trait FicheroTrait {
             if(\Input::get('asociar') == 1){
                     $this->guardarCamposEspecificos(NULL, $ficheroId);
             }
-                
-            return \Redirect::action(get_class() . '@index');
+            
+            return \Redirect::action(get_class() . '@ver', $pila->getUltimaReferencia()['retrievingValue'] );
 
         } catch (\Ttt\Panel\Exception\TttException $ex) {
             

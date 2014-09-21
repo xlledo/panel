@@ -125,5 +125,13 @@ class RepoServiceProvider extends ServiceProvider{
                 new Menu
             );
         });
+        
+//        $this->app->bind('Ttt\Panel\Repo\Fichero\Extensions\FicheroPivotInterface', function($app)
+//        {
+//            return new EloquentFicheroPivot(
+//                new FicheroPivot
+//            );
+//        });
+        
     }
 }

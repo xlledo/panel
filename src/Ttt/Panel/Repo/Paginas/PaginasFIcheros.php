@@ -5,7 +5,8 @@ namespace Ttt\Panel\Repo\Paginas;
 use Illuminate\Database\Eloquent\Model;
 
 
-class PaginasFicheros extends \Eloquent{
+
+class PaginasFicheros extends \Eloquent  {
     
       protected $table = 'paginas_ficheros';
       
@@ -26,5 +27,7 @@ class PaginasFicheros extends \Eloquent{
       public function fichero(){
           return $this->belongsTo('Ttt\Panel\Repo\Fichero\Fichero','fichero_id');
       }
-      
+
+
+
 }
