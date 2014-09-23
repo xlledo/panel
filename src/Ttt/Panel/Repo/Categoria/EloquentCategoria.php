@@ -129,10 +129,11 @@ class EloquentCategoria implements CategoriaInterface{
     */
     public function updateChild(array $data, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
     {
-        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
-
+        $categoria->nombre      = $data['nombre'];
         $categoria->visible     = $data['visible'];
         $categoria->valor       = $data['valor'];
+
+        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
 
         $categoria->update();
 

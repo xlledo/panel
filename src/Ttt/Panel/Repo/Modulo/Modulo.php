@@ -1,7 +1,7 @@
 <?php
 namespace Ttt\Panel\Repo\Modulo;
 
-class Modulo extends \Eloquent{
+class Modulo extends \Ttt\Panel\Core\Database\Extensions\Model{
 
 	protected $fillable = array('creado_por', 'actualizado_por', 'slug', 'visible', 'nombre');
 

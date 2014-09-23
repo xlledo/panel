@@ -1,7 +1,9 @@
 <?php
 namespace Ttt\Panel\Repo\Categoria;
 
-class Categoria extends \Baum\Node{
+class Categoria extends \Ttt\Panel\Core\Database\Extensions\LogableNestableModel{
+
+	public $paramsForLog = array('nombre');
 
 	protected $table = 'categorias';
 

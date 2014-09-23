@@ -144,7 +144,6 @@ class Panel{
 	public function pila($route, $request)
 	{
 		$routeAction = $route->getActionName();//p.e: Ttt\Panel\LoginController@index
-
 		//extraemos Controller y método
 		list($controller, $method) = explode('@', $routeAction);
 
@@ -168,6 +167,9 @@ class Panel{
 					\Pila::clean();
 					return;
 				}
+				break;
+			case 'Ttt\Panel\RecoveryController':
+				return;
 				break;
 			default:
 				//cualquier otro controlador, vemos si está llamando a un método que debe tratar la Pila
