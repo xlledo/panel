@@ -21,7 +21,7 @@
 	                </div>
 
                         
-	                <div class="widget-body <?php if( ! $params['titulo'] ): ?> collapse <?php endif; ?>">
+	                <div class="widget-body collapse ">
 	                    <div class="widget-main row">
 
 	                        <div class="col-md-3 form-group">
@@ -54,13 +54,12 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col" width="100">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 					<th scope="col">Texto</th>	
                                         <th scope="col">Idioma</th>
-                                        <th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-                                                                        
-									<th scope="col">Actualizado por</th>
-									@if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))
+                                        <th scope="col" width="200">Última actualización</th>
+                                        <th scope="col">Actualizado por</th>
+                                        @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))
 	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 									@endif
 	                            </tr>
@@ -78,7 +77,7 @@
 
 										</td>
                                                                                 
-                                                                                <td class="td_click"> {{ $item->traduccion('es')->texto }}</td>
+                                                                                <td class="td_click"> {{ str_limit($item->texto, 150, '...') }}</td>
                                                                                 <td class="td_click">
                                                                                     @foreach($item->traducciones()->get() as $trad)
                                                                                         <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
@@ -90,7 +89,8 @@
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>
-                                                                                <td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
+                                                                                <td class="td_click">{{ $item->updated_at }} </td>
+                                                                                
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
                                                                                 <td>
                                                                                     @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))            
