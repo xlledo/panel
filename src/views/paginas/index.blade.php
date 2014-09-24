@@ -8,9 +8,7 @@
 	<h1>{{$_titulo}} <small> <i class="icon-double-angle-right"></i> </small></h1>
 @stop
 @section('content')
-
-
-	<div class="row">
+<div class="row">
 	    <div class="col-xs-12">
 	        <div class="widget-box">
 	            <form method="POST" action="{{ url('admin/traducciones') }}">
