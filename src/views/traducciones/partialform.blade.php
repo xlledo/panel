@@ -16,7 +16,7 @@
                                     <input type="hidden" name="id" id="id" value="{{ $item->id }}" />
                             @endif
                             <div class="acciones pull-right">
-                                <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
+                                <input type="submit" value="Guardar" alt="Guardar los cambios" name="guardar" class="btn btn-sm btn-success no-border">
                             </div>
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -65,7 +65,7 @@
                                                 </div>
                                             </div>
                                             </div>
-                                            <div class="widget-box transparent">
+                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) has-error @endif">
                                                 <div class="widget-header widget-header-small">
                                                     <h4 class="smaller lighter">Traducción</h4>
                                                 </div>
@@ -90,13 +90,14 @@
                                         @if($action != 'create')
                                             <input type="hidden" name="item_id" value="{{$item->id }}"/>
                                         @endif
-                                    <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
+                                        <input type="submit" value="Guardar " alt="Guardar los cambios" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
                                 </div>
                     </form>
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                <a href="{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
+                                
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}' >Borrar Traduccion</a>
                             </div>
                         @endif
                     @endif

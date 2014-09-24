@@ -33,7 +33,6 @@ trait FicheroTrait {
             }
             
             if($nombre_fichero == ''){
-                
                 throw new \Ttt\Panel\Exception\TttException('Error fichero no seleccionado');
             }
             
@@ -99,8 +98,8 @@ trait FicheroTrait {
     {
         $message = '';
         
-        $pila = new \Ttt\Panel\Core\Pila;
-        $ultimaReferencia = $pila->getUltimaReferencia();
+        //$pila = new \Ttt\Panel\Core\Pila;
+        $ultimaReferencia = \Pila::getUltimaReferencia();
         
         //-- Cogemos el elemento de la tabla pivote
         
@@ -126,7 +125,7 @@ trait FicheroTrait {
                 $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
                 
             }catch(\Ttt\Panel\Exception\TttException $e){
-                $message = 'Existen errores de validación';
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
                 
             }
             
@@ -198,7 +197,7 @@ trait FicheroTrait {
                     return \Redirect::action( get_class() . '@verFichero', $pivot_id);
                     } 
             catch(\Ttt\Panel\Exception\TttException $e){
-                    $message = 'Existen errores de validación';
+                    $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
                     
                     $this->mandarALaVista();
                     

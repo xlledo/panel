@@ -1,8 +1,9 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('traducciones::crear'))
-		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+        <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+	@if(Sentry::getUser()->hasAccess('traducciones::crear') && $action!= 'create')
+		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo elemento en {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 
@@ -10,7 +11,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1>Editando {{$item->clave}}</h1>
 	@endif
 @stop
 @section('content')
@@ -67,7 +68,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\TraduccionesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+				<a class="btn btn-minier btn-danger no-border" title="Eliminar?" href="{{ action('Ttt\Panel\TraduccionesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 			</div>
 		@endif
 	@endif
@@ -75,4 +76,5 @@
 
 @section('inline_js')
             @parent
+
 @stop

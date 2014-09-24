@@ -62,6 +62,8 @@ class TraduccionesController extends AbstractCrudController
 
                 View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
                 View::share('todos_idiomas', $this->_todos_idiomas);
+                
+                
                 //Todo: Chequear permisos para unsetear acciones por lote
 	}
 
@@ -162,7 +164,7 @@ class TraduccionesController extends AbstractCrudController
                 return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $traduccionId);
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
-                $message = 'Existen errores de validación';
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
             }
 
             \Session::flash('messages', array(
@@ -234,7 +236,7 @@ class TraduccionesController extends AbstractCrudController
                 //die(var_dump($traduccion_i18n));
 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
-                $message = 'Existen errores de validación';
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
             }
 
             \Session::flash('messages', array(
@@ -300,16 +302,16 @@ class TraduccionesController extends AbstractCrudController
             if($id)
             {
                 $traduccion_i18n = TraduccionI18n::find($id);
-
-                if($traduccion_i18n->delete())
+                
+                if($traduccion_i18n->delete() && $traduccion = $traduccion_i18n->traduccion()->first())
                 {
                     \Session::flash('messages', array(
                             array(
-                                'class' =>'alert-error',
+                                'class' =>'alert-success',
                                 'msg'   => $message
                             )
                     ));
-                    return \Redirect::action('Ttt\Panel\TraduccionesController@index');
+                    return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $id);
                 }
 
             }

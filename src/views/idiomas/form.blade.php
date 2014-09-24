@@ -1,15 +1,18 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
+                <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+
 	@if(Sentry::getUser()->hasAccess('idiomas::crear'))
-		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo Idioma" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo elemento de {{$_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+
 	@endif
 @stop
 @section('page_header')
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Volver al listado">Idiomas</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Volver al listado">Idiomas</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }}</h1>
+		<h1>Editando {{$item->nombre}}</h1>
 	@endif
 @stop
 @section('content')

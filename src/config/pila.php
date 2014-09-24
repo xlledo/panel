@@ -83,7 +83,7 @@ return array(
         'eloquent'      => 'Ttt\Panel\Repo\Paginas\PaginasInterface',
         'metodo'        => 'byId',
         'param'         => 'id',
-        'readFields'    => array("traduccion('es')->titulo"),
+        'readFields'    => array("titulo"),
         'tituloCanonico'=> 'Paginas'
     )
 );

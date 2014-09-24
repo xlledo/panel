@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('idiomas::crear'))
-		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo Idioma" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo elemento de {{$_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')
@@ -20,7 +20,7 @@
 	                    </div>
 	                </div>
 
-	                <div class="widget-body collapse">
+	                <div class="widget-body <?php if( ! $params['nombre'] ): ?> collapse <?php endif; ?>">
 	                    <div class="widget-main row">
 
 	                        <div class="col-md-3 form-group">
@@ -109,7 +109,7 @@
 		                            <div class="pull-right form-inline selectAcciones">
 		                                <label for="acciones_por_lote">Acción:</label>
 		                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
-		                                    <option value="0" selected="selected">-seleccionar-</option>
+		                                    <option value="0" selected="selected">- Seleccionar -</option>
 											@foreach($accionesPorLote as $key => $apl)
 												<option value="{{ $key }}">{{ $apl }}</option>
 											@endforeach

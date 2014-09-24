@@ -25,7 +25,7 @@
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
-		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo elemento de {{$_title}}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')

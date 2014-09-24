@@ -127,7 +127,7 @@ class VariablesglobalesController extends AbstractCrudController{
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
-			$message = 'Existen errores de validación';
+			$message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
 		}
 
 		\Session::flash('messages', array(
@@ -226,7 +226,7 @@ class VariablesglobalesController extends AbstractCrudController{
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{
-			$message = 'Existen errores de validación';
+			$message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
 		}
 
 		\Session::flash('messages', array(

@@ -1,32 +1,9 @@
 @extends('packages/ttt/panel/layout/panel_layout')
-@section('migas')
-
-<div class="breadcrumbs" id="breadcrumbs">
-		<script type="text/javascript">
-			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-		</script>
-		<ul class="breadcrumb">
-			<li>
-				<i class="icon-home home-icon"></i>
-				<a href="{{ action('Ttt\Panel\DashboardController@index') }}">Inicio</a>
-			</li>
-			<li>
-				<a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Páginas</a>
-			</li>
-			<li>
-			 <?php if ($action == 'create'): ?>
-				Nuevo elemento
-			<?php else: ?>
-				Editar <?php echo $item->traduccion('es')->titulo; ?>
-			<?php endif; ?>
-			</li>
-		</ul>
-</div>
-@stop
 
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('paginas::crear'))
-		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+        <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+	@if(Sentry::getUser()->hasAccess('paginas::crear') && $action!='create')
+		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo elemento de {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 
@@ -34,7 +11,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a> <i class="icon-double-angle-right"></i></small> {{ $item->traduccion('es')->titulo }}</h1>
+		<h1>Editando {{$item->titulo}}</h1>
 	@endif
 @stop
 @section('content')

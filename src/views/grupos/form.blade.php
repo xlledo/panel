@@ -1,9 +1,10 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
+        <a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
 	@if(Sentry::getUser()->hasAccess('grupos::crear'))
 		<a href="{{ action('Ttt\Panel\GrupoController@nuevo') }}" title="Nuevo Grupo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
-	@endif
+        @endif
 @stop
 @section('page_header')
 	@if($action == 'create')

@@ -9,6 +9,7 @@ use \View;
 
 use Ttt\Panel\Repo\Paginas\PaginasInterface;
 use Ttt\Panel\Service\Form\Paginas\PaginasForm;
+use Ttt\Panel\Repo\Paginas\EloquentPaginasFicheros;
 
 use Ttt\Panel\Repo\Fichero\FicheroInterface;
 use Ttt\Panel\Service\Form\Fichero\FicheroForm;
@@ -60,11 +61,12 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         protected $_idioma_predeterminado;
         protected $_todos_idiomas;
         
-        public function __construct(    PaginasInterface $pagina, 
-                                        PaginasForm $paginaForm,
-                                        FicheroInterface $fichero,
-                                        FicheroForm $ficherosForm
-                                        ) 
+        public function __construct( PaginasInterface $pagina, 
+                                     PaginasForm $paginaForm,
+                                     FicheroInterface $fichero,
+                                     FicheroForm $ficherosForm
+                               //      EloquentPaginasFicheros $ficheroPivot
+                                    ) 
         {
         
             parent::__construct();
@@ -80,7 +82,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
             View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
             View::share('todos_idiomas', $this->_todos_idiomas);      
-
+            
             //Cargamos el config 
              $this->_config_ficheros = Config::get('panel::ficheros');    
              View::share('config_ficheros', $this->_config_ficheros);
@@ -198,7 +200,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 return \Redirect::action('Ttt\Panel\PaginasController@ver', $paginaId);
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
-                $message = 'Existen errores de validación';
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
                 
                 // El idioma al crear nuevo siempre es el predeterminado
                 \Session::flash('idioma_error', $this->_idioma_predeterminado->first()->codigo_iso_2);
@@ -271,7 +273,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 }
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
-                    $message = 'Existen errores de validación' ;
+                    $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.' ;
             }
             
             \Session::flash('messages', array(

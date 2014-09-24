@@ -69,13 +69,54 @@ class Pagina extends \Eloquent{
         * @return
         */
 
-        public function traduccion($idioma)
+        public function traduccion( $idioma = null )
         {
+            if( $idioma ){
+                
                 $traduccion = \DB::table(self::$table_i18n)
                                         ->where('item_id', $this->id)
                                         ->where('idioma', $idioma)
                                         ->first();
                 return $traduccion;
-        }        
+                
+            }else{
+                $idioma = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2;
+
+                //$traducciones = $this->traducciones()->getResults(); 
+                
+                foreach($this->traducciones()->getResults() as $traduccion){
+                    
+                    if($traduccion->idioma == $idioma){
+                        return $traduccion;
+                    }
+                    
+                }
+            }
+        }
+        
+        
+        /**
+         * 
+         */
+        
+        public function getAttribute($key, $idioma = null)
+        {
+            if(in_array($key, self::$atributosTraducibles)){
+                $traduccion = $this->traduccion($idioma);
+                
+                if( !$traduccion ){
+                    return 'No existe la traduccion[' . $key . '] en el idioma';
+                }
+                
+                return $traduccion->$key;
+                
+            }
+            
+            return parent::getAttribute($key);
+            
+        }
+        
+        
+        
         
 }

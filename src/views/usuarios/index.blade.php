@@ -20,7 +20,7 @@
 						</div>
 					</div>
 
-					<div class="widget-body collapse">
+					<div class="widget-body <?php if( ! $params['nombre'] && ! $params['email'] ): ?> collapse <?php endif; ?>">
 						<div class="widget-main row">
 
 							<div class="col-md-3 form-group">
