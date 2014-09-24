@@ -76,6 +76,7 @@
                                                                                     @else
                                                                                         No disponible
                                                                                     @endif
+                                                                                    @if($item->esImagen()) ES IMAGEN @endif
                                                                                 </td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
