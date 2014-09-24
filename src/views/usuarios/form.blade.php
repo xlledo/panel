@@ -48,14 +48,14 @@
 														@endforeach
 													@endif
 					                            </div>
-                                                <div class="form-group @if ($errors->first('password')) has-error @endif">
-                                                    <label for="password">Contraseña<?php if($action == 'create'): ?> *<?php endif; ?></label>
-                                                    <input type="password" tabIndex="4" class="form-control" name="password" id="password" size="20" />
-                                                    @if ($errors->first('password'))
-                                                        @foreach($errors->get('password') as $err)
-                                                            <span class="help-block">{{ $err }}</span>
+                                                <div class="form-group">
+                                                    <label for="grupo">Grupo</label>
+                                                    <select name="grupo" tabIndex="4" id="grupo" class="form-control">
+                                                        <option value="">- Seleccionar -</option>
+                                                        @foreach($grupos as $grupo)
+                                                            <option value="{{ $grupo->id }}"<?php if($item->groups->count() && $item->groups->first()->id == $grupo->id): ?> selected="selected"<?php endif; ?>>{{ $grupo->name }}</option>
                                                         @endforeach
-                                                    @endif
+                                                    </select>
                                                 </div>
 					                        </div>
 											<div class="col-md-3">
@@ -68,11 +68,11 @@
                                                         @endforeach
                                                     @endif
                                                 </div>
-                                                <div class="form-group @if ($errors->first('confirm_password')) has-error @endif">
-                                                    <label for="confirm_password">Repetir contraseña<?php if($action == 'create'): ?> *<?php endif; ?></label>
-                                                    <input type="password" tabIndex="5" class="form-control" name="confirm_password" id="confirm_password" value="" size="20" />
-                                                    @if ($errors->first('confirm_password'))
-                                                        @foreach($errors->get('confirm_password') as $err)
+                                                <div class="form-group @if ($errors->first('password')) has-error @endif">
+                                                    <label for="password">Contraseña<?php if($action == 'create'): ?> *<?php endif; ?></label>
+                                                    <input type="password" tabIndex="5" class="form-control" name="password" id="password" size="20" />
+                                                    @if ($errors->first('password'))
+                                                        @foreach($errors->get('password') as $err)
                                                             <span class="help-block">{{ $err }}</span>
                                                         @endforeach
                                                     @endif
@@ -89,14 +89,14 @@
                                                         @endforeach
                                                     @endif
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="grupo">Grupo</label>
-                                                    <select name="grupo" tabIndex="6" id="grupo" class="form-control">
-                                                        <option value="">- Seleccionar -</option>
-                                                        @foreach($grupos as $grupo)
-                                                            <option value="{{ $grupo->id }}"<?php if($item->groups->count() && $item->groups->first()->id == $grupo->id): ?> selected="selected"<?php endif; ?>>{{ $grupo->name }}</option>
+                                                <div class="form-group @if ($errors->first('confirm_password')) has-error @endif">
+                                                    <label for="confirm_password">Repetir contraseña<?php if($action == 'create'): ?> *<?php endif; ?></label>
+                                                    <input type="password" tabIndex="6" class="form-control" name="confirm_password" id="confirm_password" value="" size="20" />
+                                                    @if ($errors->first('confirm_password'))
+                                                        @foreach($errors->get('confirm_password') as $err)
+                                                            <span class="help-block">{{ $err }}</span>
                                                         @endforeach
-                                                    </select>
+                                                    @endif
                                                 </div>
 											</div>
 					                    </div>
