@@ -1,6 +1,10 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
+	@if($action != 'createArbol' && Sentry::getUser()->hasAccess('categorias::verArbol'))
+		<a href="{{ action('Ttt\Panel\CategoriaController@verArbol', $item->isRoot() ? $item->id : $item->getRoot()->id) }}" title="Volver al árbol {{ $item->isRoot() ? $item->nombre : $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
+	@endif
+
 	@if($action == 'edit' || $action == 'editArbol')
 		@if(Sentry::getUser()->hasAccess('categorias::crear'))
 			<a href="{{ action('Ttt\Panel\CategoriaController@nuevo', $item->getRoot()->id) }}" title="Nueva subcategoría en {{ $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva subcategoría</a>
@@ -41,9 +45,6 @@
 							<input type="hidden" name="parent_id" id="parent_id" value="{{ $item->getRoot()->id }}" />
 						@endif
 					    <div class="acciones pull-right">
-							@if($action != 'createArbol' && Sentry::getUser()->hasAccess('categorias::verArbol'))
-								<a href="{{ action('Ttt\Panel\CategoriaController@verArbol', $item->isRoot() ? $item->id : $item->getRoot()->id) }}" title="Volver al árbol {{ $item->isRoot() ? $item->nombre : $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
-							@endif
 					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 					    </div>
 					    <div class="row">
@@ -55,17 +56,18 @@
 					                <div class="widget-body">
 					                    <div class="widget-main row">
 											<div class="col-md-3">
-												<div class="checkbox">
-													<label for="visible">
-														<input type="checkbox" class="ace ace-checkbox-2" name="visible" id="visible" value="1"<?php if($item->visible): ?> checked="checked" <?php endif; ?>/>
-														<span class="lbl"> Visible</span>
-													</label>
-												</div>
 												@if($item->isRoot())
 													<div class="checkbox">
 														<label for="protegida">
 															<input type="checkbox" class="ace ace-checkbox-2" name="protegida" id="protegida" value="1"<?php if($item->protegida): ?> checked="checked" <?php endif; ?>/>
 															<span class="lbl"> Protegida</span>
+														</label>
+													</div>
+												@else
+													<div class="checkbox">
+														<label for="visible">
+															<input type="checkbox" class="ace ace-checkbox-2" name="visible" id="visible" value="1"<?php if($item->visible): ?> checked="checked" <?php endif; ?>/>
+															<span class="lbl"> Visible</span>
 														</label>
 													</div>
 												@endif

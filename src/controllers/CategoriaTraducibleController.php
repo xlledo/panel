@@ -14,7 +14,7 @@ use Ttt\Panel\Core\AbstractCrudController;
 class CategoriaTraducibleController extends AbstractCrudController{
 
 	protected $_views_dir = 'categorias-traducibles';
-	protected $_titulo = 'Categorías traducibles';
+	protected $_titulo = 'Taxonomías';
 
 	public static $moduleSlug = 'categorias-traducibles';
 
@@ -57,7 +57,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 	*/
 	public function index()
 	{
-		View::share('title', 'Listado de Árboles de categorías');
+		View::share('title', 'Listado de Árboles de taxonomías');
 
 		$order[Config::get('panel::app.orderBy')] = Input::has(Config::get('panel::app.orderBy')) ? Input::get(Config::get('panel::app.orderBy')) : 'nombre';
 		$order[Config::get('panel::app.orderDir')] = Input::has(Config::get('panel::app.orderDir')) ? Input::get(Config::get('panel::app.orderDir')) : 'asc';
@@ -92,7 +92,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 		\Pila::reset()
 			->push(array(
-				'titulo'          => 'Categorías traducibles',
+				'titulo'          => 'Taxonomías traducibles',
 				'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
 				'eloquent'        => NULL,
 				'eloquentMethod'  => NULL,
@@ -101,7 +101,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 				'reference'       => FALSE,
 				'pestania'        => FALSE
 			))->push(array(
-				'titulo'          => 'Nuevo árbol de categorías',
+				'titulo'          => 'Nuevo árbol de Taxonomías',
 				'url'             => action('Ttt\Panel\CategoriaTraducibleController@nuevoArbol'),
 				'eloquent'        => NULL,
 				'eloquentMethod'  => NULL,
@@ -204,7 +204,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías traducibles',
+					'titulo'          => 'Taxonomías traducibles',
 					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -344,7 +344,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías traducibles',
+					'titulo'          => 'Taxonomías traducibles',
 					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -362,7 +362,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 					'reference'       => FALSE,
 					'pestania'        => FALSE
 				))->push(array(
-					'titulo'          => 'Nueva categoría en ' . $root->nombre,
+					'titulo'          => 'Nueva taxonomía en ' . $root->nombre,
 					'url'             => action('Ttt\Panel\CategoriaTraducibleController@nuevo', $id),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -372,7 +372,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 					'pestania'        => FALSE
 				))->store();
 
-			View::share('title', 'Nueva categoría en ' . $root->nombre);
+			View::share('title', 'Nueva taxonomía en ' . $root->nombre);
 			return View::make('panel::categoriastraducibles.form')
 									->with('action', 'create')
 									->with('item', $item);
@@ -404,7 +404,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		{
 			$root = $this->categoria->rootById(Input::get('parent_id'));
 
-			$message = 'Nueva categoría creada correctamente en ' . $root->nombre;
+			$message = 'Nueva taxonomía creada correctamente en ' . $root->nombre;
 
 			$sufijo  = '_';
 			$sufijo .= Input::get('clave_idioma_campos') ?:'';
@@ -481,7 +481,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías traducibles',
+					'titulo'          => 'Taxonomías traducibles',
 					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -599,7 +599,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 	*/
 	public function borrarArbol($id = null)
 	{
-		$message = 'Árbol de categorías eliminado correctamente.';
+		$message = 'Árbol de taxonomías eliminado correctamente.';
 
 		$categoria = $this->categoria->byId($id);
 
@@ -622,7 +622,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 	*/
 	public function borrar($id = null)
 	{
-		$message = 'Categoría eliminada correctamente.';
+		$message = 'Taxonomía eliminada correctamente.';
 
 		$categoria = $this->categoria->byId($id);
 
@@ -648,7 +648,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 	*/
 	public function borrarTraduccion($id = null, $idioma = null)
 	{
-		$message = 'Traducción de categoría eliminada correctamente.';
+		$message = 'Traducción de taxonomía eliminada correctamente.';
 
 		$categoria = $this->categoria->byId($id);
 
@@ -688,7 +688,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías traducibles',
+					'titulo'          => 'Taxonomías traducibles',
 					'url'             => action('Ttt\Panel\CategoriaTraducibleController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,

@@ -63,14 +63,14 @@ return array(
         'metodo'         => 'byId',
         'param'          => 'id',
         'readFields'     => array('nombre'),
-        'tituloCanonico' => 'Categorías'
+        'tituloCanonico' => 'Taxonomías'
     ),
     'categorias-traducibles' => array(
         'eloquent'       => 'Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface',
         'metodo'         => 'byId',
         'param'          => 'id',
         'readFields'     => array('nombre'),
-        'tituloCanonico' => 'Categorías traducibles'
+        'tituloCanonico' => 'Taxonomías traducibles'
     ),
     'ficheros' => array(
         'eloquent'       => 'Ttt\Panel\Repo\Fichero\FicheroInterface',

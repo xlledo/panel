@@ -13,7 +13,7 @@ use Ttt\Panel\Core\AbstractCrudController;
 class CategoriaController extends AbstractCrudController{
 
 	protected $_views_dir = 'categorias';
-	protected $_titulo = 'Categorías';
+	protected $_titulo = 'Taxonomías';
 
 	public static $moduleSlug = 'categorias';
 
@@ -75,12 +75,11 @@ class CategoriaController extends AbstractCrudController{
 	{
 		$item = $this->categoria->createModel();
 		$item->nombre        = Input::old('nombre') ? Input::old('nombre') : '';
-		$item->visible       = Input::old('visible') ? Input::old('visible') : FALSE;
 		$item->protegida     = Input::old('protegida') ? Input::old('protegida') : FALSE;
 
 		\Pila::reset()
 			->push(array(
-				'titulo'          => 'Categorías',
+				'titulo'          => 'Taxonomías',
 				'url'             => action('Ttt\Panel\CategoriaController@index'),
 				'eloquent'        => NULL,
 				'eloquentMethod'  => NULL,
@@ -89,7 +88,7 @@ class CategoriaController extends AbstractCrudController{
 				'reference'       => FALSE,
 				'pestania'        => FALSE
 			))->push(array(
-				'titulo'          => 'Nuevo árbol de categorías',
+				'titulo'          => 'Nuevo árbol de Taxonomías',
 				'url'             => action('Ttt\Panel\CategoriaController@nuevoArbol'),
 				'eloquent'        => NULL,
 				'eloquentMethod'  => NULL,
@@ -117,7 +116,7 @@ class CategoriaController extends AbstractCrudController{
 		{
 			$data =  array(
 				'nombre'    => Input::get('nombre'),
-				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'visible'   => 1,
 				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE
 			);
 
@@ -163,12 +162,11 @@ class CategoriaController extends AbstractCrudController{
 			$item = $this->categoria->rootById($id);
 
 			$item->nombre    = !is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
-			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
 			$item->protegida = Input::old('protegida') ? Input::old('protegida') : $item->protegida;
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías',
+					'titulo'          => 'Taxonomías',
 					'url'             => action('Ttt\Panel\CategoriaController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -231,7 +229,7 @@ class CategoriaController extends AbstractCrudController{
 
 			$data =  array(
 				'nombre'    => Input::get('nombre'),
-				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
+				'visible'   => 1,
 				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE
 			);
 
@@ -279,7 +277,7 @@ class CategoriaController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías',
+					'titulo'          => 'Taxonomías',
 					'url'             => action('Ttt\Panel\CategoriaController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -297,7 +295,7 @@ class CategoriaController extends AbstractCrudController{
 					'reference'       => FALSE,
 					'pestania'        => FALSE
 				))->push(array(
-					'titulo'          => 'Nueva categoría en ' . $root->nombre,
+					'titulo'          => 'Nueva taxonomía en ' . $root->nombre,
 					'url'             => action('Ttt\Panel\CategoriaController@nuevo', $id),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -345,7 +343,7 @@ class CategoriaController extends AbstractCrudController{
 		{
 			$root = $this->categoria->rootById(Input::get('parent_id'));
 
-			$message = 'Nueva categoría creada correctamente en ' . $root->nombre;
+			$message = 'Nueva taxonomía creada correctamente en ' . $root->nombre;
 
 			$data =  array(
 				'nombre'    => Input::get('nombre'),
@@ -400,7 +398,7 @@ class CategoriaController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías',
+					'titulo'          => 'Taxonomías',
 					'url'             => action('Ttt\Panel\CategoriaController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
@@ -456,7 +454,7 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function actualizar()
 	{
-		$message = 'Categoría actualizada correctamente.';
+		$message = 'Taxonomía actualizada correctamente.';
 		try
 		{
 			$item = $this->categoria->childById(Input::get('id'));
@@ -500,7 +498,7 @@ class CategoriaController extends AbstractCrudController{
 	*/
 	public function borrarArbol($id = null)
 	{
-		$message = 'Árbol de categorías eliminado correctamente.';
+		$message = 'Árbol de taxonomías eliminado correctamente.';
 
 		$categoria = $this->categoria->byId($id);
 
@@ -568,7 +566,7 @@ class CategoriaController extends AbstractCrudController{
 
 			\Pila::reset()
 				->push(array(
-					'titulo'          => 'Categorías',
+					'titulo'          => 'Taxonomías',
 					'url'             => action('Ttt\Panel\CategoriaController@index'),
 					'eloquent'        => NULL,
 					'eloquentMethod'  => NULL,
