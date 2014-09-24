@@ -21,6 +21,8 @@ class UsuarioFormLaravelValidator extends AbstractLaravelValidator {
         'confirm_password.same'      => 'El campo repetir contraseña no concuerda con el campo contraseña',
         'first_name.required'        => 'El campo nombre es obligatorio',
         'last_name.required'         => 'El campo apellidos es obligatorio',
+        'password.required'          => 'El campo contraseña es obligatorio',
+        'confirm_password.required'  => 'El campo repetir contraseña es obligatorio',
         'required'                   => 'El campo :attribute es obligatorio',
     );
 
