@@ -37,6 +37,9 @@ use Ttt\Panel\Repo\Paginas\EloquentPaginas;
 use Ttt\Panel\Repo\Menu\Menu;
 use Ttt\Panel\Repo\Menu\EloquentMenu;
 
+use Ttt\Panel\Repo\Log\Log;
+use Ttt\Panel\Repo\Log\EloquentLog;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider{
@@ -97,14 +100,14 @@ class RepoServiceProvider extends ServiceProvider{
                 new Idioma
             );
         });
-        
+
         $this->app->bind('Ttt\Panel\Repo\Fichero\FicheroInterface', function($app)
         {
             return new EloquentFichero(
                     new Fichero
             );
         });
-        
+
         $this->app->bind('Ttt\Panel\Repo\Paginas\PaginasInterface', function($app)
         {
             return new EloquentPaginas(
@@ -125,6 +128,7 @@ class RepoServiceProvider extends ServiceProvider{
                 new Menu
             );
         });
+<<<<<<< HEAD
         
 //        $this->app->bind('Ttt\Panel\Repo\Fichero\Extensions\FicheroPivotInterface', function($app)
 //        {
@@ -133,5 +137,14 @@ class RepoServiceProvider extends ServiceProvider{
 //            );
 //        });
         
+=======
+
+        $this->app->bind('Ttt\Panel\Repo\Log\LogInterface', function($app)
+        {
+            return new EloquentLog(
+                new Log
+            );
+        });
+>>>>>>> f1e15910216453952acef393eaf8aeee2949cad6
     }
 }

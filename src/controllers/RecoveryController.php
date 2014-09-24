@@ -6,7 +6,7 @@ use \Mail;
 use \Sentry;
 use \Validator;
 use \View;
-use \Ttt\Panel\Core\PanelController;
+use Ttt\Panel\Core\PanelController;
 
 class RecoveryController extends PanelController{
 

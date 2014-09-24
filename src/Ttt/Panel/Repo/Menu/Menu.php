@@ -1,7 +1,9 @@
 <?php
 namespace Ttt\Panel\Repo\Menu;
 
-class Menu extends \Baum\Node{
+class Menu extends \Ttt\Panel\Core\Database\Extensions\LogableNestableModel{
+
+	public $paramsForLog = array('nombre');
 
 	protected $table = 'menu';
 
