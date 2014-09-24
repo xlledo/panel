@@ -4,12 +4,9 @@
 	@if(Sentry::getUser()->hasAccess('categorias-traducibles::crear'))
 		<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@nuevo', $root->id) }}" title="Nueva subcategoría en {{ $root->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva subcategoría</a>
 	@endif
-	@if(Sentry::getUser()->hasAccess('categorias-traducibles::editar-arbol'))
-		<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i> Ordenar alfabéticamente</a>
-	@endif
 @stop
 @section('page_header')
-	<h1><small><a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Volver al listado">Categorías</a> <i class="icon-double-angle-right"></i></small>Estructura del árbol de categorías {{ $root->nombre }}</h1>
+	<h1>Árbol de {{ $root->nombre }}</h1>
 @stop
 @section('content')
 	<div class="row">
@@ -19,6 +16,9 @@
 					{{ toNestable($tree, 'categorias-traducibles') }}
 				</ol>
 			</div>
+			@if(Sentry::getUser()->hasAccess('categorias-traducibles::editar-arbol'))
+				<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i> </a>
+			@endif
 		</div>
 	</div>
 @stop

@@ -31,9 +31,10 @@ $(function(){
                             if(datos.error)
                             {
                                 alert(datos.message);
-                            }else{
-                                alert(datos.message);
                             }
+                            /*else{
+                                alert(datos.message);
+                            }*/
                         }
     				}); //close $.ajax(
 

@@ -24,9 +24,6 @@
     <input type="hidden" name="nueva_traduccion" id="nueva_traduccion" value="<?php echo $nueva_traduccion ? 1 : 0; ?>" />
 
     <div class="acciones pull-right">
-        @if($action != 'createArbol' && Sentry::getUser()->hasAccess('categorias-traducibles::verArbol'))
-            <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@verArbol', $item->isRoot() ? $item->id : $item->getRoot()->id) }}" title="Volver al árbol {{ $item->isRoot() ? $item->nombre : $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
-        @endif
         <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
     </div>
     <div class="row">
