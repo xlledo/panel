@@ -33,7 +33,7 @@
                 
 	        <div class="space-12"></div>
 			@if($ficheros->count() === 0)
-				<div class="alert alert-info">Actualmente no hay elementos en la base de datos</div>
+                            No hay ficheros
         	        @else
                 <form action="{{ url('admin/' . $modulo . '/acciones_por_lote') }}" method="post">
 	                <fieldset>

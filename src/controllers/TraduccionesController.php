@@ -153,6 +153,7 @@ class TraduccionesController extends AbstractCrudController
 
                 $traduccionId = $this->traduccionForm->save($data);
 
+                //die(var_dump($traduccionId));
 
                 \Session::flash('messages', array(
                     array(
@@ -300,11 +301,8 @@ class TraduccionesController extends AbstractCrudController
 
             if($id)
             {
-                $traduccion_i18n = TraduccionI18n::where('id','=',$id)->get();
+                $traduccion_i18n = TraduccionI18n::find($id);
                 
-                die(var_dump($traduccion_i18n));
-                
-                //die(var_dump(TraduccionI18n::find($id)));
                 if($traduccion_i18n->delete() && $traduccion = $traduccion_i18n->traduccion()->first())
                 {
                     \Session::flash('messages', array(
@@ -315,6 +313,7 @@ class TraduccionesController extends AbstractCrudController
                     ));
                     return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $id);
                 }
+
             }
 
             return \Redirect::action('Ttt\Panel\TraduccionesController@index');

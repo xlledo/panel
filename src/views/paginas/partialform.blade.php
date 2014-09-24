@@ -46,11 +46,11 @@
                                                                 </div>
                                                             </div>
                                                     @endif
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-9">
                                                         <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma)) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->titulo }}" size="20" />
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->titulo }}" size="60" />
                                                                 </div>
                                                             @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
                                                                 
@@ -94,7 +94,7 @@
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                <a href="{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{ action('Ttt\Panel\PaginasController@borrarTraduccion' , $trad->id )  }}">Borrar Traduccion</a>
                             </div>
                         @endif
                     @endif
