@@ -44,7 +44,7 @@ class MenuForm {
     {
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la opción de menú. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la opción de menú. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
         return $this->menu->createChild($input, $root);
@@ -62,7 +62,7 @@ class MenuForm {
     {
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la opción de menú. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la opción de menú. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
         return $this->menu->updateChild($input, $menu);

@@ -89,7 +89,7 @@
 												<div class="form-group">
 													<label for="modulo_id">Módulo</label>
 													<select name="modulo_id" id="modulo_id" class="form-control">
-														<option value="">-Seleccionar-</option>
+														<option value="">- Seleccionar -</option>
 														@foreach($modulos as $mod)
 															<option value="{{ $mod->id }}"<?php if($item->modulo()->count() && $item->modulo->id == $mod->id): ?> selected="selected"<?php endif; ?>>{{ $mod->nombre }}</option>
 														@endforeach

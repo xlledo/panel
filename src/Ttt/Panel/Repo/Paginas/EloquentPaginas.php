@@ -11,6 +11,8 @@ class EloquentPaginas implements PaginasInterface{
     protected $pagina;
     protected $pagina_i18n;
 
+   
+    
     public function __construct(Model $Pagina, Model $Pagina_i18n)
     {
         $this->pagina = $Pagina;
@@ -235,6 +237,12 @@ class EloquentPaginas implements PaginasInterface{
         $pagina = $this->byId($idPagina);
         
         return $pagina->ficheros()->detach($idFichero);
+        
+    }
+
+  
+
+    public function getFicherosTable() {
         
     }
 

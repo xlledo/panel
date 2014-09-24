@@ -56,4 +56,11 @@ interface PaginasInterface{
      */
     public function desasociarFichero($idFichero, $usuario, $idPagina);
     
+    
+    /**
+     * 
+     * Devuelve la tabla asociada Paginas_Ficheros
+     * 
+     */
+    public function getFicherosTable();
 }

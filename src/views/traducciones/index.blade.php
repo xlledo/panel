@@ -1,11 +1,11 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('traducciones::crear'))
-		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo elemento en {{$_titulo}}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')
-	<h1>Traducciones <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>{{ $title }} <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
 @stop
 @section('content')
 
@@ -22,14 +22,16 @@
 	                    </div>
 	                </div>
 
-	                <div class="widget-body collapse">
+	                <div class="widget-body  <?php if( ! $params['clave'] ): ?> collapse <?php endif; ?>">
 	                    <div class="widget-main row">
-
 	                        <div class="col-md-3 form-group">
 	                            <label for="filtro_nombre">Clave</label>
-	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['nombre'])): ?>{{ $params['nombre'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['clave'])): ?>{{ $params['clave'] }}<?php endif; ?>" size="20" placeholder="Clave" />
 	                        </div>
-
+	                        <div class="col-md-3 form-group">
+	                            <label for="filtro_nombre">Texto</label>
+	                            <input type="text" class="form-control" name="texto" id="filtro_nombre" value="<?php if(isset($params['texto'])): ?>{{ $params['texto'] }}<?php endif; ?>" size="20" placeholder="Texto" />
+	                        </div>
 	                    </div>
 	                    <div class="widget-toolbox padding-8 clearfix">
 	                        <div class="pull-right">
@@ -55,12 +57,10 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col" width="200">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 					<th scope="col">Texto</th>	
-                                        <th scope="col">Idioma</th>
-                                        <th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-                                                                        
-									<th scope="col">Actualizado por</th>
+                                        <th scope="col" width="200">Idioma</th>
+                                        
 									@if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))
 	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 									@endif
@@ -85,12 +85,10 @@
                                                                                     
                                                                                     @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
                                                                                             @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                                                <a href="{{ 'traducciones/ver/' . $item->id. '#datos-' . $id->codigo_iso_2  }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
+                                                                                                <a href="{{ 'traducciones/ver/' . $item->id. '#datos-nuevatraduccion' }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>
-                                                                                <td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
-										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
                                                                                 <td>
                                                                                     @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))            
                                                                                             <input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" />
@@ -110,7 +108,7 @@
 		                            <div class="pull-right form-inline selectAcciones">
 		                                <label for="acciones_por_lote">Acción:</label>
 		                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
-		                                    <option value="0" selected="selected">-seleccionar-</option>
+		                                    <option value="0" selected="selected">- Seleccionar -</option>
 											@foreach($accionesPorLote as $key => $apl)
 												<option value="{{ $key }}">{{ $apl }}</option>
 											@endforeach

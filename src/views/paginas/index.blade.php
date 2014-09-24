@@ -1,11 +1,11 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('paginass::crear'))
-		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo elemento de {{$_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')
-	<h1>Páginas <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>{{$_titulo}} <small> <i class="icon-double-angle-right"></i> </small></h1>
 @stop
 @section('content')
 
@@ -22,12 +22,13 @@
 	                    </div>
 	                </div>
 
-	                <div class="widget-body collapse">
+                        
+	                <div class="widget-body <?php if( ! $params['titulo'] ): ?> collapse <?php endif; ?>">
 	                    <div class="widget-main row">
 
 	                        <div class="col-md-3 form-group">
-	                            <label for="filtro_nombre">Clave</label>
-	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['nombre'])): ?>{{ $params['nombre'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                            <label for="filtro_nombre">Título</label>
+	                            <input type="text" class="form-control" name="titulo" id="filtro_titulo" value="<?php if(isset($params['titulo'])): ?>{{ $params['titulo'] }}<?php endif; ?>" size="20" placeholder="Valor" />
 	                        </div>
 
 	                    </div>
@@ -73,8 +74,10 @@
 											@if(Sentry::getUser()->hasAccess('paginas::editar'))
 												{{ link_to('admin/paginas/ver/' . $item->id, $item->traduccion('es')->titulo) }}
 											@else
-												{{ $item->traduccion('es')->titulo }}
+												{{ $item->traduccion()->titulo }}
+                                                                                    
 											@endif
+
 										</td>
                                                                                 
                                                                                 <td class="td_click"> {{ $item->traduccion('es')->texto }}</td>
@@ -111,7 +114,7 @@
 		                            <div class="pull-right form-inline selectAcciones">
 		                                <label for="acciones_por_lote">Acción:</label>
 		                                <select id="acciones_por_lote" name="accion" class="input-medium input-sm">
-		                                    <option value="0" selected="selected">-seleccionar-</option>
+		                                    <option value="0" selected="selected">- Seleccionar -</option>
                                                                 @foreach($accionesPorLote as $key => $apl)
                                                                         <option value="{{ $key }}">{{ $apl }}</option>
                                                                 @endforeach

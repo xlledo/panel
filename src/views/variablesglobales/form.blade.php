@@ -1,15 +1,18 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('variables-globales::crear'))
-		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo Módulo" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
-	@endif
+        <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+	@if(Sentry::getUser()->hasAccess('variables-globales::crear') && $action != 'create')
+                
+		<a href="{{ action('Ttt\Panel\VariablesglobalesController@nuevo') }}" title="Nuevo elemento de {{$_titulo}}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+	
+        @endif
 @stop
 @section('page_header')
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\VariablesglobalesController@index') }}" title="Volver al listado">Variables globales</a> <i class="icon-double-angle-right"></i></small> {{ $item->clave }}</h1>
+		<h1>Editando {{$item->clave}}</h1>
 	@endif
 @stop
 @section('content')

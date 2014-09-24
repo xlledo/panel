@@ -164,8 +164,8 @@ Route::group(array('prefix' => 'admin'), function()
         Route::get('/ficheros/ver/{id}','Ttt\Panel\FicherosController@ver');
       	Route::post('/ficheros/actualizar', 'Ttt\Panel\FicherosController@actualizar');
         Route::get('/ficheros/borrar/{id}','Ttt\Panel\FicherosController@borrar');
-        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote
-
+        Route::post('/ficheros/acciones_por_lote', 'Ttt\Panel\FicherosController@accionesPorLote');//las acciones por lote        
+        
         //Gestion Paginas
         Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
         Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
@@ -177,12 +177,15 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
         Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
         Route::post('/paginas/', 'Ttt\Panel\PaginasController@index');
+        
+        //Ficheros Paginas
         Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
         Route::get('/paginas/desasociar_fichero/{id}','Ttt\Panel\PaginasController@desasociarFichero');
         Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
         Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
         Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
-
+        Route::get('/paginas/nuevo_fichero','Ttt\Panel\PaginasController@nuevoFichero');
+        
 	Route::get('/hola', function()
 	{
 		return Panel::saluda();

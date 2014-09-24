@@ -290,7 +290,7 @@ class FicherosController extends AbstractCrudController
                 $message = $ex->getMessage();
                 return \Redirect::action('Ttt\Panel\FicherosController@index');
             } catch(\Ttt\Panel\Exception\TttException $e){
-                $message = 'Existen errores de validación';
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
             }
             
             \Session::flash('messages', array(

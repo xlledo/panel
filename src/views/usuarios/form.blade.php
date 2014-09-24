@@ -1,15 +1,17 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
-	@if(Sentry::getUser()->hasAccess('usuarios::crear'))
+        <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+	@if(Sentry::getUser()->hasAccess('usuarios::crear') && $action!= 'create')
 		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
-	@endif
+                
+        @endif
 @stop
 @section('page_header')
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Volver al listado">Usuarios</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Volver al listado">Usuario</a> <i class="icon-double-angle-right"></i></small> {{ $item->full_name }}</h1>
+                <h1>Editando {{$item->full_name}}</h1>
 	@endif
 @stop
 @section('content')
@@ -69,7 +71,7 @@
 												<div class="form-group">
 													<label for="grupo">Grupo</label>
 													<select name="grupo" id="grupo" class="form-control">
-														<option value="">-Seleccionar-</option>
+														<option value="">- Seleccionar -</option>
 														@foreach($grupos as $grupo)
 															<option value="{{ $grupo->id }}"<?php if($item->groups->count() && $item->groups->first()->id == $grupo->id): ?> selected="selected"<?php endif; ?>>{{ $grupo->name }}</option>
 														@endforeach

@@ -44,6 +44,18 @@
         <script type="text/javascript">
             @section('inline_js')
                 try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+                $(document).ready(function()
+                {
+                   $(".btn_confirmacion").click(function()
+                   {
+                        action_url     = $(this).data('action');
+                        bootbox.confirm("¿Estas seguro de borrar este item?", function(result) {
+                            if(result){
+                                window.location.href = action_url;
+                            }
+                        });
+                   });
+                });
             @show
         </script>
     </body>

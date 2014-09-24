@@ -1,4 +1,3 @@
-
 <!-- Modal -->
 <div class="modal fade" id="modal_select_fichero" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -22,10 +21,10 @@
                                                         </a>
                                                 </li>
                                         </ul>
-              
                                         <div class="tab-content">
                                                 <div id="agrega_fichero" class="tab-pane fade active in">
-                                                        @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form')
+                                                        <?php $add_form = (isset($add) && $add) ? '_add' : '' ;?>
+                                                        @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form' . $add_form, array('action_fichero'=>'create'))
                                                 </div>
                                                 <div id="selecciona_fichero" class="tab-pane fade" style="overflow:scroll; height:500px;">
                                                         @include('packages/ttt/panel/ficheros/_partial_modal_listado')
@@ -33,7 +32,6 @@
                                         </div>
                                 </div>
       </div>
-      
     </div>
   </div>
 </div>

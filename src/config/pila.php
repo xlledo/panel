@@ -72,4 +72,18 @@ return array(
         'readFields'     => array('nombre'),
         'tituloCanonico' => 'Categorías traducibles'
     ),
+    'ficheros' => array(
+        'eloquent'       => 'Ttt\Panel\Repo\Fichero\FicheroInterface',
+        'metodo'         => 'byId',
+        'param'          => 'id',
+        'readFields'     => array('nombre'),
+        'tituloCanonico' => 'Ficheros'
+    ),
+    'paginas' => array(
+        'eloquent'      => 'Ttt\Panel\Repo\Paginas\PaginasInterface',
+        'metodo'        => 'byId',
+        'param'         => 'id',
+        'readFields'    => array("titulo"),
+        'tituloCanonico'=> 'Paginas'
+    )
 );

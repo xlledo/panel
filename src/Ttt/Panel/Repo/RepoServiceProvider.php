@@ -128,7 +128,7 @@ class RepoServiceProvider extends ServiceProvider{
                 new Menu
             );
         });
-
+        
         $this->app->bind('Ttt\Panel\Repo\Log\LogInterface', function($app)
         {
             return new EloquentLog(

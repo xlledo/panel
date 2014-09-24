@@ -42,7 +42,7 @@ class CategoriaForm {
     {
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse el registro. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse el registro. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
         return $this->categoria->createRoot($input);
@@ -61,7 +61,7 @@ class CategoriaForm {
 
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido actualizarse el registro. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido actualizarse el registro. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
 
@@ -80,7 +80,7 @@ class CategoriaForm {
     {
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
         return $this->categoria->createChild($input, $root);
@@ -98,7 +98,7 @@ class CategoriaForm {
     {
         if( ! $this->valid($input) )
         {
-            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. Existen errores de validación.');
+            throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. No se han podido guardar los cambios. Por favor revise los campos marcados..');
             return false;
         }
         return $this->categoria->updateChild($input, $categoria);

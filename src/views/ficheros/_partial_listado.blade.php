@@ -50,13 +50,12 @@
                                         @endif
 	                            </tr>
 	                        </thead>
-	                        <tbody>
-								@foreach($ficheros->getResults() as $index => $item)
+	                        <tbody>			
+                                                                @foreach($ficheros->getResults() as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
-                                                                   
-											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->id . '?from_url=admin/' . $modulo . '/ver/' . $item_id .'&item_id=' . $item_id . '&pivot_id=' . $item->pivot->id, $item->nombre); ?>
+                                                                                        @if(Sentry::getUser()->hasAccess('ficheros::editar'))
+												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->pivot->id , $item->nombre); ?>
 											@else
 												{{ $item->nombre }}
 											@endif
