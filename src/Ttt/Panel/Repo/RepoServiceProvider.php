@@ -128,23 +128,12 @@ class RepoServiceProvider extends ServiceProvider{
                 new Menu
             );
         });
-<<<<<<< HEAD
         
-//        $this->app->bind('Ttt\Panel\Repo\Fichero\Extensions\FicheroPivotInterface', function($app)
-//        {
-//            return new EloquentFicheroPivot(
-//                new FicheroPivot
-//            );
-//        });
-        
-=======
-
         $this->app->bind('Ttt\Panel\Repo\Log\LogInterface', function($app)
         {
             return new EloquentLog(
                 new Log
             );
         });
->>>>>>> f1e15910216453952acef393eaf8aeee2949cad6
     }
 }
