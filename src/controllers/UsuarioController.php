@@ -108,10 +108,14 @@ class UsuarioController extends AbstractCrudController {
 		}
 		$item->permissions = $permisos;
 
+		$acciones = Config::get('panel::acciones');
+		ksort($acciones);
+
 		View::share('title', 'Creación de nuevo usuario.');
 		return View::make('panel::usuarios.form')
 								->with('item', $item)
 								->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
+								->with('configGroupsOrderedByKey', $acciones)
 								->with('action', 'create');
 	}
 
@@ -229,11 +233,14 @@ class UsuarioController extends AbstractCrudController {
 				$item->groups = $coll;
 			}
 
+			$acciones = Config::get('panel::acciones');
+			ksort($acciones);
 
 			View::share('title', 'Edición del usuario ' . $item->full_name);
 			return View::make('panel::usuarios.form')
 									->with('action', 'edit')
 									->with('grupos', $this->grupo->findAllBy(array('name', 'asc')))
+									->with('configGroupsOrderedByKey', $acciones)
 									->with('item', $item);
 
 		}

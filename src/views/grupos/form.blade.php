@@ -58,7 +58,7 @@
 										</div>
 										<div class="widget-body">
 											<div class="widget-main row">
-												@foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+												@foreach($configGroupsOrderedByKey as $moduloKey => $acciones)
 													<table class="table table-striped table-bordered" id="tabla{{ ucfirst($moduloKey) }}" summary="{{ $moduloKey }}" border="0" cellpadding="0" cellspacing="1">
 												        <thead>
 												            <tr>
