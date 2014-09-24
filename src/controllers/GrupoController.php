@@ -69,9 +69,13 @@ class GrupoController extends AbstractCrudController{
 		}
 		$item->permissions = $permisos;
 
+		$acciones = Config::get('panel::acciones');
+		ksort($acciones);
+
 		View::share('title', 'Creación de nuevo grupo.');
 		return View::make('panel::grupos.form')
 								->with('item', $item)
+								->with('configGroupsOrderedByKey', $acciones)
 								->with('action', 'create');
 	}
 
@@ -158,9 +162,13 @@ class GrupoController extends AbstractCrudController{
 			}
 			$item->permissions = $permisos;
 
+			$acciones = Config::get('panel::acciones');
+			ksort($acciones);
+
 			View::share('title', 'Edición del grupo ' . $item->name);
 			return View::make('panel::grupos.form')
 									->with('action', 'edit')
+									->with('configGroupsOrderedByKey', $acciones)
 									->with('item', $item);
 
 		}

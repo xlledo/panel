@@ -17,7 +17,6 @@
                     <table class="table table-striped table-bordered table-hover listado" summary="Listado de módulos" border="0" cellpadding="0" cellspacing="1">
                         <thead>
                             <tr>
-                                <th scope="col" width="40">{{ ordenable_link($currentUrl, 'id', '#ID', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                                 <th scope="col">{{ ordenable_link($currentUrl, 'name', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                             </tr>
                         </thead>
@@ -25,7 +24,6 @@
 
 							@foreach($items as $index => $item)
 								<tr class="@if($index % 2 == 0) par @else impar @endif">
-									<td class="center">{{ $item->id }}</td>
 									<td>
 										@if(Sentry::getUser()->hasAccess('grupos::editar'))
 											{{ link_to('admin/grupos/ver/' . $item->id, $item->name) }}
