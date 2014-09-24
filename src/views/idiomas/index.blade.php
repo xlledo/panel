@@ -83,7 +83,7 @@
 												{{ $item->nombre }}
 											@endif
 											@if($item->principal)
-												&nbsp;<small>[Principal]</small>
+												&nbsp;<i class="icon-star"></i>
 											@endif
 										</td>
 										<td class="td_click">

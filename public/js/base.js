@@ -206,18 +206,32 @@ function cambiar_estado(elemento, url_aplicacion_modulo){
     } else {
         var msg='¿Desea desactivar este item?';
     }
-    bootbox.confirm(msg,function(result) {
-		if(result){
-        var array_id = elemento.attr('id').split("_");
-        var id_element = array_id[array_id.length - 1];
-        var params = {
-            id: id_element
-        }
+    bootbox.confirm(
+    {
+        message: msg,
+        buttons: {
+            confirm: {
+              label: "Aceptar",
+              className: "btn-success",
+            },
+            cancel: {
+              label: "Cancelar",
+              className: "btn-danger",
+            }
+        },
+        callback: function(result) {
+            if(result){
+            var array_id = elemento.attr('id').split("_");
+            var id_element = array_id[array_id.length - 1];
+            var params = {
+                id: id_element
+            }
 
-        _cambiar_estado(container, params, url_aplicacion_modulo);
-		}
-//return true;
-	});
+            _cambiar_estado(container, params, url_aplicacion_modulo);
+            }
+    //return true;
+        }
+    });
 }
 
 // Cambia estado de un item
