@@ -29,7 +29,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         use \Ttt\Panel\Repo\Fichero\Extensions\FicheroTrait;
     
 	protected $_views_dir = 'paginas';
-	protected $_titulo = 'Paginas';
+	protected $_titulo = 'Páginas';
 
 	public static $moduleSlug = 'paginas';    
 

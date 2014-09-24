@@ -82,7 +82,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\PaginasController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+                                <a href="#" title="Borrar Traduccion" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{action('Ttt\Panel\PaginasController@borrar', $item->id) }}">Borrar Traducción</a>
 			</div>
 		@endif
 	@endif
