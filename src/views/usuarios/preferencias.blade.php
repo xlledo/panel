@@ -27,29 +27,38 @@
 					                        <div class="col-md-3">
 					                            <div class="form-group @if ($errors->first('first_name')) has-error @endif">
 					                                <label for="first_name">Nombre *</label>
-					                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{ $item->first_name }}" size="20" />
+					                                <input type="text" tabIndex="1" class="form-control" name="first_name" id="first_name" value="{{ $item->first_name }}" size="20" />
 													@if ($errors->first('first_name'))
 														@foreach($errors->get('first_name') as $err)
 															<span class="help-block">{{ $err }}</span>
 														@endforeach
 													@endif
 					                            </div>
-												<div class="form-group @if ($errors->first('last_name')) has-error @endif">
-													<label for="first_name">Apellidos *</label>
-													<input type="text" class="form-control" name="last_name" id="last_name" value="{{ $item->last_name }}" size="20" />
-													@if ($errors->first('last_name'))
-														@foreach($errors->get('last_name') as $err)
+												<div class="form-group @if ($errors->first('password')) has-error @endif">
+													<label for="password">Contraseña</label>
+													<input type="password" tabIndex="4" class="form-control" name="password" id="password" size="20" />
+													@if ($errors->first('password'))
+														@foreach($errors->get('password') as $err)
 															<span class="help-block">{{ $err }}</span>
 														@endforeach
 													@endif
 												</div>
 					                        </div>
 											<div class="col-md-3">
-												<div class="form-group @if ($errors->first('email')) has-error @endif">
-													<label for="email">E-mail *</label>
-													<input type="text" class="form-control" name="email" id="email" value="{{ $item->email }}" size="20" />
-													@if ($errors->first('email'))
-														@foreach($errors->get('email') as $err)
+												<div class="form-group @if ($errors->first('last_name')) has-error @endif">
+													<label for="last_name">Apellidos *</label>
+													<input type="text" tabIndex="2" class="form-control" name="last_name" id="last_name" value="{{ $item->last_name }}" size="20" />
+													@if ($errors->first('last_name'))
+														@foreach($errors->get('last_name') as $err)
+															<span class="help-block">{{ $err }}</span>
+														@endforeach
+													@endif
+												</div>
+												<div class="form-group @if ($errors->first('confirm_password')) has-error @endif">
+													<label for="confirm_password">Repetir contraseña</label>
+													<input type="password" tabIndex="5" class="form-control" name="confirm_password" id="confirm_password" value="" size="20" />
+													@if ($errors->first('confirm_password'))
+														@foreach($errors->get('confirm_password') as $err)
 															<span class="help-block">{{ $err }}</span>
 														@endforeach
 													@endif
@@ -57,20 +66,11 @@
 											</div>
 
 											<div class="col-md-3">
-												<div class="form-group @if ($errors->first('password')) has-error @endif">
-													<label for="password">Password *</label>
-													<input type="password" class="form-control" name="password" id="password" size="20" />
-													@if ($errors->first('password'))
-														@foreach($errors->get('password') as $err)
-															<span class="help-block">{{ $err }}</span>
-														@endforeach
-													@endif
-												</div>
-												<div class="form-group @if ($errors->first('confirm_password')) has-error @endif">
-													<label for="confirm_password">Repetir password *</label>
-													<input type="password" class="form-control" name="confirm_password" id="confirm_password" value="" size="20" />
-													@if ($errors->first('confirm_password'))
-														@foreach($errors->get('confirm_password') as $err)
+												<div class="form-group @if ($errors->first('email')) has-error @endif">
+													<label for="email">E-mail *</label>
+													<input type="text" tabIndex="3" class="form-control" name="email" id="email" value="{{ $item->email }}" size="20" />
+													@if ($errors->first('email'))
+														@foreach($errors->get('email') as $err)
 															<span class="help-block">{{ $err }}</span>
 														@endforeach
 													@endif
