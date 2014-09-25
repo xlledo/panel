@@ -71,12 +71,9 @@
 											@endif
 										</td>
                                                                                 <td class="td_click">
-                                                                                    @if($item->tipo == 'imagen')
-                                                                                        <img src='{{URL::to('/') . '/' . $item->ruta . $item->fichero}}' width="100" />
-                                                                                    @else
-                                                                                        No disponible
-                                                                                    @endif
-                                                                                    @if($item->esImagen()) ES IMAGEN @endif
+                                                                                    
+                                                                                        <img src='' width="100" />
+                                                                                    
                                                                                 </td>
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
