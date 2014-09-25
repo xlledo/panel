@@ -1,6 +1,9 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
+	@if(Sentry::getUser()->hasAccess('menu::listar'))
+		<a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al árbol {{ $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
+	@endif
 	@if($action == 'edit')
 		@if(Sentry::getUser()->hasAccess('menu::crear'))
 			<a href="{{ action('Ttt\Panel\MenuController@nuevo', $item->getRoot()->id) }}" title="Nueva opción de menú en {{ $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva opción</a>
@@ -10,9 +13,9 @@
 @stop
 @section('page_header')
 	@if($action == 'create')
-		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small>Nueva opción en {{ link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small>Nueva opción en {{ $item->parent()->get()->first()->isRoot() ? link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) : link_to('admin/menu/ver/' . $item->parent()->get()->first()->id . '/', $item->parent()->get()->first()->nombre, array('title' => $item->parent()->get()->first()->nombre)) }}</h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }} ubicado en {{ link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}</h1>
+		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }} ubicado en {{ $item->parent()->get()->first()->isRoot() ? link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) : link_to('admin/menu/ver/' . $item->parent()->get()->first()->id . '/', $item->parent()->get()->first()->nombre, array('title' => $item->parent()->get()->first()->nombre)) }}</h1>
 	@endif
 @stop
 @section('content')
@@ -33,9 +36,6 @@
 							<input type="hidden" name="parent_id" id="parent_id" value="{{ $item->getRoot()->id }}" />
 						@endif
 						<div class="acciones pull-right">
-							@if(Sentry::getUser()->hasAccess('menu::listar'))
-								<a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al árbol {{ $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
-							@endif
 							<input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
 						</div>
 						<div class="row">

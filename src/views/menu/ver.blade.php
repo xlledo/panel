@@ -4,12 +4,9 @@
 	@if(Sentry::getUser()->hasAccess('menu::crear'))
 		<a href="{{ action('Ttt\Panel\MenuController@nuevo', $root->id) }}" title="Nueva opción de menú en {{ $root->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva opción</a>
 	@endif
-	@if(Sentry::getUser()->hasAccess('menu::editar-arbol'))
-		<a href="{{ action('Ttt\Panel\MenuController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i> Ordenar alfabéticamente</a>
-	@endif
 @stop
 @section('page_header')
-	<h1>Estructura de navegación {{ $root->nombre }}</h1>
+	<h1>{{ $root->nombre }}</h1>
 @stop
 @section('content')
 	<div class="row">
@@ -20,6 +17,9 @@
 					{{ toNestable($tree, 'menu') }}
 				</ol>
 			</div>
+			@if(Sentry::getUser()->hasAccess('menu::editar-arbol'))
+				<a href="{{ action('Ttt\Panel\MenuController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i></a>
+			@endif
 		</div>
 	</div>
 @stop
