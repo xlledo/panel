@@ -54,7 +54,6 @@
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de módulos" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
-	                                <th scope="col" width="40">{{ ordenable_link($currentUrl, 'id', '#ID', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col" width="300">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 	                                <th scope="col" width="300">{{ ordenable_link($currentUrl, 'email', 'E-mail', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">Grupo</th>
@@ -64,7 +63,6 @@
 
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
-										<td class="center">{{ $item->id }}</td>
 										<td>
 											@if(Sentry::getUser()->hasAccess('usuarios::editar'))
 												{{ link_to('admin/usuarios/ver/' . $item->id, $item->full_name) }}</td>
