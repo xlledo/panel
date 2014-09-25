@@ -53,8 +53,11 @@
 	                                	<th scope="col" width="40"></th>
 									@endif
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+									<th scope="col">{{ ordenable_link($currentUrl, 'slug', 'Slug', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+									{{--
 									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									<th scope="col">Actualizado por</th>
+									--}}
 									@if(Sentry::getUser()->hasAccess(array('modulos::editar', 'modulos::borrar'), FALSE))
 	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 									@endif
@@ -83,8 +86,11 @@
 												{{ $item->nombre }}
 											@endif
 										</td>
+										<td class="td_click">{{ $item->slug }}</td>
+										{{--
 										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
 										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
+										--}}
 										@if(Sentry::getUser()->hasAccess(array('modulos::editar', 'modulos::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 										@endif
