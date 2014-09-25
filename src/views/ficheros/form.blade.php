@@ -63,6 +63,15 @@
                                                                         <input type="file" name='fichero' class='form-cotrol' />
                                                                     </div>
                                                                 </div>
+                                                                
+                                                                <div class="col-md-4">
+                                                                    <h4>Preview</h4>
+                                                                    <div>
+                                                                        @if($item->esImagen())
+                                                                            <img src="{{ \URL::to('/') . '/' . $item->ruta . $item->fichero }}" style="max-width: 200px;"/>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
                                                             </div>
 					                </div>
 					            </div>
