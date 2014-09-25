@@ -51,10 +51,11 @@ class EloquentPaginas implements PaginasInterface{
         $query = $this->getQuery($params);
 
         $paginas = $query->with('maker', 'updater')
+                                ->join('paginas_i18n','paginas.id','=','paginas_i18n.item_id')
                                 ->orderBy($orderBy, $orderDir)
                                 ->skip($limit * ($page - 1))
                                 ->take($limit)
-                                ->get();
+                                ->get(array('paginas.*','paginas_i18n.titulo'));
 
         $result->items      = $paginas->all();
         $result->totalItems = $this->totalPaginas($params);

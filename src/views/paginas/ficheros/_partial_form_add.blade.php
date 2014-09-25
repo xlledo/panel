@@ -42,7 +42,7 @@
 					            </div>
 					        </div>
                                                 </div>
-
+<!--
                                                 <div class='row'>
                                                 <div class="col-xs-12">
                                                     <div class="widget-box transparent">
@@ -106,6 +106,7 @@
                                                     </div>
                                                 </div>
 					    </div>
+        -->
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />

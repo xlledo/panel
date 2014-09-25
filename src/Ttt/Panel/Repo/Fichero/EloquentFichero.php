@@ -53,6 +53,7 @@ class EloquentFichero implements FicheroInterface{
                     'actualizado_por'   => $data['usuario'],
                     'ruta'              => $data['ruta'],
                     'mime'              => $data['mime'],
+                    'peso'              => $data['peso'],
                     //'tipo'              => $data['tipo'],
                     'titulo_defecto'    => $data['titulo_defecto'],
                     'alt_defecto'       => $data['alt_defecto'],

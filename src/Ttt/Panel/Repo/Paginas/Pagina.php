@@ -96,7 +96,7 @@ class Pagina extends \Eloquent{
         
         
         /**
-         * 
+         * Coje un atributo bien de la pagina master, o bien del idioma principal
          */
         
         public function getAttribute($key, $idioma = null)

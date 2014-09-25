@@ -10,12 +10,17 @@
                                                 <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
+                                                        
+                                                            <div class='alert alert-block alert-info'>
+                                                                <span>La ruta del fichero es: {{\URL::to('/') . '/' .$item->ruta . $item->fichero}}</span>
+                                                            </div>
+                                                        
 					                <div class="widget-header widget-header-small">
 					                    <h4 class="smaller lighter">Datos</h4>
 					                </div>
 					                <div class="widget-body">
                                                             <div class="widget-main row"> <!-- Form Ficheros -->
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-8">
                                                                     <div class="input-group">
                                                                         
                                                                         <input id='fichero'  type="text" class="form-control search-query" placeholder="{{$item->nombre }}" readonly="readonly">
@@ -24,6 +29,14 @@
                                                                                             <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
                                                                                     </button>
                                                                             </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <h4>Preview</h4>
+                                                                    <div>
+                                                                        @if($action_fichero =='edit' && $item->esImagen())
+                                                                            <img src="{{ \URL::to('/') . '/' . $item->ruta . $item->fichero }}" />
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -66,20 +79,7 @@
                                                                     
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group @if($errors->first('descripcion')) has-error @endif ">
-                                                                    <label for="descripcion">Descripcion</label>
-                                                                    <input type="text" name="descripcion" class="form-control"
-                                                                           value="{{($action_fichero == 'edit') ? $descripcion: ''}}"
-                                                                           id='descripcion'>
-                                                                    @if($errors->first('descripcion'))
-                                                                        @foreach($errors->get('descripcion') as $err)
-                                                                        <span class="help-block">{{$err}}</span>
-                                                                        @endforeach
-                                                                    @endif                                                                              
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-12">
                                                                 <div class="form-group @if($errors->first('enlace')) has-error @endif ">
                                                                     <label for="enlace">Enlace</label>
                                                                     <input type="text" name="enlace" class="form-control"
@@ -92,10 +92,44 @@
                                                                     @endif                                                                              
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group @if($errors->first('descripcion')) has-error @endif ">   
+                                                                    <label for="descripcion">Descripción</label>
+                                                                    <textarea id="descripcion" name="descripcion" class="mceEditor">{{($action_fichero == 'edit') ? $descripcion: ''}}</textarea>
+                                                                    @if($errors->first('descripcion'))
+                                                                        @foreach($errors->get('descripcion') as $err)
+                                                                        <span class="help-block">{{$err}}</span>
+                                                                        @endforeach
+                                                                    @endif    
+                                                                    </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
 					    </div>
+                                                @if($action_fichero =='edit')
+                                                    <!-- Datos del Fichero  -->
+                                                    <div class="col-xs-12">
+                                                        <div class="widget-box transparent">
+                                                            <div class="widget-header widget-header-small">
+                                                            <h4 class="smaller lighter">Datos del Fichero</h4>
+                                                            </div>
+
+                                                            <div class="widget-body">
+                                                                <div class="widget-main row">
+                                                                    <div class="col-md-4">
+
+                                                                        <strong>Nombre: </strong> {{$item->nombre }} <br/>
+                                                                        <strong>Tipo: </strong> {{$item->mime }} <br/>
+                                                                        <strong>Tamaño: </strong>{{ number_format($item->peso/1000, 0) }} kb <br/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                         
+                                            @endif
+                                                
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />
