@@ -23,14 +23,14 @@
 
 	            <div class="widget-body">
 	                <div class="widget-main no-padding">
-	                    <ul class="item-list">
+	                    <!--<ul class="item-list">
 	                        <li class="clearfix item-default">
 	                            <a href="#">
 	                                <span class="badge pull-right">40</span>
 	                                Pedidos
 	                            </a>
 	                        </li>
-	                    </ul>
+	                    </ul>-->
 	                </div><!-- /widget-main -->
 	            </div><!-- /widget-body -->
 	        </div>

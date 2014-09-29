@@ -52,6 +52,8 @@ class EloquentPaginas implements PaginasInterface{
 
         $query = $this->getQuery($params);
 
+        //die(var_dump($query));
+        
         $paginas = $query->with('maker', 'updater')
                                 ->join('paginas_i18n',function($join) use($idioma)
                                 {
@@ -232,8 +234,8 @@ class EloquentPaginas implements PaginasInterface{
         $query = $this->pagina->newQuery();
         if(! is_null($params['titulo']))
         {
-            die(var_dump($params));    
-            $query->where('titulo', 'LIKE', '%' . $params['titulo'] . '%');
+            //die(var_dump($params));    
+            $query->where('paginas_i18n.titulo', 'LIKE', '%' . $params['titulo'] . '%');
         }
 
         return $query;

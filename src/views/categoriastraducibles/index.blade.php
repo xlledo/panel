@@ -5,7 +5,11 @@
 	@endif
 @stop
 @section('page_header')
+<<<<<<< HEAD
 	<h1>Listado de {{$_titulo}} </h1>
+=======
+	<h1>Listado de {{$_titulo}}</h1>
+>>>>>>> 954bcc5967ca760959f02afbb0e3ead7c4377c87
 @stop
 @section('content')
 	<div class="row">
