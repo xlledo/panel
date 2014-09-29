@@ -24,7 +24,7 @@
     <input type="hidden" name="nueva_traduccion" id="nueva_traduccion" value="<?php echo $nueva_traduccion ? 1 : 0; ?>" />
 
     <div class="acciones pull-right">
-        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
+        <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -112,7 +112,7 @@
         </div>
     </div>
     <div class="acciones pull-right">
-        <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
+        <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
     </div>
 </form>
     @if($action != 'create' && $action != 'createArbol' && $clave_idioma != 'new')
