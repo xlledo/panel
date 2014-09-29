@@ -78,6 +78,24 @@
                                             </div>
                                     </div>
                                 </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-small">
+                                            <h4 class="smaller lighter">Opciones avanzadas</h4>
+                                        </div>
+                                        <div class="input-group @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma)) has-error @endif">
+                                            <label for="slug"> Clave *</label>
+                                            <input name="slug" type="text" class="form-control" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->slug }}" />
+                                        </div>
+                                        @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma))
+                                                @foreach($errors->get('slug') as $err)
+                                                        <span class="help-block">{{ $err }}</span>
+                                                @endforeach
+                                        @endif                                        
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="acciones pull-right">
                                         @if(! $nueva_traduccion && $action!='create')
                                             <input type="hidden" name="idioma" value="{{ $trad->idioma }}" />

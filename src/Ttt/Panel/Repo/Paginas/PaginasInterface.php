@@ -63,4 +63,7 @@ interface PaginasInterface{
      * 
      */
     public function getFicherosTable();
+    
+    public function slug($string, $checkId, $idioma);
+    
 }

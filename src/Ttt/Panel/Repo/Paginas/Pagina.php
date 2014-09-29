@@ -20,7 +20,7 @@ class Pagina extends \Eloquent{
                                       );
 
         //Atributos Traducibles
-        public static $atributosTraducibles = array('titulo', 'texto');
+        public static $atributosTraducibles = array('titulo', 'texto', 'slug');
 
 	public $validator = null;
 
@@ -37,7 +37,7 @@ class Pagina extends \Eloquent{
         public function ficheros()
         {
             return $this->belongsToMany('Ttt\Panel\Repo\Fichero\Fichero', 'paginas_ficheros', 'pagina_id', 'fichero_id')
-                                                            ->withPivot('id', 'titulo', 'alt', 'enlace', 'descripcion');
+                                                            ->withPivot('id', 'titulo', 'alt', 'enlace', 'descripcion','idioma');
         }
         
 	public function maker()

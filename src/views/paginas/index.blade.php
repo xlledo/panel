@@ -11,7 +11,7 @@
 <div class="row">
 	    <div class="col-xs-12">
 	        <div class="widget-box">
-	            <form method="POST" action="{{ url('admin/traducciones') }}">
+	            <form method="POST" action="{{ url('admin/paginas') }}">
 	                <div class="widget-header widget-header-small" data-toggle="collapse" data-target=".widget-body">
 	                    <h4 class="smaller lighter"><i class="icon-filter"></i> Filtros</h4>
 
@@ -19,7 +19,6 @@
 	                        <i class="icon-chevron-down"></i>
 	                    </div>
 	                </div>
-
                         
 	                <div class="widget-body collapse ">
 	                    <div class="widget-main row">

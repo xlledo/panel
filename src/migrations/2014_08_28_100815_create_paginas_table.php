@@ -31,6 +31,7 @@ class CreatePaginasTable extends Migration {
                         $table->increments('id');
                         
                         $table->integer('item_id')->unsigned();
+                        $table->string('slug',255);
                         $table->string('idioma',4);
                         
                         $table->string('titulo',255);

@@ -122,7 +122,8 @@
 
                                                                         <strong>Nombre: </strong> {{$item->nombre }} <br/>
                                                                         <strong>Tipo: </strong> {{$item->mime }} <br/>
-                                                                        <strong>Tamaño: </strong>{{ number_format($item->peso/1000, 0) }} kb <br/>
+                                                                        <strong>Tamaño: </strong>{{ number_format($item->peso/1000, 1) }} kb <br/>
+                                                                        <strong>Idioma: </strong> {{ @($idioma!=-1) ? $idioma : 'Todos' }} <br/>
                                                                     </div>
                                                                 </div>
                                                             </div>
