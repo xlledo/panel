@@ -45,7 +45,7 @@
 							<input type="hidden" name="parent_id" id="parent_id" value="{{ $item->getRoot()->id }}" />
 						@endif
 					    <div class="acciones pull-right">
-							<button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+							<button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 					    </div>
 					    <div class="row">
 					        <div class="col-xs-12">
@@ -104,7 +104,7 @@
 					    </div>
 						<div class="acciones pull-right">
 
-							<button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+							<button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 
 						</div>
 					</form>
