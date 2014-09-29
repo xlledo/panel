@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
-        <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+        <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
 	@if(Sentry::getUser()->hasAccess('paginas::crear') && $action!='create')
 		<a href="{{ action('Ttt\Panel\PaginasController@nuevo') }}" title="Nuevo elemento de {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
@@ -82,7 +82,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-                                <a href="#" title="Borrar Traduccion" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{action('Ttt\Panel\PaginasController@borrar', $item->id) }}">Borrar Traducción</a>
+                                <a href="#" title="Borrar Página" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{action('Ttt\Panel\PaginasController@borrar', $item->id) }}">Borrar Página</a>
 			</div>
 		@endif
 	@endif

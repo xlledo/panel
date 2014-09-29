@@ -105,9 +105,7 @@
 					        </div>
 					    </div>
 					    <div class="acciones pull-right">
-
 					        <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
-
 					    </div>
 					</form>
 				</div>
@@ -118,7 +116,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\VariablesglobalesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+                                <a href="#" title="Borrar Elemento" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\VariablesglobalesController@borrar' , $item->id )  }}' >Borrar Elemento</a>
 			</div>
 		@endif
 

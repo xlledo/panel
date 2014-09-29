@@ -166,9 +166,9 @@ class EloquentPaginas implements PaginasInterface{
         $itemBorrado->first()->traducciones()->delete();
 
         /* Borramos el item master */
-        $itemBorrado->first()->delete();
+        $r = $itemBorrado->first()->delete();
 
-        return ($itemBorrado === TRUE) ? TRUE : FALSE;
+        return ($r === TRUE)?: FALSE;
     }
 
     /**

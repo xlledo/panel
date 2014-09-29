@@ -22,7 +22,7 @@
 	                    </div>
 	                </div>
 
-	                <div class="widget-body  <?php if( ! $params['clave'] ): ?> collapse <?php endif; ?>">
+	                <div class="widget-body  <?php if( ! $params['clave'] && ! $params['texto'] ): ?> collapse <?php endif; ?>">
 	                    <div class="widget-main row">
 	                        <div class="col-md-3 form-group">
 	                            <label for="filtro_nombre">Clave</label>

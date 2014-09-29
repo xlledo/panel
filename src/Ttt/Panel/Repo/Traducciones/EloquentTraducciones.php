@@ -41,16 +41,24 @@ class EloquentTraducciones implements TraduccionesInterface{
         $result->totalItems = 0;
         $result->items      = array();
 
+        $idioma = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal();     
+        
         $orderBy  = isset($params['ordenPor']) ? $params['ordenPor'] : 'clave';
         $orderDir = isset($params['ordenDir']) ? $params['ordenDir'] : 'asc';
 
         $query = $this->getQuery($params);
 
         $traducciones = $query->with('maker', 'updater')
+                                ->join('traducciones_i18n', function($join) use($idioma, $params)
+                                {
+                                    $join->on('traducciones.id', '=', 'traducciones_i18n.item_id')
+                                            ->where('idioma','=',$idioma->codigo_iso_2)
+                                            ->where('texto','LIKE','%'. $params['texto'] . '%');
+                                })
                                 ->orderBy($orderBy, $orderDir)
                                 ->skip($limit * ($page - 1))
                                 ->take($limit)
-                                ->get();
+                                ->get(array('traducciones.*','traducciones_i18n.texto'));
 
         $result->items      = $traducciones->all();
         $result->totalItems = $this->totalTraducciones($params);

@@ -4,7 +4,7 @@
     <form class="clearfix" action="{{ action('Ttt\Panel\PaginasController@actualizarFichero');  }}" method="post"  enctype="multipart/form-data">
 @endif
     					    <div class="acciones pull-right">
-					        <input type="submit" value="Guardar" name="guardar" class="btn btn-sm btn-success no-border">
+                                                <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 					    </div>
                                                 @if($action_fichero=='edit')
                                                 <div class="row">
@@ -141,7 +141,8 @@
                                                 <input type='hidden' name='item_id' value='{{$item_id}}' />
                                             @endif
                                             
-                                            <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" guardar">
+                                            <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+
             </form>
 </div>
                                                 

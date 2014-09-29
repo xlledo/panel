@@ -261,9 +261,6 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 $pagina_i18n->slug      = $this->pagina->slug($posibleSlug, FALSE, Input::get('idioma'));
                 $pagina_i18n->item_id   = Input::get('item_id');
                 
-
-                
-                
                 if( $this->paginaForm->update($data)
                     && $pagina_i18n->save() )
                 {
@@ -276,7 +273,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                     )
                     ));
                     
-                    return \Redirect::to('admin/paginas/ver/' . $pagina->id);
+                    return \Redirect::to('admin/paginas/ver/' . $pagina->id . '#datos-'. $pagina_i18n->idioma);
                     
                 }
                 
@@ -378,8 +375,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 		try
 		{
 
+                        $r = $this->pagina->delete($id);
 			//$ent = $this->modulo->byId(Input::get('id'));
-			if(! $this->pagina->delete($id))
+			if(! $r)
 			{
 				throw new \Ttt\Panel\Exception\TttException;
 			}
@@ -412,7 +410,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\PaginasController@ver', $id);
+		return \Redirect::action('Ttt\Panel\PaginasController@index');
 	}
 
         /**

@@ -20,7 +20,7 @@
 	                    </div>
 	                </div>
                         
-	                <div class="widget-body collapse ">
+	                <div class="widget-body <?php if( ! $params['titulo'] ): ?> collapse <?php endif; ?> ">
 	                    <div class="widget-main row">
 
 	                        <div class="col-md-3 form-group">
@@ -53,7 +53,7 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col" width="100">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col" width="200">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 					<th scope="col">Texto</th>	
                                         <th scope="col" width="200">Idioma</th>
                                         <th scope="col" width="300">
@@ -76,7 +76,7 @@
 												{{ $item->traduccion()->titulo }}
 											@endif
 										</td>
-                                                                                <td class="td_click"> {{ str_limit($item->texto, 150, '...') }}</td>
+                                                                                <td class="td_click"> {{ str_limit(strip_tags($item->texto), 300, '...') }}</td>
                                                                                 <td class="td_click">
                                                                                     @foreach($item->traducciones()->get() as $trad)
                                                                                         <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
@@ -124,7 +124,7 @@
 				<div class="center">
 					@if($items->getLastPage() > 1)
 						<ul class="pagination">
-							7<?php echo with(new Ttt\Panel\Pagination\TttPresenter($items))->render(); ?>
+							<?php echo with(new Ttt\Panel\Pagination\TttPresenter($items))->render(); ?>
 						</ul>
 					@endif
 				</div>

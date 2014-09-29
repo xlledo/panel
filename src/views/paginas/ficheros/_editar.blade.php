@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('paginas::editar'))
-		<a href="{{ action('Ttt\Panel\PaginasController@ver',$item_id) }}" title="Volver a  {{$_titulo}}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver a Página</a></li>
+		<a href="{{ action('Ttt\Panel\PaginasController@ver',$item_id) }}" title="Volver a  {{$_titulo}}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver a Página</a></li>
 	@endif
 @stop
     @section('page_header')
