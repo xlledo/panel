@@ -1,11 +1,11 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('usuarios::crear'))
-		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo elemento en {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
 @stop
 @section('page_header')
-	<h1>Usuarios <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>Listado de {{ $_titulo }}</h1>
 @stop
 @section('content')
 	<div class="row">

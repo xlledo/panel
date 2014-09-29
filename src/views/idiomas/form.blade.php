@@ -4,7 +4,7 @@
                 <a href="{{ action('Ttt\Panel\IdiomaController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
 
 	@if(Sentry::getUser()->hasAccess('idiomas::crear'))
-		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo elemento de {{$_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\IdiomaController@nuevo') }}" title="Nuevo elemento en {{$_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 
 	@endif
 @stop
