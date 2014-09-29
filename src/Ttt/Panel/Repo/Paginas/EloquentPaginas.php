@@ -52,13 +52,13 @@ class EloquentPaginas implements PaginasInterface{
 
         $query = $this->getQuery($params);
 
-        //die(var_dump($query));
         
         $paginas = $query->with('maker', 'updater')
-                                ->join('paginas_i18n',function($join) use($idioma)
+                                ->join('paginas_i18n',function($join) use($idioma,$params)
                                 {
                                     $join->on('paginas.id','=','paginas_i18n.item_id')
-                                         ->where('idioma','=',$idioma->codigo_iso_2);
+                                         ->where('idioma','=',$idioma->codigo_iso_2)
+                                         ->where('titulo','LIKE','%'.$params['titulo'].'%');
                                 })
                                 ->orderBy($orderBy, $orderDir)
                                 ->skip($limit * ($page - 1))
@@ -232,10 +232,9 @@ class EloquentPaginas implements PaginasInterface{
     protected function getQuery(array $params)
     {
         $query = $this->pagina->newQuery();
-        if(! is_null($params['titulo']))
+        if(isset($params['titulo']) && ! is_null($params['titulo'])) // Esto por lo visto tiene que ir en el JOIN
         {
-            //die(var_dump($params));    
-            $query->where('paginas_i18n.titulo', 'LIKE', '%' . $params['titulo'] . '%');
+            // $query->where('paginas_i18n.titulo', 'LIKE', '%' . $params['titulo'] . '%');
         }
 
         return $query;
