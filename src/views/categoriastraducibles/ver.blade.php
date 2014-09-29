@@ -1,6 +1,9 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
+	@if(Sentry::getUser()->hasAccess('categorias-traducibles::listar'))
+		<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
+	@endif
 	@if(Sentry::getUser()->hasAccess('categorias-traducibles::crear'))
 		<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@nuevo', $root->id) }}" title="Nueva subcategoría en {{ $root->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva subcategoría</a>
 	@endif

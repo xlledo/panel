@@ -5,7 +5,7 @@
 	@endif
 @stop
 @section('page_header')
-	<h1>{{$_titulo}} <small> <i class="icon-double-angle-right"></i> Listado</small></h1>
+	<h1>Listado de {{$_titulo}}</h1>
 @stop
 @section('content')
 	<div class="row">

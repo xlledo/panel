@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('page_header')
-	<h1><small>Mis preferencias <i class="icon-double-angle-right"></i></small> {{ $item->full_name }}</h1>
+	<h1>Editar Mis Preferencias</h1>
 @stop
 @section('content')
 	<div class="row">
