@@ -118,7 +118,7 @@
     @if($action != 'create' && $action != 'createArbol' && $clave_idioma != 'new')
         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2 && Sentry::getUser()->hasAccess('categorias-traducibles::borrarTraduccion'))
             <div class="col-xs-6">
-                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarTraduccion', array($item->id, $trad->idioma) )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
+                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarTraduccion', array($item->id, $trad->idioma) )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn-confirmacion" data-mensaje="¿Seguro que deseas borrar la traducción?">Borrar Traduccion</a>
             </div>
         @endif
     @endif

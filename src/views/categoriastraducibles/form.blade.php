@@ -76,13 +76,13 @@
 	@if($item->isRoot() && $action == 'editArbol' && Sentry::getUser()->hasAccess('categorias-traducibles::borrar-arbol'))
 		<div class="space-6"></div>
 		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarArbol', $item->id) }}"><i class="icon-trash"></i>Borrar árbol de categorías</a>
+			<a class="btn btn-minier btn-danger no-border btn-confirmacion" title="Eliminar ?" href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarArbol', $item->id) }}"><i class="icon-trash"></i>Borrar árbol de categorías</a>
 		</div>
 	@endif
 	@if(! $item->isRoot() && $action == 'edit' && Sentry::getUser()->hasAccess('categorias-traducibles::borrar'))
 		<div class="space-6"></div>
 		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			<a class="btn btn-minier btn-danger no-border btn-confirmacion" title="Eliminar ?" href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 		</div>
 	@endif
 @stop
