@@ -36,7 +36,7 @@
 							<input type="hidden" name="parent_id" id="parent_id" value="{{ $item->getRoot()->id }}" />
 						@endif
 						<div class="acciones pull-right">
-							<button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+							<button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
@@ -103,7 +103,7 @@
 						</div>
 						<div class="acciones pull-right">
 
-							<button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+							<button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 
 						</div>
 					</form>
@@ -114,7 +114,7 @@
 	@if($action == 'edit' && Sentry::getUser()->hasAccess('menu::borrar'))
 		<div class="space-6"></div>
 		<div class="acciones">
-			<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\MenuController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+			<a class="btn btn-minier btn-danger no-border btn-confirmacion" title="Eliminar ?" href="{{ action('Ttt\Panel\MenuController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 		</div>
 	@endif
 @stop

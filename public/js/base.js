@@ -526,7 +526,34 @@ jQuery(function($){
 					//
 				});
 
+        $("a.btn-confirmacion").click(function(e){
+             e.stopPropagation();
+             e.preventDefault();
+             var mensaje = $(this).data('mensaje') ? $(this).data('mensaje') :'¿Seguro que deseas borrar el elemento?';
+             var enlace = $(this).attr('href');
+             bootbox.confirm(
+             {
+                 message: mensaje,
+                 buttons: {
+                     confirm: {
+                       label: "Aceptar",
+                       className: "btn-success",
+                     },
+                     cancel: {
+                       label: "Cancelar",
+                       className: "btn-danger",
+                     }
+                 },
+                 callback: function(result) {
 
+                     if(result){
+                         //que vaya a la url del enlace
+                         $(location).attr('href', enlace);
+                     }
+                     //return true;
+                 }
+             });
+        });
     }
     tttjs.limpiaNotificacion = function (){
         $("#notificacion").remove();

@@ -3,7 +3,7 @@
 @section('tools')
         <a href="{{ action('Ttt\Panel\UsuarioController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
 	@if(Sentry::getUser()->hasAccess('usuarios::crear') && $action!= 'create')
-		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo Usuario" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
+		<a href="{{ action('Ttt\Panel\UsuarioController@nuevo') }}" title="Nuevo elemento en {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 
         @endif
 @stop
@@ -28,7 +28,7 @@
 							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
 						@endif
 					    <div class="acciones pull-right">
-					        <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+					        <button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 					    </div>
 					    <div class="row">
 					        <div class="col-xs-12">
@@ -148,7 +148,7 @@
 						</div>
 						<div class="acciones pull-right">
 
-							<button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+							<button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 
 						</div>
 					</form>
@@ -160,7 +160,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\UsuarioController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+				<a class="btn btn-minier btn-danger no-border btn-confirmacion" title="Eliminar ?" href="{{ action('Ttt\Panel\UsuarioController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
 			</div>
 		@endif
 	@endif

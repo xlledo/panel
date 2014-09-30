@@ -24,7 +24,7 @@
     <input type="hidden" name="nueva_traduccion" id="nueva_traduccion" value="<?php echo $nueva_traduccion ? 1 : 0; ?>" />
 
     <div class="acciones pull-right">
-        <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+        <button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -112,13 +112,13 @@
         </div>
     </div>
     <div class="acciones pull-right">
-        <button type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
+        <button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
     </div>
 </form>
     @if($action != 'create' && $action != 'createArbol' && $clave_idioma != 'new')
         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2 && Sentry::getUser()->hasAccess('categorias-traducibles::borrarTraduccion'))
             <div class="col-xs-6">
-                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarTraduccion', array($item->id, $trad->idioma) )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border">Borrar Traduccion</a>
+                <a href="{{ action('Ttt\Panel\CategoriaTraducibleController@borrarTraduccion', array($item->id, $trad->idioma) )  }}" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn-confirmacion" data-mensaje="¿Seguro que deseas borrar la traducción?">Borrar Traduccion</a>
             </div>
         @endif
     @endif
