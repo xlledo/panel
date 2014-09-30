@@ -171,12 +171,29 @@ function accion_por_lotes(e) {
     }
 
     // comprobamos si es un borrado
-    if (accion == 'accion_borrar') {
-        bootbox.confirm('¿Seguro que desea eliminar los items seleccionados?', function(result){
-            if(result){
-                $('.listado').parents('form').unbind('submit', accion_por_lotes);
-                //alert($('.listado').parents('form').serialize());
-                $('.listado').parents('form').submit();
+    if (accion == 'accion_borrar' || accion == 'borrar' || accion == 'delete') {
+        var mensaje = '¿Seguro que desea eliminar los elementos seleccionados?';
+        bootbox.confirm(
+        {
+            message: mensaje,
+            buttons: {
+                confirm: {
+                  label: "Aceptar",
+                  className: "btn-success",
+                },
+                cancel: {
+                  label: "Cancelar",
+                  className: "btn-danger",
+                }
+            },
+            callback: function(result) {
+
+                if(result){
+                    $('.listado').parents('form').unbind('submit', accion_por_lotes);
+                    //alert($('.listado').parents('form').serialize());
+                    $('.listado').parents('form').submit();
+                }
+                //return true;
             }
         });
         return false;
