@@ -87,6 +87,17 @@ class Pila {
 			{
 				$this->push(
 					array(
+						'titulo'          => 'Ficheros',
+						'url'             => $ultimaReferencia->url . '#ficheros',
+						'eloquent'        => NULL,
+						'eloquentMethod'  => NULL,
+						'retrievingField' => NULL,
+						'retrievingValue' => NULL,
+						'reference'       => FALSE,
+						'pestania'        => 'ficheros'
+					)
+				)->push(
+					array(
 						'titulo'          => 'Nuevo Fichero',
 						'url'             => action($controlador . '@nuevoFichero'),
 						'eloquent'        => NULL,
@@ -105,7 +116,18 @@ class Pila {
 						->get()->first()->pivot;//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(
-						'titulo'          => $ficheroRelacionado->titulo,
+						'titulo'          => 'Ficheros',
+						'url'             => $ultimaReferencia->url . '#ficheros',
+						'eloquent'        => NULL,
+						'eloquentMethod'  => NULL,
+						'retrievingField' => NULL,
+						'retrievingValue' => NULL,
+						'reference'       => FALSE,
+						'pestania'        => 'ficheros'
+					)
+				)->push(
+					array(
+						'titulo'          => $ficheroRelacionado->nombre,
 						'url'             => $ultimaReferencia->url . '#ficheros',
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
