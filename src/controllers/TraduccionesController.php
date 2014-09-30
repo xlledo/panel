@@ -280,7 +280,7 @@ class TraduccionesController extends AbstractCrudController
 
                 \Session::flash('messages', array(
 				array(
-					'class' => 'alert-error',
+					'class' => 'alert-success',
 					'msg'   => $message
 				)
                             ));

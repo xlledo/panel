@@ -427,7 +427,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             {
                 $pagina_i18n = Repo\Paginas\PaginaI18n::find($id);
                 
-                if($pagina_i18n->delete() && $pagina = $pagina_i18n->traduccion()->first())
+                
+                if($pagina_i18n->delete() && $item_id = $pagina_i18n->item_id)
                 {
                     \Session::flash('messages', array(
                             array(
@@ -435,7 +436,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                 'msg'   => $message
                             )
                     ));
-                    return \Redirect::action('Ttt\Panel\PaginasController@ver', $pagina->id);
+                    return \Redirect::action('Ttt\Panel\PaginasController@ver', $item_id);
                 }
             }
 

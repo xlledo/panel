@@ -63,7 +63,7 @@
                                                 </div>
                                             </div>
                                             </div>
-                                            <div class="widget-box transparent">
+                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) has-error @endif ">
                                                 <div class="widget-header widget-header-small">
                                                     <h4 class="smaller lighter">Texto</h4>
                                                 </div>
@@ -117,7 +117,7 @@
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{ action('Ttt\Panel\PaginasController@borrarTraduccion' , $trad->id )  }}">Borrar traduccion de {{$_titulo}}</a>
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{ action('Ttt\Panel\PaginasController@borrarTraduccion' , $trad->id )  }}"><i class="icon-trash"></i>Borrar traduccion de {{$_titulo}}</a>
                             </div>
                         @endif
                     @endif

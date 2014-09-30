@@ -116,7 +116,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-                                <a href="#" title="Borrar Elemento" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\VariablesglobalesController@borrar' , $item->id )  }}' >Borrar Elemento</a>
+                                <a href="#" title="Borrar Elemento" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\VariablesglobalesController@borrar' , $item->id )  }}' ><i class="icon-trash"></i>Borrar Elemento</a>
 			</div>
 		@endif
 

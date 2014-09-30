@@ -25,7 +25,7 @@
 
 	                        <div class="col-md-3 form-group">
 	                            <label for="filtro_nombre">Título</label>
-	                            <input type="text" class="form-control" name="titulo" id="filtro_titulo" value="<?php if(isset($params['titulo'])): ?>{{ $params['titulo'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                            <input type="text" class="form-control" name="titulo" id="filtro_titulo" value="<?php if(isset($params['titulo'])): ?>{{ $params['titulo'] }}<?php endif; ?>" size="20" placeholder="Titulo" />
 	                        </div>
 
 	                    </div>
