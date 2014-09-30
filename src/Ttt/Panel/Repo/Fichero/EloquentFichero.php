@@ -117,7 +117,8 @@ class EloquentFichero implements FicheroInterface{
     protected function getQuery(array $params)
     {
         $query = $this->fichero->newQuery();
-        if(! is_null($params['nombre']))
+        
+        if(isset($params['nombre']) &&  ! is_null($params['nombre']))
         {
             $query->where('nombre', 'LIKE', '%' . $params['nombre'] . '%');
         }
