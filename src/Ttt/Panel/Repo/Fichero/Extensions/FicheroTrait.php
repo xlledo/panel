@@ -44,6 +44,7 @@ trait FicheroTrait {
                     'usuario' => \Sentry::getUser()['id'],
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
+                    'peso'    => '',
                     'titulo_defecto'        => \Input::get('titulo_defecto'),
                     'alt_defecto'           => \Input::get('alt_defecto'),
                     'enlace_defecto'        => \Input::get('enlace_defecto'),

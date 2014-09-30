@@ -53,6 +53,7 @@ class EloquentFichero implements FicheroInterface{
                     'actualizado_por'   => $data['usuario'],
                     'ruta'              => $data['ruta'],
                     'mime'              => $data['mime'],
+                    'peso'              => $data['peso'],
                     //'tipo'              => $data['tipo'],
                     'titulo_defecto'    => $data['titulo_defecto'],
                     'alt_defecto'       => $data['alt_defecto'],
@@ -116,7 +117,8 @@ class EloquentFichero implements FicheroInterface{
     protected function getQuery(array $params)
     {
         $query = $this->fichero->newQuery();
-        if(! is_null($params['nombre']))
+        
+        if(isset($params['nombre']) &&  ! is_null($params['nombre']))
         {
             $query->where('nombre', 'LIKE', '%' . $params['nombre'] . '%');
         }

@@ -33,17 +33,16 @@
                 
 	        <div class="space-12"></div>
 			@if($ficheros->count() === 0)
-				<div class="alert alert-info">Actualmente no hay elementos en la base de datos</div>
+                            No hay ficheros
         	        @else
                 <form action="{{ url('admin/' . $modulo . '/acciones_por_lote') }}" method="post">
 	                <fieldset>
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
-	                                <th scope="col">Nombre</th>
+	                                    <th scope="col">Nombre</th>
                                         <th scope="col">Preview</th>
-					<th scope="col">Creado por </th>
-                                        <th scope="col">Actualizado por </th>
+                                        <th scope="col">Ruta</th>
                                         
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
                                             <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
@@ -51,29 +50,31 @@
 	                            </tr>
 	                        </thead>
 	                        <tbody>			
-                                                                @foreach($ficheros->getResults() as $index => $item)
+								@foreach($ficheros->getResults() as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
 										<td class="td_click">
-                                                                                        @if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												<?php echo link_to('admin/' . $modulo .  '/ver_fichero/' . $item->pivot->id , $item->nombre); ?>
+											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
+												{{ link_to('admin/' . $modulo. '/ver_fichero/' . $item->pivot->id, $item->nombre) }}
 											@else
 												{{ $item->nombre }}
 											@endif
 										</td>
                                                                                 <td class="td_click">
-                                                                                    @if($item->tipo == 'imagen')
-                                                                                        <img src='{{URL::to('/') . '/' . $item->ruta . $item->fichero}}' width="100" />
+                                                                                    @if($item->esImagen())
+                                                                                        <img src='{{URL::to('/') . '/' .$item->ruta . $item->fichero }}' width="50" />
                                                                                     @else
-                                                                                        No disponible
+                                                                                        <i class="icon-file-text"></i>
                                                                                     @endif
                                                                                 </td>
-										<td class="td_click">{{ $item->maker->first_name }}</td>
-										<td class="td_click">{{ $item->updater->first_name }}</td>
-										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
-											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
-										@endif
+                                                                                <td class="td_click">
+                                                                                        <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}" readonly="readonly" size="100"/>
+                                                                                </td>
+                                                                                    @if(Sentry::getUser()->hasAccess(array('ficheros::editar', 'ficheros::borrar'), FALSE))
+                                                                                            <td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
+                                                                                    @endif
+
 									</tr>
-								@endforeach
+								@endforeach                                                                
 	                        </tbody>
 	                    </table>
 	                    <div class="selectAcciones row">

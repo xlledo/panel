@@ -42,7 +42,7 @@ class TraduccionesController extends AbstractCrudController
 	protected $traduccionForm;
 
 	protected $allowed_url_params = array(
-		'clave', 'ordenPor', 'ordenDir', 'creado_por'
+		'clave', 'texto', 'ordenPor', 'ordenDir', 'creado_por'
 	);
 
 	protected $acciones_por_lote = array(
@@ -280,7 +280,7 @@ class TraduccionesController extends AbstractCrudController
 
                 \Session::flash('messages', array(
 				array(
-					'class' => 'alert-error',
+					'class' => 'alert-success',
 					'msg'   => $message
 				)
                             ));
@@ -302,8 +302,10 @@ class TraduccionesController extends AbstractCrudController
             if($id)
             {
                 $traduccion_i18n = TraduccionI18n::find($id);
+
+                //$tr = $traduccion_i18n->traduccion(); 
                 
-                if($traduccion_i18n->delete() && $traduccion = $traduccion_i18n->traduccion()->first())
+                if($traduccion_i18n->delete() && $item_id = $traduccion_i18n->item_id)
                 {
                     \Session::flash('messages', array(
                             array(
@@ -311,7 +313,7 @@ class TraduccionesController extends AbstractCrudController
                                 'msg'   => $message
                             )
                     ));
-                    return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $id);
+                    return \Redirect::action('Ttt\Panel\TraduccionesController@ver', $item_id);
                 }
 
             }

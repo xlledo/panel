@@ -24,13 +24,11 @@
                                              <i class="icon-list"></i>  Datos</a>
                                      </li>
 				</ul>
-
 				<div id="datos">
 					<form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\IdiomaController@crear') : action('Ttt\Panel\IdiomaController@actualizar') ; ?>" method="post">
 						@if($action != 'create')
 							<input type="hidden" name="id" id="id" value="{{ $item->id }}" />
 						@endif
-
                                             <div class="acciones pull-right">
 					        <button type="submit" title="Guardar los cambios" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
 					    </div>

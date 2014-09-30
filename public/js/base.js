@@ -207,11 +207,25 @@ function accion_por_lotes(e) {
  */
 function confirmar(e) {
 
-			bootbox.confirm(e.data.msg, function(result){
-				if(result){
-					window.location =  e.data.destino;
-				}
-			});
+			bootbox.confirm(
+                                {
+                                message: e.data.msg,
+                                buttons: {
+                                   confirm: {
+                                        label: "Aceptar",
+                                        className: "btn-success",
+                                      },
+                                      cancel: {
+                                        label: "Cancelar",
+                                        className: "btn-danger",
+                                       }
+                                    },
+                                    callback:
+                                        function(result){
+                                        if(result){
+                                                window.location =  e.data.destino;
+                                        }
+                                    }});
 }
 
 // Cambia estado de un item

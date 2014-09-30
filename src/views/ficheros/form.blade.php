@@ -36,7 +36,7 @@
 					            <div class="widget-box transparent">
                                                         @if($action != 'create')
                                                             <div class='alert alert-block alert-info'>
-                                                                <span>La ruta del fichero es: {{$item->ruta . $item->fichero}}</span>
+                                                                <span>La ruta del fichero es: {{\URL::to('/') . '/' .$item->ruta . $item->fichero}}</span>
                                                             </div>
                                                         @endif
 					                <div class="widget-header widget-header-small">
@@ -61,6 +61,15 @@
                                                                     <div class='form-group'>
                                                                         <label for='fichero'>Fichero</label>
                                                                         <input type="file" name='fichero' class='form-cotrol' />
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-4">
+                                                                    <h4>Preview</h4>
+                                                                    <div>
+                                                                        @if($action!='create' && $item->esImagen())
+                                                                            <img src="{{ \URL::to('/') . '/' . $item->ruta . $item->fichero }}" />
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -90,26 +99,48 @@
                                                                            >
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="descripcion_defecto">Descripcion</label>
-                                                                    <input type="text" name="descripcion_defecto" class="form-control"
-                                                                           value="{{$item->descripcion_defecto}}"
-                                                                           >
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="enlace_defecto">Enlace</label>
                                                                     <input type="text" name="enlace_defecto" class="form-control"
                                                                            value="{{$item->enlace_defecto}}"
                                                                            >
                                                                 </div>
+                                                            </div>                                                            
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="descripcion_defecto">Descripcion</label>
+                                                                    <textarea id="descripcion_defecto" name="descripcion_defecto" class="mceEditor">{{$item->descripcion_defecto}}</textarea>
+                                                                </div>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
 					    </div>
+                                            
+                                            @if($action != 'create')    
+                                            <!-- Datos del Fichero  -->
+                                            <div class="col-xs-12">
+                                                <div class="widget-box transparent">
+                                                    <div class="widget-header widget-header-small">
+                                                    <h4 class="smaller lighter">Datos del Fichero</h4>
+                                                    </div>
+                                                    
+                                                    <div class="widget-body">
+                                                        <div class="widget-main row">
+                                                            <div class="col-md-4">
+                                                                
+                                                                <strong>Nombre: </strong> {{$item->nombre }} <br/>
+                                                                <strong>Tipo: </strong> {{$item->mime }} <br/>
+                                                                <strong>Tamaño: </strong>{{ number_format($item->peso/1000, 0) }} kb <br/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
+                                                
 					    <div class="acciones pull-right">
                                                 <input type="hidden" value="{{$from_url}}" name="from_url"/>
 					        <input type="submit" value="Guardar" class="boton btn btn-sm btn-success no-border" name="guardar"></li>

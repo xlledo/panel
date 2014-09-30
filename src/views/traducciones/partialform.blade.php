@@ -16,7 +16,7 @@
                                     <input type="hidden" name="id" id="id" value="{{ $item->id }}" />
                             @endif
                             <div class="acciones pull-right">
-                                <input type="submit" value="Guardar" alt="Guardar los cambios" name="guardar" class="btn btn-sm btn-success no-border">
+                                <button title="Guardar los cambios" type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
                             </div>
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -32,7 +32,7 @@
                                                                 <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
                                                                 <label for="select_idioma">Idioma *</label>
                                                                 <select name="idioma" id="select_idioma" class="form-control">
-                                                                <option value="">- - Seleccionar - -</option>
+                                                                <option value="">- Seleccionar -</option>
                                                                     @foreach($todos_idiomas as $id) {{-- Cogemos todos los idiomas disponibles  --}}
                                                                         @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
                                                                             <option value="{{$id->codigo_iso_2 }}">{{ ucfirst($id->nombre) }}</option>
@@ -90,14 +90,13 @@
                                         @if($action != 'create')
                                             <input type="hidden" name="item_id" value="{{$item->id }}"/>
                                         @endif
-                                        <input type="submit" value="Guardar " alt="Guardar los cambios" class="boton btn btn-sm btn-success no-border" name="guardar"></li>
+                                        <button title="Guardar los cambios" type="submit" class="btn btn-sm btn-success no-border"><i class="icon-save"></i> Guardar</button>
                                 </div>
                     </form>
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                
-                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}' >Borrar Traduccion</a>
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}' ><i class="icon-trash"></i>Borrar Traduccion</a>
                             </div>
                         @endif
                     @endif

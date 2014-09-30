@@ -38,4 +38,13 @@ class Fichero extends \Eloquent{
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
 	}                
+        
+        public function esImagen()
+        {
+                if(strpos($this->mime, 'image') === FALSE ){
+                    return FALSE;
+                }else{
+                    return TRUE;
+                }
+        }
 }

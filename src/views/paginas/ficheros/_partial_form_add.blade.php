@@ -42,7 +42,27 @@
 					            </div>
 					        </div>
                                                 </div>
-
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="widget-box transparent">
+					                <div class="widget-header widget-header-small">
+					                    <h4 class="smaller lighter">Datos Opcionales</h4>
+					                </div>                                                            
+                                                            <div class="widget-body">
+                                                                <div class="form-group">
+                                                                    <label for='nombre'>Idioma </label>
+                                                                    <select name="idioma" class="form-control">
+                                                                        <option value="-1"> - Todos - </option>
+                                                                        @foreach($todos_idiomas as $id)
+                                                                            <option value="{{ $id->codigo_iso_2 }}">{{$id->nombre}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+<!--
                                                 <div class='row'>
                                                 <div class="col-xs-12">
                                                     <div class="widget-box transparent">
@@ -106,6 +126,7 @@
                                                     </div>
                                                 </div>
 					    </div>
+        -->
 					    <div class="acciones pull-right">
                                             <input type="hidden" name="asociar" value="1" />
                                             <input type="hidden" name="from_id" value="{{$item_id}}" />

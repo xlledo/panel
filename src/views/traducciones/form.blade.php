@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 
 @section('tools')
-        <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Volver al listado</a>
+        <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
 	@if(Sentry::getUser()->hasAccess('traducciones::crear') && $action!= 'create')
 		<a href="{{ action('Ttt\Panel\TraduccionesController@nuevo') }}" title="Nuevo elemento en {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo</a></li>
 	@endif
@@ -68,7 +68,7 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar?" href="{{ action('Ttt\Panel\TraduccionesController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+				<a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrar' , $item->id )  }}' ><i class="icon-trash"></i>Borrar </a>
 			</div>
 		@endif
 	@endif

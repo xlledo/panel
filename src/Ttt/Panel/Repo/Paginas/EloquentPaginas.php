@@ -45,16 +45,25 @@ class EloquentPaginas implements PaginasInterface{
         $result->totalItems = 0;
         $result->items      = array();
 
+        $idioma = \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal();     
+        
         $orderBy  = isset($params['ordenPor']) ? $params['ordenPor'] : 'titulo';
         $orderDir = isset($params['ordenDir']) ? $params['ordenDir'] : 'asc';
 
         $query = $this->getQuery($params);
 
+        
         $paginas = $query->with('maker', 'updater')
+                                ->join('paginas_i18n',function($join) use($idioma,$params)
+                                {
+                                    $join->on('paginas.id','=','paginas_i18n.item_id')
+                                         ->where('idioma','=',$idioma->codigo_iso_2)
+                                         ->where('titulo','LIKE','%'.$params['titulo'].'%');
+                                })
                                 ->orderBy($orderBy, $orderDir)
                                 ->skip($limit * ($page - 1))
                                 ->take($limit)
-                                ->get();
+                                ->get(array('paginas.*','paginas_i18n.titulo'));
 
         $result->items      = $paginas->all();
         $result->totalItems = $this->totalPaginas($params);
@@ -99,6 +108,7 @@ class EloquentPaginas implements PaginasInterface{
         $item                  = $this->pagina->create($datos_comunes);
         $datos_i18n['idioma']  = $data['idioma'];
         $datos_i18n['titulo']  = $data['titulo'];
+        $datos_i18n['slug']    = $this->slug($datos_i18n['titulo']);
         $datos_i18n['item_id'] = $item->id;
 
         //creamos el Item y su traduccion
@@ -123,6 +133,10 @@ class EloquentPaginas implements PaginasInterface{
         //Idem del metodo anterior
         $pagina = $this->pagina->with('updater')->findOrFail($data['id']);
 
+     //   $pagina->slug = $this->slug($data['slug'], FALSE, $data['idioma']); // Slug del idioma
+        
+        $data['slug'] = $this->slug($data['slug'], FALSE, $data['idioma']); // Slug del idioma
+        
         if(! $pagina)
         {
             return FALSE;
@@ -152,9 +166,9 @@ class EloquentPaginas implements PaginasInterface{
         $itemBorrado->first()->traducciones()->delete();
 
         /* Borramos el item master */
-        $itemBorrado->first()->delete();
+        $r = $itemBorrado->first()->delete();
 
-        return ($itemBorrado === TRUE) ? TRUE : FALSE;
+        return ($r === TRUE)?: FALSE;
     }
 
     /**
@@ -163,7 +177,7 @@ class EloquentPaginas implements PaginasInterface{
      * @param  int $checkId  En el caso de actualizar, queremos que guardar el slug del elemento porque ya existirá
      * @return string       Computer-friendly tag
      */
-    protected function slug($string, $checkId = FALSE)
+    public function slug($string, $checkId = FALSE, $idioma = FALSE)
     {
         $originalSlug = $candidateSlug = url_title($string, 'dash', TRUE);
         //queremos que los slugs sean únicos, por lo tanto
@@ -171,11 +185,14 @@ class EloquentPaginas implements PaginasInterface{
         //$rule   = '/-[0-9]+$/';
         $matchingRule = '/-(?P<digit>\d+)$/';
 
+        $idioma = ($idioma)?: \App::make('Ttt\Panel\Repo\Idioma\IdiomaInterface')->idiomaPrincipal()->codigo_iso_2;
+        
         while($existe)
         {
-            $item = ($checkId !== FALSE) ? $this->traduccion->where('clave', $candidateSlug)
-                                                            ->where('id', '!=', $checkId)
-                                                            ->first() : $this->traduccion->where('clave', $candidateSlug)->first();
+            $item = ($checkId !== FALSE) ? $this->pagina_i18n->where('slug', $candidateSlug)
+                                                             ->where('idioma', $idioma)
+                                                             ->where('id', '!=', $checkId)
+                                                             ->first() : $this->pagina_i18n->where('slug', $candidateSlug)->first();
 
             $existe = ! is_null($item);//¿existe elemento (que no sea el actual si se indica)?
             if(! $existe)
@@ -215,9 +232,9 @@ class EloquentPaginas implements PaginasInterface{
     protected function getQuery(array $params)
     {
         $query = $this->pagina->newQuery();
-        if(! is_null($params['clave']))
+        if(isset($params['titulo']) && ! is_null($params['titulo'])) // Esto por lo visto tiene que ir en el JOIN
         {
-            $query->where('clave', 'LIKE', '%' . $params['clave'] . '%');
+            // $query->where('paginas_i18n.titulo', 'LIKE', '%' . $params['titulo'] . '%');
         }
 
         return $query;

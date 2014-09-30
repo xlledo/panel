@@ -29,7 +29,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         use \Ttt\Panel\Repo\Fichero\Extensions\FicheroTrait;
     
 	protected $_views_dir = 'paginas';
-	protected $_titulo = 'Paginas';
+	protected $_titulo = 'Páginas';
 
 	public static $moduleSlug = 'paginas';    
 
@@ -43,7 +43,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
 
         protected $allowed_url_params = array(
-		'clave', 'ordenPor', 'ordenDir', 'creado_por'
+		'titulo', 'ordenPor', 'ordenDir', 'creado_por'
 	);
 
 	protected $acciones_por_lote = array(
@@ -184,6 +184,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                     'titulo' => Input::get('titulo'),
                     'texto' => Input::get('texto'),
                     'idioma' => Input::get('idioma'),
+                    'slug'   => Input::get('slug'),
                     'creado_por' => \Sentry::getUser()['id'],
                     'actualizado_por' => \Sentry::getUser()['id']
                 );
@@ -231,7 +232,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             try{
                 
                 //Cogemos la tabla master
-                $this->pagina = $pagina = $this->pagina->byId(Input::get('item_id'));
+                $pagina = $this->pagina->byId(Input::get('item_id'));
                 
                 //Cogemos la traducción
                 $pagina_i18n = Pagina::find(Input::get('item_id'))
@@ -245,17 +246,21 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'titulo'    => Input::get('titulo'),
                         'texto'     => Input::get('texto'),
                         'idioma'    => Input::get('idioma'),
+                        'slug'      => Input::get('slug'),
                         'usuario'   => \Sentry::getUser()['id']
                 );
                 
                 $pagina_i18n = $pagina_i18n?: new Repo\Paginas\PaginaI18n;
                 
+                $posibleSlug = (Input::get('slug')!='') ? Input::get('slug') : Input::get('titulo');
+                
                 //Campos traducibles
                 $pagina_i18n->texto     = Input::get('texto');
                 $pagina_i18n->titulo    = Input::get('titulo');
                 $pagina_i18n->idioma    = Input::get('idioma');
+                $pagina_i18n->slug      = $this->pagina->slug($posibleSlug, FALSE, Input::get('idioma'));
                 $pagina_i18n->item_id   = Input::get('item_id');
-
+                
                 if( $this->paginaForm->update($data)
                     && $pagina_i18n->save() )
                 {
@@ -268,7 +273,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                     )
                     ));
                     
-                    return \Redirect::to('admin/paginas/ver/' . $pagina->id);
+                    return \Redirect::to('admin/paginas/ver/' . $pagina->id . '#datos-'. $pagina_i18n->idioma);
                     
                 }
                 
@@ -370,8 +375,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 		try
 		{
 
+                        $r = $this->pagina->delete($id);
 			//$ent = $this->modulo->byId(Input::get('id'));
-			if(! $this->pagina->delete($id))
+			if(! $r)
 			{
 				throw new \Ttt\Panel\Exception\TttException;
 			}
@@ -404,8 +410,38 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 			)
 		));
 
-		return \Redirect::action('Ttt\Panel\PaginasController@ver', $id);
+		return \Redirect::action('Ttt\Panel\PaginasController@index');
 	}
+
+        /**
+         * Borrado de una traduccion asociada
+         *
+         * @return type
+         */
+
+        public function borrarTraduccion($id = null)
+        {
+            $message = 'Traduccion eliminada correctamente';
+
+            if($id)
+            {
+                $pagina_i18n = Repo\Paginas\PaginaI18n::find($id);
+                
+                
+                if($pagina_i18n->delete() && $item_id = $pagina_i18n->item_id)
+                {
+                    \Session::flash('messages', array(
+                            array(
+                                'class' =>'alert-success',
+                                'msg'   => $message
+                            )
+                    ));
+                    return \Redirect::action('Ttt\Panel\PaginasController@ver', $item_id);
+                }
+            }
+
+            return \Redirect::action('Ttt\Panel\PaginasController@index');
+        }        
 
         /**
 	* Ejecuta una acción sobre un conjunto de elementos
@@ -484,7 +520,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'titulo'      => \Input::get('titulo'),
                         'alt'         => \Input::get('alt'),
                         'enlace'      => \Input::get('enlace'),
-                        'descripcion' => \Input::get('descripcion')
+                        'descripcion' => \Input::get('descripcion'),
+                        'idioma'      => \Input::get('idioma')
                     );
                     
                         //-- Obtenemos el elemento de la tabla Pivote
@@ -515,10 +552,13 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                                 $r = $pagina->ficheros()->attach(\Input::get('fichero_id'), $datosEspecificos);
                                                 return \Input::get('fichero_id');
                                             }else{
+                                                
                                                 $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
                                                 $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
                                                 $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
                                                 $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
+                                                $ficherosPivot->first()->pivot->idioma      = $datosEspecificos['idioma'];
+                                                
                                                 $ficherosPivot->first()->pivot->save();
                                             return TRUE;
                                             }
@@ -594,6 +634,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
    
             }else{ //Si no tiene tabla pivote es que hemos cambiado el fichero
                 $camposEspecificos = array( 'nombre'        => \Input::old('nombre')?:\Input::get('nombre'),
+                                            'idioma'        => \Input::old('idioma')?:\Input::get('idioma'),
                                             'titulo'        => \Input::old('titulo')?:\Input::get('titulo'),
                                             'alt'           => \Input::old('alt')?:\Input::get('alt'),
                                             'enlace'        => \Input::old('enlace')?:\Input::get('enlace'),
@@ -603,6 +644,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
                 //-- Si no encuentra los modelos, repopulamos los datos de la vista
                 $camposEspecificos = array( 'nombre'        => (\Input::old('nombre'))?:\Input::get('nombre'),
+                                            'idioma'        => (\Input::old('idioma'))?:\Input::get('idioma'),
                                             'titulo'        => (\Input::old('titulo'))?:\Input::get('titulo'),
                                             'alt'           => (\Input::old('alt'))?:\Input::get('alt'),
                                             'enlace'        => (\Input::old('enlace'))?:\Input::get('enlace'),
@@ -624,13 +666,15 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $data = array(  'titulo'        => \Input::old('titulo'),
                             'alt'           => \Input::old('alt'),
                             'enlace'        => \Input::old('enlace'),
-                            'descripcion'   => \Input::old('descripcion'));
+                            'descripcion'   => \Input::old('descripcion'),
+                            );
         }
         
                 \View::share('titulo',      $data['titulo']);
                 \View::share('alt',         $data['alt']);
                 \View::share('enlace',      $data['enlace']);
                 \View::share('descripcion', $data['descripcion']);
+                \View::share('idioma',      $data['idioma']);
                 
                 return $data;
     }

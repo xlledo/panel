@@ -147,12 +147,14 @@ class FicherosController extends AbstractCrudController
                 }
                 
                 
+                
                 $data = array(
                     'nombre'  => Input::get('nombre'),
                     'fichero' => $nombre_fichero,
                     'usuario' => \Sentry::getUser()['id'],
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
+                    'peso'    => $fichero->getSize(),
                     //'tipo'    => Input::get('tipo'), //El tipo de momento va a ir en la relacion
                     'titulo_defecto'        => Input::get('titulo_defecto'),
                     'alt_defecto'           => Input::get('alt_defecto'),
