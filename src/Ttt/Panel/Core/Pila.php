@@ -77,6 +77,9 @@ class Pila {
 			//el caso de los ficheros relacionados es especial
 			$this->popToReference();
 			$ultimaReferencia = $this->getUltimaReferencia(TRUE);
+			echo '<pre>';
+			print_r($ultimaReferencia->toArray());
+			echo '</pre>';exit;
 			if($ultimaReferencia === FALSE)
 			{
 				//no ha accedido de manera correcta, que es desde el ver de un elemento
