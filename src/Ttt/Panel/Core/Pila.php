@@ -76,10 +76,8 @@ class Pila {
 		{
 			//el caso de los ficheros relacionados es especial
 			$this->popToReference();
-			$ultimaReferencia = $this->getUltimaReferencia(TRUE);
-			echo '<pre>';
-			print_r($ultimaReferencia->toArray());
-			echo '</pre>';exit;
+			$ultimaReferencia     = $this->getUltimaReferencia(TRUE);
+			$ultimaReferenciaPila = $this->getUltimaReferencia();
 			if($ultimaReferencia === FALSE)
 			{
 				//no ha accedido de manera correcta, que es desde el ver de un elemento
@@ -91,7 +89,7 @@ class Pila {
 				$this->push(
 					array(
 						'titulo'          => 'Ficheros',
-						'url'             => $ultimaReferencia->url . '#ficheros',
+						'url'             => $ultimaReferenciaPila['url'] . '#ficheros',
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
@@ -116,11 +114,11 @@ class Pila {
 				//$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$ficheroRelacionado = $ultimaReferencia->ficheros()
 						->where($moduleSlug . '_ficheros.id', $parametros['id'])
-						->get()->first()->pivot;//recuperamos el fichero relacionado de la tabla pivote para su referencia
+						->get()->first();//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(
 						'titulo'          => 'Ficheros',
-						'url'             => $ultimaReferencia->url . '#ficheros',
+						'url'             => $ultimaReferenciaPila['url'] . '#ficheros',
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
