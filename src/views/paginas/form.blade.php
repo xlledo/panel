@@ -11,7 +11,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\PaginasController@index') }}" title="Volver al listado">Paginas</a></h1>
 	@else
-		<h1>Editando {{$item->titulo}}</h1>
+        <h1>Editando <em>{{$item->titulo}}</em></h1>
 	@endif
 @stop
 @section('content')

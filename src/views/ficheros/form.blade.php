@@ -10,7 +10,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\FicherosController@index') }}" title="Volver al listado">Ficheros</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }}</h1>
+                <h1>Editando <em>{{ $item->nombre }}</em></h1>
 	@endif
 @stop
 @section('content')
@@ -22,7 +22,6 @@
                                              <i class="icon-list"></i>  Datos</a>
                                      </li>
 				</ul>
-
 				<div id="datos">
                                     <form class="clearfix" action="<?php echo ($action == 'create') ? action('Ttt\Panel\FicherosController@crear') : action('Ttt\Panel\FicherosController@actualizar') ; ?>" method="post"  enctype="multipart/form-data">
 						@if($action != 'create')
@@ -34,19 +33,14 @@
                                    	    <div class="row">
 					        <div class="col-xs-12">
 					            <div class="widget-box transparent">
-                                                        @if($action != 'create')
-                                                            <div class='alert alert-block alert-info'>
-                                                                <span>La ruta del fichero es: {{\URL::to('/') . '/' .$item->ruta . $item->fichero}}</span>
-                                                            </div>
-                                                        @endif
-					                <div class="widget-header widget-header-small">
+                                	                <div class="widget-header widget-header-small">
 					                    <h4 class="smaller lighter">Datos</h4>
 					                </div>
 					                <div class="widget-body">
                                                             <div class="widget-main row"> <!-- Form Ficheros -->
                                                                 <div class="col-md-4">
                                                                     <div class="form-group @if($errors->first('nombre')) has-error @endif">
-                                                                        <label for='nombre'>Nombre *</label>
+                                                                        <label for='nombre'>Nombre </label>
                                                                         <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
                                                                             @if ($errors->first('nombre'))
                                                                                 @foreach($errors->get('nombre') as $err)
@@ -65,12 +59,14 @@
                                                                 </div>
                                                                 
                                                                 <div class="col-md-4">
-                                                                    <h4>Preview</h4>
-                                                                    <div>
-                                                                        @if($action!='create' && $item->esImagen())
-                                                                            <img src="{{ \URL::to('/') . '/' . $item->ruta . $item->fichero }}" />
-                                                                        @endif
-                                                                    </div>
+                                                                    @if($action!='create')
+                                                                        <h4>Preview</h4>
+                                                                            <div>
+                                                                                @if($item->esImagen())
+                                                                                    <img src="{{ \URL::to('/') . '/' . $item->ruta . $item->fichero }}" style='max-width: 250px;'/>
+                                                                                @endif
+                                                                            </div>
+                                                                    @endif
                                                                 </div>
                                                             </div>
 					                </div>
@@ -99,14 +95,16 @@
                                                                            >
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="enlace_defecto">Enlace</label>
-                                                                    <input type="text" name="enlace_defecto" class="form-control"
-                                                                           value="{{$item->enlace_defecto}}"
-                                                                           >
-                                                                </div>
-                                                            </div>                                                            
+                                                            <!-- ENLACE
+                                                                                                                            <div class="col-md-12">
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label for="enlace_defecto">Enlace</label>
+                                                                                                                                    <input type="text" name="enlace_defecto" class="form-control"
+                                                                                                                                           value="{{$item->enlace_defecto}}"
+                                                                                                                                           >
+                                                                                                                                </div>
+                                                                                                                            </div>                                                        
+                                                                                                                            -->
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="descripcion_defecto">Descripcion</label>
@@ -119,27 +117,27 @@
                                                 </div>
 					    </div>
                                             
-                                            @if($action != 'create')    
-                                            <!-- Datos del Fichero  -->
+                                            
+                                                
+                                            <?php if( $action == 'edit' ): ?>
                                             <div class="col-xs-12">
                                                 <div class="widget-box transparent">
                                                     <div class="widget-header widget-header-small">
                                                     <h4 class="smaller lighter">Datos del Fichero</h4>
                                                     </div>
-                                                    
                                                     <div class="widget-body">
                                                         <div class="widget-main row">
                                                             <div class="col-md-4">
-                                                                
                                                                 <strong>Nombre: </strong> {{$item->nombre }} <br/>
                                                                 <strong>Tipo: </strong> {{$item->mime }} <br/>
                                                                 <strong>Tamaño: </strong>{{ number_format($item->peso/1000, 0) }} kb <br/>
+                                                                <strong>Enlace: </strong>{{\URL::to('/') . '/' .$item->ruta . $item->fichero}}<br/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            @endif
+                                            <?php endif; ?>
                                                 
 					    <div class="acciones pull-right">
                                                 <input type="hidden" value="{{$from_url}}" name="from_url"/>
@@ -154,7 +152,8 @@
 		@if ($action != 'create')
 			<div class="space-6"></div>
 			<div class="acciones">
-				<a class="btn btn-minier btn-danger no-border" title="Eliminar ?" href="{{ action('Ttt\Panel\FicherosController@borrar', $item->id) }}"><i class="icon-trash"></i>Borrar</a>
+                                <a href="#" title="Eliminar ?" class="btn btn-minier btn-danger no-border btn_confirmacion" 
+                                    data-action="{{ action('Ttt\Panel\FicherosController@borrar' , $item->id )  }}"><i class="icon-trash"></i>Borrar</a>                                
 			</div>
 		@endif
 

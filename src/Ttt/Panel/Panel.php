@@ -2,7 +2,7 @@
 namespace Ttt\Panel;
 
 
-class Panel {
+class Panel {   
 	public function __construct()
 	{
 

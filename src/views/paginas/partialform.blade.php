@@ -27,7 +27,7 @@
                                             <div class="widget-body">
                                                 <div class="widget-main row">
                                                     @if($nueva_traduccion)
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
                                                                 <label for="select_idioma">Idioma *</label>
                                                                 <select name="idioma" id="select_idioma" class="form-control">
@@ -50,10 +50,9 @@
                                                         <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma)) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value='{{ ($nueva_traduccion || $action=='create') ? '' : $trad->titulo }}' size="60" />
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value='{{ ($action=='create') ? $item->titulo : ( ($nueva_traduccion) ? $item_nuevatraduccion->titulo : (($idioma_error == $trad->idioma ) ? \Input::old('titulo') : $trad->titulo )) }}' size="60" />
                                                                 </div>
                                                             @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
-                                                                
                                                                 @foreach($errors->get('titulo') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
                                                                 @endforeach
@@ -68,7 +67,7 @@
                                                     <h4 class="smaller lighter">Texto</h4>
                                                 </div>
                                                 <div class="widget-body">
-                                                    <textarea name="texto" class="mceEditor">{{ ($nueva_traduccion || $action=='create') ? '' : $trad->texto }}</textarea>
+                                                    <textarea name="texto" class="mceEditor">{{ ($action=='create') ? $item->texto : ( ($nueva_traduccion) ? $item_nuevatraduccion->texto : (($idioma_error == $trad->idioma ) ? \Input::old('texto') : $trad->texto )) }}</textarea>
                                                 </div>
                                                 @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) 
                                                         @foreach($errors->get('texto') as $err)
@@ -117,7 +116,7 @@
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{ action('Ttt\Panel\PaginasController@borrarTraduccion' , $trad->id )  }}"><i class="icon-trash"></i>Borrar traduccion de {{$_titulo}}</a>
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action="{{ action('Ttt\Panel\PaginasController@borrarTraduccion' , $trad->id )  }}"><i class="icon-trash"></i>Borrar traducción de {{$_titulo}}</a>
                             </div>
                         @endif
                     @endif

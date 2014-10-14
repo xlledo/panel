@@ -122,10 +122,16 @@ class TraduccionesController extends AbstractCrudController
             if($id)
             {
                 $item = Traduccion::find($id);
+                
+                $item_nuevatraduccion = new \stdClass();
+                
+                $item_nuevatraduccion->texto = \Input::old('texto') ?: '';
+                $item_nuevatraduccion->clave = \Input::old('clave') ?: $item->clave;
 
                 View::share('title', 'Editar elemento');
                 return View::make('panel::traducciones.form')
                                     ->with('item', $item)
+                                    ->with('item_nuevatraduccion', $item_nuevatraduccion)
                                     ->with('action', 'edit');
 
             }
@@ -190,11 +196,13 @@ class TraduccionesController extends AbstractCrudController
         public function actualizar()
         {
         $message = 'Traducción guardada correctamente';
-
+        $nueva_traduccion = FALSE; 
+        
             try{
 
                 //Cogemos tabla master traduccón
                 $this->traduccion = $traduccion = Traduccion::find(Input::get('item_id'));
+                
                 $this->traduccion->clave = Input::get('clave');
 
                 // Cogemos la traducción
@@ -203,6 +211,7 @@ class TraduccionesController extends AbstractCrudController
                                                         ->where('idioma','=', Input::get('idioma'))
                                                         ->first();
 
+                $nueva_traduccion = $traduccion_i18n ? FALSE : TRUE;
                 $traduccion_i18n = $traduccion_i18n ?: new TraduccionI18n;
                 //Cargamos campos traducibles
                 $traduccion_i18n->texto     = Input::get('texto');
@@ -230,6 +239,7 @@ class TraduccionesController extends AbstractCrudController
 
                         //Guardamos los ficheros
                         Traduccion::guardarFicheros();
+                        
                         return \Redirect::to('admin/traducciones/ver/' . $traduccion->id . '#datos-' . Input::get('idioma'));
                     }
 
@@ -253,7 +263,7 @@ class TraduccionesController extends AbstractCrudController
 
             \Session::flash('idioma_error', Input::get('idioma'));
             $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
-            return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
+            return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . (($nueva_traduccion) ? 'nuevatraduccion' : $idioma_redireccion))
                                             ->withInput()
                                             ->withErrors($this->traduccionForm->errors());
 

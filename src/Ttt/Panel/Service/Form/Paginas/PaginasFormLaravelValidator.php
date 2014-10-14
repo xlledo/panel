@@ -12,7 +12,7 @@ class PaginasFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'titulo'            => 'required',
+        'titulo'            => 'required|max:255',
         'texto'             => 'required',
         'idioma'            => 'required'
     );

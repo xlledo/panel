@@ -107,10 +107,11 @@ class EloquentVariablesglobales implements VariablesglobalesInterface{
             return FALSE;
         }
 
-        $variablesglobale->actualizado_por   = $data['usuario']; // CON UN OBSERVER
-        $variablesglobale->clave             = isset($variablesglobale['clave']) ? $variablesglobale['clave'] : $variablesglobale['clave'];
-        $variablesglobale->valor             = isset($variablesglobale['valor']) ? $variablesglobale['valor'] : $variablesglobale['valor'];
+        $variablesglobale->actualizado_por   = $data['usuario']; 
+        $variablesglobale->clave             = $this->slug(isset($data['clave']) ? $data['clave'] : $variablesglobale['clave'], $data['id'] );
+        $variablesglobale->valor             = isset($data['valor']) ? $data['valor'] : $variablesglobale['valor'];
 
+        
         $variablesglobale->update();
 
         //return TRUE;
@@ -138,9 +139,6 @@ class EloquentVariablesglobales implements VariablesglobalesInterface{
     */
     public function noVisible($id, $usuario)
     {
-        //POSIBLE CAMBIO:
-        //PODRIA SER CONVENIENTE HACERLO COMO METODO DE CLASE EN VEZ DE PROCEDIMETNAL ?
-        //AGRUPAR ESTE METODO CON visible, QUIZAS LLAMARLE TOGGLE
 
         return $this->update(array(
             'id'      => $id,
@@ -222,9 +220,14 @@ class EloquentVariablesglobales implements VariablesglobalesInterface{
     protected function getQuery(array $params)
     {
         $query = $this->variablesglobale->newQuery();
-        if(! is_null($params['clave']))
+        if(! is_null($params['clave'])   )
         {
             $query->where('clave', 'LIKE', '%' . $params['clave'] . '%');
+        }
+        
+        if(! is_null($params['valor'])   )
+        {
+            $query->where('valor', 'LIKE', '%' . $params['valor'] . '%');
         }
 
         return $query;

@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modal_select_fichero" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 80%;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -8,6 +8,7 @@
       </div>
       <div class="modal-body">
           <div class="tabbable">
+              
                                         <ul class="nav nav-tabs" id="myTab">
                                                 <li class="active">
                                                         <a data-toggle="tab" href="#agrega_fichero">
@@ -21,15 +22,17 @@
                                                         </a>
                                                 </li>
                                         </ul>
+              
                                         <div class="tab-content">
                                                 <div id="agrega_fichero" class="tab-pane fade active in">
                                                         <?php $add_form = (isset($add) && $add) ? '_add' : '' ;?>
                                                         @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form' . $add_form, array('action_fichero'=>'create'))
                                                 </div>
-                                                <div id="selecciona_fichero" class="tab-pane fade" style="overflow:scroll; height:500px;">
+                                                <div id="selecciona_fichero" class="tab-pane fade" >
                                                         @include('packages/ttt/panel/ficheros/_partial_modal_listado')
                                                 </div>
                                         </div>
+
                                 </div>
       </div>
     </div>

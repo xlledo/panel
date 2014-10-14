@@ -51,7 +51,7 @@
                         action_url     = $(this).data('action');
                         
                         bootbox.confirm(
-                                {message: "¿Esta seguro de ejecutar la accion?",
+                                {message: "¿Está seguro de ejecutar la acción?",
                                 buttons: {
                                    confirm: {
                                         label: "Aceptar",

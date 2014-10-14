@@ -1,5 +1,4 @@
-<table class="table table-striped table-bordered table-hover" summary="Listado de Ficheros" border="0" cellpadding="0" cellspacing="1">
-    
+<table class="table table-striped table-bordered table-hover" id="tablaModalFichero" summary="Listado de Ficheros" border="0" cellpadding="0" cellspacing="1">
     <thead>
         <tr>
             <th>Preview</th>
@@ -7,14 +6,16 @@
             <th>Acciones</th>
         </tr>
     </thead>
-    
+    <tbody>
     @foreach($ficheros_todos as $index => $item)
     <tr class="@if($index % 2 == 0) par @else impar @endif">
-        
         <td>
-            Preview
+            @if($item->esImagen())
+                 <img src='{{URL::to('/') . '/' .$item->ruta . $item->fichero }}' width="50" />
+            @else
+                 No disponible
+            @endif
         </td>
-        
         <td>
             {{ $item->nombre }}
         </td>
@@ -27,7 +28,29 @@
                         data-fichero='{{$item->nombre}}'>Asociar y cerrar</a>
             @endif
         </td>
-        
-    <tr/>
+    </tr>
     @endforeach
+    </tbody>
 </table>
+
+<script type='text/javascript'>
+    $(document).ready(function()
+    {
+        
+        $('#tablaModalFichero').dataTable({
+                "lengthChange": false,
+                "pageLength": 6,
+                "paging": true,
+                "language":{
+                    "info":      "Mostrando _START_ to _END_ de _TOTAL_ elementos",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior",
+                        
+                    }}
+        });
+        
+    });
+ </script>

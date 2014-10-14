@@ -56,12 +56,23 @@ class Pagina extends \Eloquent{
      * @return PaginasI18n
     */
 
-        public function traducciones()
-        {
-                return $this->hasMany('Ttt\Panel\Repo\Paginas\PaginaI18n', 'item_id');
-        }    
+    public function traducciones()
+    {
+            return $this->hasMany('Ttt\Panel\Repo\Paginas\PaginaI18n', 'item_id');
+    }    
 
 
+    /*
+        *  Devuelve la fecha en formato d-m-Y con hora
+        */
+    
+    public function ultimaActualizacion()
+    {
+        $fecha_c = $this->updated_at;
+        
+        return $fecha_c->day . '-' . $fecha_c->month . '-' . $fecha_c->year;
+    }
+        
         /**
         * Devuelve una traduccion de un item, desde su Item principal
         *
