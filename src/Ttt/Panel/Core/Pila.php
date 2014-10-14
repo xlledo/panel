@@ -196,7 +196,7 @@ class Pila {
 						$this->push(
 							array(
 								'titulo'          => $element['titulo'],
-								'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+								'url'             => action($controlador . '@ver', $parametros[$config['param']]) . '?direction=backward',
 								'eloquent'        => $config['eloquent'],
 								'eloquentMethod'  => $config['metodo'],
 								'retrievingField' => $config['param'],
@@ -218,18 +218,25 @@ class Pila {
 							//no ha accedido de manera correcta, que es desde el ver de un elemento
 							throw new \Ttt\Panel\Exception\TttException('No existe referencia en la Pila, para poder acceder ha de pasar por una vista de edición');
 						}
-						if(preg_match('/^referencia(.+)$/', $method, $matches))
+						if(preg_match('/^referencia(.+)$/', $metodo, $matches))
 						{
 							//Apilamos la URL para la Pestaña, cuyo nombre se extrae del nombre del método quitándole la cadena referencia y haciendo un strtolower.
 							//En la pestaña indicamos los datos de la propia referencia para recuperarlos a continuación.
 							//Marcamos este elemento de la Pila como referencia = TRUE
 
-							$pestania = strtolower(str_replace('referencia', '', $method));
+							$pestania = strtolower(str_replace('referencia', '', $metodo));
+							$tituloElm = ucfirst($pestania);
+
+							//el título canónico ha de cogerse de la configuración
+							if(array_key_exists($pestania, \Config::get('panel::pila', array())))
+							{
+								$tituloElm = \Config::get('panel::pila')[$pestania]['tituloCanonico'];
+							}
 
 							$this->push(
 								array(
-									'titulo'          => ucwords($pestania),
-									'url'             => action($controlador . '@ver', $ultimaReferencia['retrievingValue']) . '#' . $pestania,
+									'titulo'          => $tituloElm,
+									'url'             => action($controlador . '@ver', $ultimaReferencia['retrievingValue']) . '?direction=backward' . '#' . $pestania,
 									'eloquent'        => $ultimaReferencia['eloquent'],
 									'eloquentMethod'  => $ultimaReferencia['eloquentMethod'],
 									'retrievingField' => $ultimaReferencia['retrievingField'],
@@ -264,7 +271,7 @@ class Pila {
 								$this->push(
 									array(
 										'titulo'          => $element['titulo'],
-										'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+										'url'             => action($controlador . '@ver', $parametros[$config['param']]) . '?direction=backward',
 										'eloquent'        => $config['eloquent'],
 										'eloquentMethod'  => $config['metodo'],
 										'retrievingField' => $config['param'],
@@ -287,7 +294,7 @@ class Pila {
 
 							$newElm = array(
 								'titulo'          => $element['titulo'],
-								'url'             => action($controlador . '@ver', $parametros[$config['param']]),
+								'url'             => action($controlador . '@ver', $parametros[$config['param']]) . '?direction=backward',
 								'eloquent'        => $config['eloquent'],
 								'eloquentMethod'  => $config['metodo'],
 								'retrievingField' => $config['param'],
@@ -368,6 +375,25 @@ class Pila {
 			if($rs['reference'])
 			{
 				return $asModel ? $this->getModelObject($rs) : $rs;
+			}
+		}
+
+		return FALSE;
+	}
+
+	public function getPenultimaReferencia($asModel = FALSE)
+	{
+		$reversedStack = array_reverse($this->stack);
+		$encontradas = 0;
+		foreach($reversedStack as $rs)
+		{
+			if($rs['reference'])
+			{
+				if($encontradas == 1)
+				{
+					return $asModel ? $this->getModelObject($rs) : $rs;
+				}
+				$encontradas ++;
 			}
 		}
 
