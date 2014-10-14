@@ -12,7 +12,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\ModuloController@index') }}" title="Volver al listado">Módulos</a></h1>
 	@else
-		<h1>Editando {{$item->nombre}}</h1>
+        <h1>Editando <em>{{$item->nombre}}</em></h1>
 	@endif
 @stop
 @section('content')

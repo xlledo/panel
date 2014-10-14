@@ -53,12 +53,12 @@
 	                        <thead>
 	                            <tr>
 
-	                                <th scope="col" width="200">{{ ordenable_link($currentUrl, 'titulo', 'Titulo', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+	                                <th scope="col" width="200">{{ ordenable_link($currentUrl, 'titulo', 'Título', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 					<th scope="col">Texto</th>	
                                         <th scope="col" width="200">Idioma</th>
                                         <th scope="col" width="300">
                                             
-                                            {{ ordenable_link($currentUrl,'updated_at','Ultima Actualizacion', $params, $params[Config::get('panel::app.orderDir')]) }}
+                                            {{ ordenable_link($currentUrl,'updated_at','Última Actualización', $params, $params[Config::get('panel::app.orderDir')]) }}
                                             </th>
                                         
                                         @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))
@@ -81,13 +81,13 @@
                                                                                     @foreach($item->traducciones()->get() as $trad)
                                                                                         <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $trad->idioma  }}" class="label label-success arrowed">{{$trad->idioma }}</a>
                                                                                     @endforeach
-                                                                                    @foreach($todos_idiomas as $id) {{-- Cuando haya modulo de idiomas, habra que cambiarlo por idiomas activos  --}}
+                                                                                    @foreach($todos_idiomas as $id) 
                                                                                             @if( ! $item->traduccion($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
-                                                                                                <a href="{{ 'paginas/ver/' . $item->id. '#datos-' . $id->codigo_iso_2  }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
+                                                                                                <a href="{{ 'paginas/ver/' . $item->id. '#datos-nuevatraduccion' }}" class="label label-danger arrowed"> {{ $id->codigo_iso_2 }} </a>
                                                                                             @endif
                                                                                     @endforeach
                                                                                 </td>
-                                                                                <td class="td_click">{{ $item->updated_at }} por {{ $item->updater->first_name . ' ' . $item->updater->last_name }} </td>
+                                                                                <td class="td_click">{{ $item->ultimaActualizacion() }} por {{ $item->updater->first_name . ' ' . $item->updater->last_name }} </td>
                                                                                 <td>
                                                                                     @if(Sentry::getUser()->hasAccess(array('traducciones::editar', 'traducciones::borrar'), FALSE))            
                                                                                             <input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" />

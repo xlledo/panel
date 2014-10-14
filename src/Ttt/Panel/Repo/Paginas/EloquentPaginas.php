@@ -135,7 +135,7 @@ class EloquentPaginas implements PaginasInterface{
 
      //   $pagina->slug = $this->slug($data['slug'], FALSE, $data['idioma']); // Slug del idioma
         
-        $data['slug'] = $this->slug($data['slug'], FALSE, $data['idioma']); // Slug del idioma
+        $data['slug'] = $this->slug($data['slug'], $data['id'], $data['idioma']); // Slug del idioma
         
         if(! $pagina)
         {
@@ -163,10 +163,10 @@ class EloquentPaginas implements PaginasInterface{
         $itemBorrado = $this->pagina->findOrFail($id);
 
         /* Borramos las traducciones asociadas */
-        $itemBorrado->first()->traducciones()->delete();
+        $itemBorrado->traducciones()->delete();
 
         /* Borramos el item master */
-        $r = $itemBorrado->first()->delete();
+        $r = $itemBorrado->delete();
 
         return ($r === TRUE)?: FALSE;
     }

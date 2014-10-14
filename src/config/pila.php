@@ -84,6 +84,6 @@ return array(
         'metodo'        => 'byId',
         'param'         => 'id',
         'readFields'    => array("titulo"),
-        'tituloCanonico'=> 'Paginas'
+        'tituloCanonico'=> 'Páginas'
     )
 );

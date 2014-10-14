@@ -70,7 +70,6 @@ class EloquentFichero implements FicheroInterface{
                                         ->delete();
         
         return ($deletedFichero === TRUE) ? TRUE : FALSE;
-
     }
 
     public function update(array $data) {

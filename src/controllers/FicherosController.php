@@ -117,14 +117,17 @@ class FicherosController extends AbstractCrudController
                     if(true)
                     {
                         $fichero = Input::file('fichero');
-                        $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '.' . $fichero->getClientOriginalExtension();
+                        
+                        $nombre_fichero_canonical   = \Illuminate\Support\Str::slug( substr($fichero->getClientOriginalName(), 0, strlen($fichero->getClientOriginalName())- (strlen($fichero->getClientOriginalExtension()))));
+                        $nombre_fichero             = $nombre_fichero_canonical . '.' . $fichero->getClientOriginalExtension();
+                        
                         $path_completo  = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
                         $mime           = $fichero->getMimeType();
 
                         /**
-                         * Generamos el nombre del fichero,
-                         * si ya existe lo numeramos
-                         */
+                                                * Generamos el nombre del fichero,
+                                                * si ya existe lo numeramos
+                                                */
                         $i=1;
                         while(file_exists($path_completo . $nombre_fichero)){
                             $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '_'.$i . '.' . $fichero->getClientOriginalExtension();
@@ -135,7 +138,6 @@ class FicherosController extends AbstractCrudController
                         $fichero->move($path_completo , $nombre_fichero);
                         
                     }else{
-                        
                         throw new \Ttt\Panel\Exception\TttException('Errores de validacion en el Fichero');
                     }
                 }
@@ -149,13 +151,12 @@ class FicherosController extends AbstractCrudController
                 
                 
                 $data = array(
-                    'nombre'  => Input::get('nombre'),
+                    'nombre'  => (Input::get('nombre')) ?: $nombre_fichero_canonical, 
                     'fichero' => $nombre_fichero,
                     'usuario' => \Sentry::getUser()['id'],
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
-                    'peso'    => $fichero->getSize(),
-                    //'tipo'    => Input::get('tipo'), //El tipo de momento va a ir en la relacion
+                    'peso'    => '',
                     'titulo_defecto'        => Input::get('titulo_defecto'),
                     'alt_defecto'           => Input::get('alt_defecto'),
                     'enlace_defecto'        => Input::get('enlace_defecto'),
@@ -163,10 +164,16 @@ class FicherosController extends AbstractCrudController
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
                 );
                 
+                try { //Si falla al obtener el peso, lo ponemos a 0
+                    $data['peso'] = $fichero->getSize();
+                } catch (\RuntimeException $ex) {
+                    $data['peso'] = '';
+                }
+                
                 /*
-                 * Primero subimos el fichero, si sube correctamente
-                 * entonces guardamos el registro en la BBDD
-                 */
+                                * Primero subimos el fichero, si sube correctamente
+                                * entonces guardamos el registro en la BBDD
+                                */
                 
                 $ficheroId = $this->ficheroForm->save($data);
                 
@@ -184,7 +191,7 @@ class FicherosController extends AbstractCrudController
                     return \Redirect::to( $url_redirect );
                 }
                 
-                return \Redirect::action('Ttt\Panel\FicherosController@index');
+                return \Redirect::action('Ttt\Panel\FicherosController@ver', $ficheroId);
                 
             } catch (\Ttt\Panel\Exception\TttException $e) {
                                 $message = $e->getMessage();
@@ -226,8 +233,8 @@ class FicherosController extends AbstractCrudController
                                 ->with('item', $fichero);
                 
             }else{
-                //TODO Redirect
-                die('no encontrado');
+                
+                return \Redirect::action('Ttt\Panel\FicherosController@index');
             }
         }
         
@@ -242,21 +249,11 @@ class FicherosController extends AbstractCrudController
                 if(Input::hasFile('fichero')){
 
                     $fic = Input::file('fichero');
-                    //-- Mantenemos el nombre antiguo solo si no cambiamos la extensión
-                    
-                            //                    if($fichero->mime != $fic->getMimeType()){
-                            //                        
-                            //                            $fichero->fichero = \Illuminate\Support\Str::slug($fic->getClientOriginalName(),'-') . '.' . $fic->getClientOriginalExtension();
-                            //                            $fichero->ruta   = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
-                            //                            
-                            //                    }
-                    
                     $fic->move($fichero->ruta, $fichero->fichero);
                 }
                 
                 //--Guardamos el fichero
-                $fichero->nombre                = Input::get('nombre');
-//                $fichero->tipo                  = Input::get('tipo');
+                $fichero->nombre                = (Input::get('nombre'))?:$fichero->fichero;
                 $fichero->titulo_defecto        = Input::get('titulo_defecto');
                 $fichero->alt_defecto           = Input::get('alt_defecto');
                 $fichero->descripcion_defecto   = Input::get('descripcion_defecto');
@@ -378,7 +375,7 @@ class FicherosController extends AbstractCrudController
         }
         
     	protected function getParams()
-	{	
+	{
                 $input = array_merge(Input::only($this->allowed_url_params));
 
 		$input[Config::get('panel::app.orderBy')]  = !is_null($input[Config::get('panel::app.orderBy')]) ? $input[Config::get('panel::app.orderBy')] : 'nombre';

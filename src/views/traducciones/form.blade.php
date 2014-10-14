@@ -11,7 +11,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\TraduccionesController@index') }}" title="Volver al listado">Traducciones</a></h1>
 	@else
-		<h1>Editando {{$item->clave}}</h1>
+        <h1>Editando <em>{{$item->clave}}</em></h1>
 	@endif
 @stop
 @section('content')

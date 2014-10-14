@@ -40,6 +40,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         protected $fichero;
         protected $ficheroForm;
         protected $ficheroPivot;
+        
+        
 
 
         protected $allowed_url_params = array(
@@ -65,7 +67,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                      PaginasForm $paginaForm,
                                      FicheroInterface $fichero,
                                      FicheroForm $ficherosForm
-                               //      EloquentPaginasFicheros $ficheroPivot
+                               
                                     ) 
         {
         
@@ -75,7 +77,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $this->paginaForm   = $paginaForm;
             $this->fichero      = $fichero;
             $this->ficheroForm  = $ficherosForm;
-            //$this->ficheroPivot = $ficheroPivot;
+            
+            $this->ficheroPivot = new Repo\Paginas\PaginasFicheros;
 
             $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
             $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
@@ -144,14 +147,18 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         }
         
         /**
-         * Formulario de edición
-         */
+                * Formulario de edición
+                */
         
         public function ver($id = null)
         {
             if( $id )
             {
                 $item = $this->pagina->byId($id);
+                
+                $item_nuevatraduccion =  new \stdClass();
+                $item_nuevatraduccion->titulo = \Input::old('titulo') ?: '';
+                $item_nuevatraduccion->texto = \Input::old('texto') ?: '';
                 
                 View::share('title', 'Editar elemento');
                 
@@ -164,6 +171,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 return View::make('panel::paginas.form')
                                     //->with('params', $params)
                                     ->with('item',$item)
+                                    ->with('item_nuevatraduccion', $item_nuevatraduccion)
                                     ->with('item_id', $item->id)
                                     ->with('acciones_por_lote_ficheros', $this->acciones_por_lote_ficheros)
                                     ->with('currentUrl', \URL::current())
@@ -181,8 +189,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             
             try{
                 $data = array(
-                    'titulo' => Input::get('titulo'),
-                    'texto' => Input::get('texto'),
+                    'titulo' => Input::get('titulo')?: \Input::old('titulo'),
+                    'texto' => Input::get('texto')?: \Input::old('texto'),
                     'idioma' => Input::get('idioma'),
                     'slug'   => Input::get('slug'),
                     'creado_por' => \Sentry::getUser()['id'],
@@ -201,8 +209,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 return \Redirect::action('Ttt\Panel\PaginasController@ver', $paginaId);
                 
             } catch (\Ttt\Panel\Exception\TttException $ex) {
-                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
-                
+                $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';                
                 // El idioma al crear nuevo siempre es el predeterminado
                 \Session::flash('idioma_error', $this->_idioma_predeterminado->first()->codigo_iso_2);
             }
@@ -214,20 +221,22 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 )
             ));
             
+            $errores = $this->paginaForm->errors();
+            
             return \Redirect::action('Ttt\Panel\PaginasController@nuevo')
                                         ->withInput()
                                         ->withErrors($this->paginaForm->errors());
-            
         }
         
         /**
-         * Actualizar un Item
-         * 
-         */
+                * Actualizar un Item
+                * 
+                */
         
         public function actualizar()
         {
             $message = 'Página guardada correctamente';
+            $nueva_traduccion = FALSE;
             
             try{
                 
@@ -240,7 +249,6 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                                 ->where('idioma','=',Input::get('idioma'))
                                                 ->first();
                 
-                
                 $data = array(
                         'id'        => Input::get('item_id'),
                         'titulo'    => Input::get('titulo'),
@@ -249,16 +257,18 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'slug'      => Input::get('slug'),
                         'usuario'   => \Sentry::getUser()['id']
                 );
-                
+                $nueva_traduccion = $pagina_i18n ? FALSE : TRUE;
                 $pagina_i18n = $pagina_i18n?: new Repo\Paginas\PaginaI18n;
                 
                 $posibleSlug = (Input::get('slug')!='') ? Input::get('slug') : Input::get('titulo');
+                
+                $checkId = (($nueva_traduccion)? FALSE : $pagina_i18n->id);
                 
                 //Campos traducibles
                 $pagina_i18n->texto     = Input::get('texto');
                 $pagina_i18n->titulo    = Input::get('titulo');
                 $pagina_i18n->idioma    = Input::get('idioma');
-                $pagina_i18n->slug      = $this->pagina->slug($posibleSlug, FALSE, Input::get('idioma'));
+                $pagina_i18n->slug      = $this->pagina->slug($posibleSlug, $checkId, Input::get('idioma'));
                 $pagina_i18n->item_id   = Input::get('item_id');
                 
                 if( $this->paginaForm->update($data)
@@ -272,6 +282,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                         'msg'   => $message
                                     )
                     ));
+                    
+                    
                     
                     return \Redirect::to('admin/paginas/ver/' . $pagina->id . '#datos-'. $pagina_i18n->idioma);
                     
@@ -289,6 +301,8 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             ));
            
 
+            
+            
             //-- Cargamos los errores en un array por idioma
             //-- para luego mostrarlos en el form de idioma que toque
             $errores = array();
@@ -298,7 +312,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             
             $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
             
-            return \Redirect::to('admin/paginas/ver/' . Input::get('item_id') . '#datos-' . $idioma_redireccion)
+            return \Redirect::to('admin/paginas/ver/' . Input::get('item_id') . '#datos-' . (($nueva_traduccion) ? 'nuevatraduccion' : $idioma_redireccion))
                                                         ->withInput()
                                                         ->withErrors($this->paginaForm->errors());
         }
@@ -327,7 +341,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                     )
                 ));
             }
-                return \Redirect::to('admin/paginas/ver/' . Input::get('from'));
+                return \Redirect::to('admin/paginas/ver/' . Input::get('from').'#ficheros');
         }
         
         
@@ -361,7 +375,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                     )
                 ));
             }
-            return \Redirect::to('admin/paginas/ver/' . Input::get('from'));
+            
+            die('ola!');
+            
+            return \Redirect::to('admin/paginas/ver/' . $pagina->id);
         }
 
         /**
@@ -377,7 +394,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
                         $r = $this->pagina->delete($id);
 			//$ent = $this->modulo->byId(Input::get('id'));
-			if(! $r)
+			if(! $r )
 			{
 				throw new \Ttt\Panel\Exception\TttException;
 			}
@@ -467,6 +484,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 					throw new \Ttt\Exception\TttException;
 				} 
 
+                                    
 				call_user_func_array(array($this->pagina, $input['accion']), array($itemId, \Sentry::getUser()['id'], Input::get('from')));
 			}
 
@@ -478,8 +496,9 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 					'class' => 'alert-success',
 					'msg'   => 'La acción ' . $accion . ' se ha ejecutado correctamente.'
 				)));
-
-			return \Redirect::action('Ttt\Panel\PaginasController@index');
+                        
+                        //Si se recibe un campo from de un item, redirigimos a la página, no al index
+                        return (\Input::get('from', FALSE)) ? \Redirect::action('Ttt\Panel\PaginasController@ver',$from) :  \Redirect::action('Ttt\Panel\PaginasController@index');
 
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
@@ -500,7 +519,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 		));
 
 		return \Redirect::action('Ttt\Panel\DashboardController@index');
-	}        
+	}
         
         
         protected function getParams()
@@ -517,10 +536,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
         public function guardarCamposEspecificos($id = null, $fichero_id = null) {
             
                     $datosEspecificos = array(
-                        'titulo'      => \Input::get('titulo'),
-                        'alt'         => \Input::get('alt'),
-                        'enlace'      => \Input::get('enlace'),
-                        'descripcion' => \Input::get('descripcion'),
+                        'titulo'      => \Input::get('titulo_defecto'),
+                        'alt'         => \Input::get('alt_defecto'),
+                        'enlace'      => \Input::get('enlace_defecto'),
+                        'descripcion' => \Input::get('descripcion_defecto'),
                         'idioma'      => \Input::get('idioma')
                     );
                     
@@ -598,10 +617,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $validator = \Validator::make(
                             array( //La validacion siempre se hará sobre un get
                                 'nombre' => $this->_fichero_nombre,
-                                'titulo' => \Input::get('titulo'),
-                                'alt'    => \Input::get('alt'),
-                                'enlace' => \Input::get('enlace'),
-                                'descripcion' => \Input::get('descripcion')),
+                                'titulo' => \Input::get('titulo_defecto'),
+                                'alt'    => \Input::get('alt_defecto'),
+                                'enlace' => \Input::get('enlace_defecto'),
+                                'descripcion' => \Input::get('descripcion_defecto')),
                             array(
                                 'nombre' => 'required|max:255',
                                 'titulo' => 'max:255',
@@ -667,6 +686,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                             'alt'           => \Input::old('alt'),
                             'enlace'        => \Input::old('enlace'),
                             'descripcion'   => \Input::old('descripcion'),
+                            'idioma'        => \Input::old('idioma')
                             );
         }
         
@@ -678,4 +698,18 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 
                 return $data;
     }
+    
+
+            protected function _setDefaultAssets() 
+        {
+            parent::_setDefaultAssets();
+
+            $assets = \View::shared('assets');
+            $assets['js'][] = asset('packages/ttt/panel/components/jquery.datatables/jquery.datatables.min.js');
+            $assets['js'][] = asset('packages/ttt/panel/components/jquery.datatables/bootstrap-adapter/js/datatables.js');
+            $assets['css'][] = asset('packages/ttt/panel/components/jquery.datatables/bootstrap-adapter/css/datatables.css');
+            
+            \View::share('assets', $assets);
+            
+        }
 }

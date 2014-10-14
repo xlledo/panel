@@ -20,14 +20,17 @@
 	                    </div>
 	                </div>
 
-	                <div class="widget-body <?php if( ! $params['clave'] ): ?> collapse <?php endif; ?>">
+	                <div class="widget-body <?php if( ! $params['clave'] && ! $params['valor'] ): ?> collapse <?php endif; ?>">
 	                    <div class="widget-main row">
-
 	                        <div class="col-md-3 form-group">
 	                            <label for="filtro_nombre">Clave</label>
-	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['clave'])): ?>{{ $params['clave'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                            <input type="text" class="form-control" name="clave" id="filtro_nombre" value="<?php if(isset($params['clave'])): ?>{{ $params['clave'] }}<?php endif; ?>" size="20" placeholder="Clave" />
 	                        </div>
 
+	                        <div class="col-md-3 form-group">
+	                            <label for="filtro_valor">Valor</label>
+	                            <input type="text" class="form-control" name="valor" id="filtro_valor" value="<?php if(isset($params['valor'])): ?>{{ $params['valor'] }}<?php endif; ?>" size="20" placeholder="Valor" />
+	                        </div>
 	                    </div>
 	                    <div class="widget-toolbox padding-8 clearfix">
 	                        <div class="pull-right">
@@ -52,8 +55,7 @@
 	                            <tr>
 
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'clave', 'Clave', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-									<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
-									<th scope="col">Actualizado por</th>
+                                        <th scope="col">{{ ordenable_link($currentUrl, 'valor', 'Valor', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
 									@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 	                                	<th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
 									@endif
@@ -69,8 +71,13 @@
 												{{ $item->clave }}
 											@endif
 										</td>
-										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
-										<td class="td_click">{{ $item->updater->first_name . ' ' . $item->updater->last_name }}</td>
+                                                                                <td class="td_click">
+											@if(Sentry::getUser()->hasAccess('variables-globales::editar'))
+												{{ link_to('admin/variablesglobales/ver/' . $item->id, $item->valor) }}
+											@else
+												{{ $item->valor }}
+											@endif
+										</td>
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>
 										@endif
@@ -78,7 +85,7 @@
 								@endforeach
 	                        </tbody>
 	                    </table>
-	                    -<div class="selectAcciones row">
+	                    <div class="selectAcciones row">
 	                        <div class="elementos col-sm-6">
 	                            Mostrando de {{ $items->getFrom() }} a {{ $items->getTo() }} de un total de {{ $items->getTotal() }}
 	                        </div>

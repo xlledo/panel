@@ -8,8 +8,6 @@ trait FicheroTrait {
     {
         $message = 'Fichero creado correctamente';
         
-        $pila = new \Ttt\Panel\Core\Pila;
-        
         try{
             $fichero = \Input::file('fichero');
             $nombre_fichero='';
@@ -17,7 +15,10 @@ trait FicheroTrait {
             if(\Input::hasFile('fichero')){
                 
                 $fichero            = \Input::file('fichero');
-                $nombre_fichero = \Illuminate\Support\Str::slug($fichero->getClientOriginalName(),'-') . '.' . $fichero->getClientOriginalExtension();
+                
+                $nombre_fichero_canonical   = \Illuminate\Support\Str::slug( substr($fichero->getClientOriginalName(), 0, strlen($fichero->getClientOriginalName())- (strlen($fichero->getClientOriginalExtension()))));
+                $nombre_fichero             = $nombre_fichero_canonical . '.' . $fichero->getClientOriginalExtension();
+                        
                 $path_completo  = $this->_upload_folder . date("Y") . '/' . date("m") . '/';
                 $mime           = $fichero->getMimeType();
                 
@@ -39,7 +40,7 @@ trait FicheroTrait {
             $this->_fichero_nombre = $nombre_fichero;
                 
             $data = array(
-                    'nombre'  => \Input::get('nombre'),
+                    'nombre'  => (\Input::get('nombre')) ?: $nombre_fichero_canonical,
                     'fichero' => $nombre_fichero,
                     'usuario' => \Sentry::getUser()['id'],
                     'ruta'    => $path_completo,
@@ -51,6 +52,12 @@ trait FicheroTrait {
                     'descripcion_defecto'   => \Input::get('descripcion_defecto'),
                     'fichero_original'      => $fichero //Pasamos el fichero para propositos de validacion
                 );
+            
+                try {  //Si falla al obtener el peso, lo ponemos a 0
+                    $data['peso'] = $fichero->getSize();
+                } catch (\RuntimeException $ex) {
+                    $data['peso'] = '';
+                }
             
             // Hay que validar los campos concretos de la relación
             // En esta validación tambien entran los campos comunes de los ficheros
@@ -75,7 +82,7 @@ trait FicheroTrait {
                     $this->guardarCamposEspecificos(NULL, $ficheroId);
             }
             
-            return \Redirect::action(get_class() . '@ver', $pila->getUltimaReferencia()['retrievingValue'] );
+            return \Redirect::action(get_class() . '@ver', \Pila::getUltimaReferencia()['retrievingValue'] );
 
         } catch (\Ttt\Panel\Exception\TttException $ex) {
             
@@ -99,16 +106,16 @@ trait FicheroTrait {
     {
         $message = '';
         
-        //$pila = new \Ttt\Panel\Core\Pila;
         $ultimaReferencia = \Pila::getUltimaReferencia();
         
-        //-- Cogemos el elemento de la tabla pivote
-        
-        $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($id); // ***
+        //-- Cogemos el elemento de la tabla pivotee
 
-        if( $fichero = $this->fichero->byId($pivot->fichero()->first()->id)){
+        $pivot = $this->ficheroPivot->find($id);
+        
+            if( $fichero = $this->fichero->byId($pivot->fichero()->first()->id) ){
            
-//          $fichero  = $this->fichero->byId($id);
+            //$fichero  = $this->fichero->byId($id);
+                
             $fichero->nombre = ! is_null(\Input::old('nombre')) ?: $fichero->nombre;
             
             $fichero->titulo_defecto        = ! is_null(\Input::old('titulo_defecto')) ?: $fichero->titulo_defecto;
@@ -127,16 +134,14 @@ trait FicheroTrait {
                 
             }catch(\Ttt\Panel\Exception\TttException $e){
                 $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
-                
             }
-            
-            
             
             \View::share('title', 'Edicion del fichero ' . $fichero->nombre);
             \View::share('action_fichero', 'edit');
             
             \View::share('from_url', \Input::get('from_url')?:'');
             \View::share('item_id', ($ultimaReferencia['retrievingValue'])?:'');
+            \View::share('pivot', $pivot);
             \View::share('pivot_id', $id);
             
             \View::share('item', $fichero);
@@ -162,18 +167,27 @@ trait FicheroTrait {
             
             $this->_fichero_nombre = $fichero->nombre;
             
-            if(\Input::hasFile('fichero')){ 
+            if(\Input::hasFile('fichero')){
                 $fic = \Input::file('fichero');
                 $fic->move($fichero->ruta, $fichero->fichero);
             }
             
             $data = array(
                 'id'        => $fichero->id,
-                'nombre'    => \Input::get('nombre')
+                'nombre'    => (\Input::get('nombre')) ?: $this->_fichero_nombre,
+                'titulo_defecto' => \Input::get('titulo_defecto'),
+                'alt_defecto' => \Input::get('alt_defecto'),
+                'enlace_defecto' => \Input::get('enlace_defecto'),
+                'descripcion_defecto' => \Input::get('descripcion_defecto')
             );
             
+            
+            //die(var_dump($data));
+            
+            //Atualizamos el fichero
+            $ficheroId = $this->ficheroForm->update($data);            
+            
             $item_id    = \Input::get('item_id');
-                        
             $result = $this->guardarCamposEspecificos($pivot_id);
             
             \View::share('item_id', $item_id);
@@ -198,6 +212,8 @@ trait FicheroTrait {
                     return \Redirect::action( get_class() . '@verFichero', $pivot_id);
                     } 
             catch(\Ttt\Panel\Exception\TttException $e){
+                
+                //llega aquí
                     $message = 'No se han podido guardar los cambios. Por favor revise los campos marcados.';
                     
                     $this->mandarALaVista();
@@ -209,7 +225,7 @@ trait FicheroTrait {
                                         )
                     ));
                     
-                    return $this->verFichero($fichero->id)
+                    return $this->verFichero($pivot->id)
                                  ->withErrors($this->validarCamposEspecificos());
                     
                 }

@@ -33,15 +33,16 @@
                 
 	        <div class="space-12"></div>
 			@if($ficheros->count() === 0)
-                            No hay ficheros
+                            No existen ficheros relacionados
         	        @else
                 <form action="{{ url('admin/' . $modulo . '/acciones_por_lote') }}" method="post">
 	                <fieldset>
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
+                                                   <th scope="col">Preview</th>
 	                                    <th scope="col">Nombre</th>
-                                        <th scope="col">Preview</th>
+                             
                                         <th scope="col">Ruta</th>
                                         
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
@@ -49,16 +50,9 @@
                                         @endif
 	                            </tr>
 	                        </thead>
-	                        <tbody>			
-								@foreach($ficheros->getResults() as $index => $item)
+	                        <tbody>				
+							@foreach($ficheros->getResults() as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
-										<td class="td_click">
-											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												{{ link_to('admin/' . $modulo. '/ver_fichero/' . $item->pivot->id, $item->nombre) }}
-											@else
-												{{ $item->nombre }}
-											@endif
-										</td>
                                                                                 <td class="td_click">
                                                                                     @if($item->esImagen())
                                                                                         <img src='{{URL::to('/') . '/' .$item->ruta . $item->fichero }}' width="50" />
@@ -66,8 +60,16 @@
                                                                                         <i class="icon-file-text"></i>
                                                                                     @endif
                                                                                 </td>
+										<td class="td_click">
+											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
+												{{ link_to('admin/' . $modulo. '/ver_fichero/' . $item->pivot->id, $item->nombre) }}
+											@else
+												{{ $item->nombre }}
+											@endif
+										</td>
+                                                           
                                                                                 <td class="td_click">
-                                                                                        <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}" readonly="readonly" size="100"/>
+                                                                                        <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}"  size="70"/>
                                                                                 </td>
                                                                                     @if(Sentry::getUser()->hasAccess(array('ficheros::editar', 'ficheros::borrar'), FALSE))
                                                                                             <td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>

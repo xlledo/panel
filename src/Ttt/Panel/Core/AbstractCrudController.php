@@ -35,6 +35,7 @@ abstract class AbstractCrudController extends PanelController {
 		parent::__construct();
                 
                 View::share('_titulo', $this->_titulo);
+                View::share('_todos_idiomas', $this->_todosIdiomas);
                 
 	}
 }

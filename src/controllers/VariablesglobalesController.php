@@ -26,7 +26,7 @@ class VariablesglobalesController extends AbstractCrudController{
 	protected $variablesglobalesForm;
 
 	protected $allowed_url_params = array(
-		'clave', 'ordenPor', 'ordenDir', 'creado_por'
+		'clave', 'valor' ,'ordenPor', 'ordenDir', 'creado_por'
 	);
 
 	protected $acciones_por_lote = array(
@@ -102,7 +102,7 @@ class VariablesglobalesController extends AbstractCrudController{
 	*/
 	public function crear()
 	{
-		$message = 'Módulo creado correctamente.';
+		$message = 'Variable creada correctamente.';
 		try
 		{
 
@@ -185,7 +185,7 @@ class VariablesglobalesController extends AbstractCrudController{
 	*/
 	public function actualizar()
 	{
-		$message = 'Módulo actualizado correctamente.';
+		$message = 'Variable actualizada correctamente.';
 		try
 		{
 			$ent = $this->variablesglobale->byId(Input::get('id'));
@@ -204,9 +204,16 @@ class VariablesglobalesController extends AbstractCrudController{
 
                         $var->clave   = Input::get('clave');
                         $var->valor   = Input::get('valor');
+                        
+                        $data = array (
+                            'clave' => \Input::get('clave'),
+                            'valor' => \Input::get('valor'),
+                            'usuario' => \Sentry::getUser()['id'],
+                            'id' => $ent->id
+                        );
 
-                        $var->save();
-
+                        $varId = $this->variablesglobalesForm->update($data);
+                        
 			//$moduloId = $this->variablesglobalesForm->update($data);
 
 			\Session::flash('messages', array(
@@ -238,7 +245,7 @@ class VariablesglobalesController extends AbstractCrudController{
 
 		return \Redirect::action('Ttt\Panel\VariablesglobalesController@ver', $ent->id)
 										->withInput()
-										->withErrors($this->variablesglobaleForm->errors());
+										->withErrors($this->variablesglobalesForm->errors());
 	}
 
 /**
