@@ -291,7 +291,6 @@ class Pila {
 							//se deben eliminar todos los elementos de la pila hasta que lleguemos al que estamos editando
 
 							$element = $this->getElement($parametros, $config);
-
 							$newElm = array(
 								'titulo'          => $element['titulo'],
 								'url'             => action($controlador . '@ver', $parametros[$config['param']]) . '?direction=backward',
@@ -326,7 +325,7 @@ class Pila {
 			$keys = array_keys($rs);
 
 			$totalKeys    = count($keys);
-			$totalMatches = 1;
+			$totalMatches = 0;
 			foreach($keys as $k)
 			{
 				if($element[$k] === $rs[$k])
@@ -334,7 +333,6 @@ class Pila {
 					$totalMatches ++;
 				}
 			}
-
 			if($totalMatches === $totalKeys)
 			{
 				//se ha encontrado el elemento
