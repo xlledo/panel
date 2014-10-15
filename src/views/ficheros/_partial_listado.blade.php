@@ -40,10 +40,10 @@
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
-                                                   <th scope="col">Preview</th>
+                                            <th scope="col">Preview</th>
 	                                    <th scope="col">Nombre</th>
-                             
-                                        <th scope="col">Ruta</th>
+                                            <th scope="col">Ruta</th>
+                                            <th scope="col">Subido por</th>
                                         
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
                                             <th scope="col" width="30"><input type="checkbox" class="select_all"/></th>
@@ -69,7 +69,10 @@
 										</td>
                                                            
                                                                                 <td class="td_click">
-                                                                                        <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}"  size="70"/>
+                                                                                    <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}"  size="70"/>
+                                                                                </td>
+                                                                                <td class='td_click'>
+                                                                                    {{ $item->maker->first_name . ' ' . $item->maker->last_name }}
                                                                                 </td>
                                                                                     @if(Sentry::getUser()->hasAccess(array('ficheros::editar', 'ficheros::borrar'), FALSE))
                                                                                             <td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>

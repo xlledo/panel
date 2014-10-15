@@ -3,6 +3,8 @@
         <tr>
             <th>Preview</th>
             <th>Nombre</th>
+            <th>Subido por</th>
+            <th>Fecha</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -18,6 +20,12 @@
         </td>
         <td>
             {{ $item->nombre }}
+        </td>
+        <td>
+            {{ ucfirst($item->maker->first_name . ' ' .$item->maker->last_name) }}
+        </td>
+        <td>
+            {{ $item->updated_at }}
         </td>
         <td>
             @if($action_fichero!='edit')
@@ -36,21 +44,18 @@
 <script type='text/javascript'>
     $(document).ready(function()
     {
-        
         $('#tablaModalFichero').dataTable({
-                "lengthChange": false,
-                "pageLength": 6,
-                "paging": true,
-                "language":{
-                    "info":      "Mostrando _START_ to _END_ de _TOTAL_ elementos",
-                    "paginate": {
-                        "first":      "Primero",
-                        "last":       "Último",
-                        "next":       "Próximo",
-                        "previous":   "Anterior",
-                        
-                    }}
-        });
-        
+                        "lengthChange": false,
+                        "pageLength": 6,
+                        "paging": true,
+                        "language":{
+                            "info":      "Mostrando _START_ to _END_ de _TOTAL_ elementos",
+                            "paginate": {
+                                "first":      "Primero",
+                                "last":       "Último",
+                                "next":       "Próximo",
+                                "previous":   "Anterior",
+                            }}
+                });
     });
- </script>
+</script>

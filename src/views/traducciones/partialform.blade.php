@@ -26,10 +26,10 @@
                                             </div>
                                             <div class="widget-body">
                                                 <div class="widget-main row">
-
+                                                    
                                                     @if($nueva_traduccion)
                                                             <div class="col-md-3">
-                                                                <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || (isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
+                                                                <div class="form-group @if(($errors->first('idioma') && $action=='create') || ($errors->first('idioma') && $idioma_error==$trad->idioma) || ( isset($nueva_traduccion) && $errors->first('idioma'))) has-error @endif">
                                                                 <label for="select_idioma">Idioma *</label>
                                                                 <select name="idioma" id="select_idioma" class="form-control">
                                                                 <option value="">- Seleccionar -</option>
@@ -49,7 +49,7 @@
                                                     @endif
 
                                                     <div class="col-md-3">
-                                                        <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma)) has-error @endif">
+                                                        <div class="input-group @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma) ||( $errors->first('clave') && $nueva_traduccion ) ) has-error @endif">
                                                             <label for="clave">Clave *</label>
                                 				<div class="input-group">
                                                                     <span class="input-group-addon"><i class="icon-flag"></i></span>
@@ -58,7 +58,7 @@
                                                                            size="20" data-html="true" data-rel="popover" data-trigger="focus" 
                                                                            data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común"/>
                                                                 </div>
-                                                            @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma))
+                                                            @if(($errors->first('clave') && $action=='create') || ($errors->first('clave') && $idioma_error==$trad->idioma) || ($errors->first('clave') && $nueva_traduccion ))
                                                                         @foreach($errors->get('clave') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
                                                                         @endforeach
@@ -68,14 +68,14 @@
                                                 </div>
                                             </div>
                                             </div>
-                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) has-error @endif">
+                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma) || ($errors->first('texto') && $nueva_traduccion )) has-error @endif">
                                                 <div class="widget-header widget-header-small">
                                                     <h4 class="smaller lighter">Texto</h4>
                                                 </div>
                                                 <div class="widget-body">
                                                     <textarea name="texto" class="mceEditor">{{ ($action=='create') ? $item->texto : ( ($nueva_traduccion) ? $item_nuevatraduccion->texto : (($idioma_error == $trad->idioma ) ? \Input::old('texto') : $trad->texto )) }}</textarea>
                                                 </div>
-                                                @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma))
+                                                @if( ($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma) || ($errors->first('texto') && $nueva_traduccion) )
                                                         @foreach($errors->get('texto') as $err)
                                                                 <span class="help-block">{{ $err }}</span>
                                                         @endforeach
@@ -99,7 +99,7 @@
                     @if($action != 'create')
                         @if($trad->idioma != $idioma_predeterminado->codigo_iso_2)
                             <div class="col-xs-6">
-                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}' ><i class="icon-trash"></i>Borrar Traducción</a>
+                                <a href="#" title="Borrar Traducción" class="btn btn-minier btn-danger no-border btn_confirmacion" data-action='{{ action('Ttt\Panel\TraduccionesController@borrarTraduccion' , $trad->id )  }}' ><i class="icon-trash"></i>Borrar traducción</a>
                             </div>
                         @endif
                     @endif

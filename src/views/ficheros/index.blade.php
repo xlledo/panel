@@ -49,11 +49,12 @@
 	                    <table class="table table-striped table-bordered table-hover listado" summary="Listado de Variablesglobales" border="0" cellpadding="0" cellspacing="1">
 	                        <thead>
 	                            <tr>
-
-	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                                         <th scope="col">Preview</th>
+	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+                                        <th scope="col">Subido por</th>
+                                        <th scope="col">Fecha</th>
                                         <th scope="col">Ruta</th>
-					<th scope="col">{{ ordenable_link($currentUrl, 'creado_por', 'Creado por', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
+					
                                         
                                         
 					@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
@@ -64,13 +65,6 @@
 	                        <tbody>
 								@foreach($items as $index => $item)
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
-										<td class="td_click">
-											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
-												{{ link_to('admin/ficheros/ver/' . $item->id, $item->nombre) }}
-											@else
-												{{ $item->nombre }}
-											@endif
-										</td>
                                                                                 <td class="td_click">
                                                                                     @if($item->esImagen())
                                                                                         <img src='{{URL::to('/') . '/' .$item->ruta . $item->fichero }}' width="50" />
@@ -78,10 +72,20 @@
                                                                                         <i class="icon-file-text"></i>
                                                                                     @endif
                                                                                 </td>
+
+                                                                            <td class="td_click">
+											@if(Sentry::getUser()->hasAccess('ficheros::editar'))
+												{{ link_to('admin/ficheros/ver/' . $item->id, $item->nombre) }}
+											@else
+												{{ $item->nombre }}
+											@endif
+										</td>
+                                                                                <td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
+                                                                                <td class="td_click">{{ $item->created_at }}</td>
                                                                                 <td class="td_click">
                                                                                         <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}" readonly="readonly" size="100"/>
                                                                                 </td>
-										<td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
+										
 										
 										@if(Sentry::getUser()->hasAccess(array('variables-globales::editar', 'variables-globales::borrar'), FALSE))
 											<td><input class="item" type="checkbox" name="item[]" value="{{ $item->id }}" /></td>

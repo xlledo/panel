@@ -47,12 +47,12 @@
                                                             </div>
                                                     @endif
                                                     <div class="col-md-9">
-                                                        <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma)) has-error @endif">
+                                                        <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma) || ($errors->first('titulo') && $nueva_traduccion)  ) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
                                                                     <input type="text" class="form-control" name="titulo" id="titulo" value='{{ ($action=='create') ? $item->titulo : ( ($nueva_traduccion) ? $item_nuevatraduccion->titulo : (($idioma_error == $trad->idioma ) ? \Input::old('titulo') : $trad->titulo )) }}' size="60" />
                                                                 </div>
-                                                            @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma))
+                                                            @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma) || ($errors->first('titulo') && $nueva_traduccion ))
                                                                 @foreach($errors->get('titulo') as $err)
                                                                                 <span class="help-block">{{ $err }}</span>
                                                                 @endforeach
@@ -62,14 +62,14 @@
                                                 </div>
                                             </div>
                                             </div>
-                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) has-error @endif ">
+                                            <div class="widget-box transparent @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma) || ($errors->first('texto') && $nueva_traduccion ) ) has-error @endif ">
                                                 <div class="widget-header widget-header-small">
                                                     <h4 class="smaller lighter">Texto</h4>
                                                 </div>
                                                 <div class="widget-body">
                                                     <textarea name="texto" class="mceEditor">{{ ($action=='create') ? $item->texto : ( ($nueva_traduccion) ? $item_nuevatraduccion->texto : (($idioma_error == $trad->idioma ) ? \Input::old('texto') : $trad->texto )) }}</textarea>
                                                 </div>
-                                                @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma)) 
+                                                @if(($errors->first('texto') && $action=='create') || ($errors->first('texto') && $idioma_error==$trad->idioma) || ($errors->first('texto') && $nueva_traduccion ) ) 
                                                         @foreach($errors->get('texto') as $err)
                                                                 <span class="help-block">{{ $err }}</span>
                                                         @endforeach
@@ -85,12 +85,12 @@
                                         </div>
                                         <div class="widget-body">
                                         <div class="widget-main row">
-                                                <div class="input-group @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma)) has-error @endif">
+                                                <div class="input-group @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma) || ($errors->first('slug') && $nueva_traduccion  ) ) has-error @endif">
                                                     <label for="slug"> Clave </label>
                                                     <input name="slug" type="text" class="form-control" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->slug }}" />
                                                 </div>
                                             
-                                            @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma))
+                                            @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma) || ($errors->first('slug') && $nueva_traduccion ) )
                                                     @foreach($errors->get('slug') as $err)
                                                             <span class="help-block">{{ $err }}</span>
                                                     @endforeach

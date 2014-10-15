@@ -376,9 +376,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                 ));
             }
             
-            die('ola!');
-            
-            return \Redirect::to('admin/paginas/ver/' . $pagina->id);
+            return \Redirect::to('admin/paginas/ver/' . $pagina->id . '#ficheros');
         }
 
         /**
@@ -497,8 +495,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 					'msg'   => 'La acción ' . $accion . ' se ha ejecutado correctamente.'
 				)));
                         
+                        
                         //Si se recibe un campo from de un item, redirigimos a la página, no al index
-                        return (\Input::get('from', FALSE)) ? \Redirect::action('Ttt\Panel\PaginasController@ver',$from) :  \Redirect::action('Ttt\Panel\PaginasController@index');
+                        $from = \Input::get('from');
+                        return (\Input::get('from')) ? \Redirect::action('Ttt\Panel\PaginasController@ver',$from) :  \Redirect::action('Ttt\Panel\PaginasController@index');
 
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
