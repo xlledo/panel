@@ -245,12 +245,7 @@ class FicherosController extends AbstractCrudController
             try{
                 $fichero = $this->fichero->byId(Input::get('id'));
                 
-                //--Subimos la imagen si tenemos
-                if(Input::hasFile('fichero')){
-
-                    $fic = Input::file('fichero');
-                    $fic->move($fichero->ruta, $fichero->fichero);
-                }
+     
                 
                 //--Guardamos el fichero
                 $fichero->nombre                = (Input::get('nombre'))?:$fichero->fichero;
@@ -267,6 +262,20 @@ class FicherosController extends AbstractCrudController
                     'descripcion_defecto'   => $fichero->descripcion_defecto,
                     'enlace_defecto'        => $fichero->enlace_defecto
                 );
+                
+                
+                //--Subimos la imagen si tenemos
+                if(Input::hasFile('fichero')){
+
+                    $fic = Input::file('fichero');
+                    $fic->move($fichero->ruta, $fichero->fichero);
+                    
+                    try {  //Si falla al obtener el peso, lo ponemos a 0
+                        $data['peso'] = $fic->getSize();
+                    } catch (\RuntimeException $ex) {
+                        $data['peso'] = '';
+                    }                    
+                }
                 
                 $this->ficheroForm->update($data);
                 

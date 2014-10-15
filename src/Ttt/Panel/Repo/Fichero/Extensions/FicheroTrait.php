@@ -167,10 +167,7 @@ trait FicheroTrait {
             
             $this->_fichero_nombre = $fichero->nombre;
             
-            if(\Input::hasFile('fichero')){
-                $fic = \Input::file('fichero');
-                $fic->move($fichero->ruta, $fichero->fichero);
-            }
+
             
             $data = array(
                 'id'        => $fichero->id,
@@ -182,8 +179,18 @@ trait FicheroTrait {
             );
             
             
-            //die(var_dump($data));
-            
+            if(\Input::hasFile('fichero')){
+
+                $fic = \Input::file('fichero');
+                $fic->move($fichero->ruta, $fichero->fichero);
+                
+                    try {  //Si falla al obtener el peso, lo ponemos a 0
+                        $data['peso'] = $fic->getSize();
+                    } catch (\RuntimeException $ex) {
+                        $data['peso'] = '';
+                    }
+            }
+
             //Atualizamos el fichero
             $ficheroId = $this->ficheroForm->update($data);            
             

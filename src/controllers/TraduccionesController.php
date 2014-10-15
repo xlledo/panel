@@ -263,6 +263,7 @@ class TraduccionesController extends AbstractCrudController
 
             \Session::flash('idioma_error', Input::get('idioma'));
             $idioma_redireccion = empty(Input::get('idioma')) ? 'nuevatraduccion' : Input::get('idioma');
+            
             return \Redirect::to('admin/traducciones/ver/' . Input::get('item_id') . '#datos-' . (($nueva_traduccion) ? 'nuevatraduccion' : $idioma_redireccion))
                                             ->withInput()
                                             ->withErrors($this->traduccionForm->errors());
@@ -282,7 +283,7 @@ class TraduccionesController extends AbstractCrudController
 
 
             $traduccion = Traduccion::find($id);
-            $message = 'Traduccion eliminada correctamente';
+            $message = 'Traducción eliminada correctamente';
 
             if($traduccion)
             {
