@@ -69,7 +69,7 @@ class GrupoController extends AbstractCrudController{
 		}
 		$item->permissions = $permisos;
 
-		$acciones = Config::get('panel::acciones');
+		$acciones = \Panel::getConfigMergedForFile();
 		ksort($acciones);
 
 		View::share('title', 'Creación de nuevo grupo.');
@@ -162,7 +162,7 @@ class GrupoController extends AbstractCrudController{
 			}
 			$item->permissions = $permisos;
 
-			$acciones = Config::get('panel::acciones');
+			$acciones = \Panel::getConfigMergedForFile();
 			ksort($acciones);
 
 			View::share('title', 'Edición del grupo ' . $item->name);

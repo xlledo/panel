@@ -98,7 +98,9 @@ class Panel{
 	protected function guessPermission($fullNameClass, $methodName, $moduleSlug)
 	{
 		$permission = 'vacio';
-		foreach(\Config::get('panel::acciones') as $moduloKey => $acciones)
+
+		$allAllowedActions = \Panel::getConfigMergedForFile();
+		foreach($allAllowedActions as $moduloKey => $acciones)
 		{
 			if($moduleSlug !== $moduloKey)
 			{
@@ -188,7 +190,7 @@ class Panel{
 		}
 		$moduleSlug = $controller::$moduleSlug;//propiedad del controlador
 
-		$configPila = \Config::get('panel::pila');
+		$configPila = \Panel::getConfigMergedForFile('pila');
 		if(! isset($configPila[$moduleSlug]))
 		{
 			\Session::flash('messages', array(

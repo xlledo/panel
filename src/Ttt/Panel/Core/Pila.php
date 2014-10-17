@@ -228,9 +228,9 @@ class Pila {
 							$tituloElm = ucfirst($pestania);
 
 							//el título canónico ha de cogerse de la configuración
-							if(array_key_exists($pestania, \Config::get('panel::pila', array())))
+							if(array_key_exists($pestania, \Panel::getConfigMergedForFile('pila')))
 							{
-								$tituloElm = \Config::get('panel::pila')[$pestania]['tituloCanonico'];
+								$tituloElm = \Panel::getConfigMergedForFile('pila')[$pestania]['tituloCanonico'];
 							}
 
 							$this->push(

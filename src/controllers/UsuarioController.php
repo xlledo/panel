@@ -108,7 +108,7 @@ class UsuarioController extends AbstractCrudController {
 		}
 		$item->permissions = $permisos;
 
-		$acciones = Config::get('panel::acciones');
+		$acciones = \Panel::getConfigMergedForFile();
 		ksort($acciones);
 
 		View::share('title', 'Creación de nuevo usuario.');
@@ -233,7 +233,7 @@ class UsuarioController extends AbstractCrudController {
 				$item->groups = $coll;
 			}
 
-			$acciones = Config::get('panel::acciones');
+			$acciones = \Panel::getConfigMergedForFile();
 			ksort($acciones);
 
 			View::share('title', 'Edición del usuario ' . $item->full_name);
