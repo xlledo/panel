@@ -18,4 +18,6 @@ interface UsuarioInterface extends \Cartalyst\Sentry\Users\ProviderInterface{
     * @return boolean
     */
     public function update(\Cartalyst\Sentry\Users\UserInterface $user);
+
+    public function newQuery();
 }

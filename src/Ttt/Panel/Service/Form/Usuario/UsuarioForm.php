@@ -60,6 +60,7 @@ class UsuarioForm {
     public function update(array $input, \Cartalyst\Sentry\Users\UserInterface &$user)
     {
         //reestablecemos las reglas para el password, ya que en la edición no ha de ser obligatorio
+        $this->validator->setRuleForKey('email', 'required|email|existe:' . $user->id);
         $this->validator->setRuleForKey('password', '');
         if($input['password'] == '')
         {

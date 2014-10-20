@@ -12,7 +12,7 @@ class UsuarioFormLaravelValidator extends AbstractLaravelValidator {
     protected $rules = array(
         'first_name'         => 'required',
         'last_name'          => 'required',
-        'email'              => 'required|email',
+        'email'              => 'required|email|existe',
         'password'           => 'required',
         'confirm_password'   => 'required|same:password'
     );
@@ -25,6 +25,7 @@ class UsuarioFormLaravelValidator extends AbstractLaravelValidator {
         'confirm_password.required'  => 'El campo repetir contraseña es obligatorio',
         'required'                   => 'El campo :attribute es obligatorio',
         'email'                      => 'El campo :attribute ha de ser una dirección de E-mail válida',
+        'email.existe'           => 'Ya existe un usuario con ese :attribute',
     );
 
 }

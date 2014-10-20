@@ -55,6 +55,14 @@ class SentryUsuario extends \Cartalyst\Sentry\Users\Eloquent\Provider implements
         }
     }
 
+    public function newQuery()
+    {
+        $model = $this->createModel();
+
+        $query = $model->newQuery();
+        return $query;
+    }
+
     /**
     * Devuelve el total de elementos de una consulta según parámetros
     *
