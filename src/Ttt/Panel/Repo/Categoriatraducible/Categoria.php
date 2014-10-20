@@ -81,43 +81,41 @@ class Categoria extends \Ttt\Panel\Core\Database\Extensions\TranslatableNestable
 		return TRUE;
 	}
 
-	public function makeTreeOrdered(Categoria $parent)
+	public function makeTreeOrdered()
 	{
-		$childrenOrdered         = $parent->getDescendants()->toHierarchyForceOrder('nombre');
+		$childrenOrdered         = $this->getImmediateDescendants()->toHierarchyForceOrder('slug');
 
 		$previousNode = NULL;
+		$firstChildren = $this->getDescendants()->first();
 
 		foreach($childrenOrdered as $chld)
 		{
-			$nodeToMove = $parent->getDescendants()->getDictionary()[$chld->id];
+			$nodeToMove = $this->getDescendants()->getDictionary()[$chld->id];
 			//se trata de el primer elemento
 			if(is_null($previousNode))
 			{
-				$firstChildren = $parent->getDescendants()->first();
 				if($firstChildren)
 				{
 					if($firstChildren->id != $nodeToMove->id)
 					{
 						//solo ha de moverse si no se trata del mismo nodo
-						$nodeToMove->moveToLeftOf($firstChildren);
+						$nodeToMove = $nodeToMove->moveToLeftOf($firstChildren);
 					}
 				}else{
-					$nodeToMove->makeFirstChildOf($parent);
+					$nodeToMove = $nodeToMove->makeFirstChildOf($this);
 				}
 			}else{
 				//lo movemos si el nodo anterior no es este mismo, si no saltará una excepción
 				if($nodeToMove->id != $previousNode->id)
 				{
-					$nodeToMove->moveToRightOf($previousNode);
+					$nodeToMove = $nodeToMove->moveToRightOf($previousNode);
 				}
 			}
-
 			//si este nodo tiene hijos llamamos recursivamente a este método
-			if($chld->children->count())
+			if($chld->getImmediateDescendants()->count())
 			{
-				$this->makeTreeOrdered($chld);
+				$nodeToMove->makeTreeOrdered();
 			}
-
 			$previousNode = $nodeToMove;
 		}
 

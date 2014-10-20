@@ -45,45 +45,61 @@ class Menu extends \Ttt\Panel\Core\Database\Extensions\LogableNestableModel{
 		return new \Ttt\Panel\Repo\Menu\Extensions\Collection($models);
 	}
 
-	public function makeTreeOrdered(Menu $parent)
+	public function makeTreeOrdered()
 	{
+		$childrenOrdered         = $this->getImmediateDescendants()->toHierarchyForceOrder('nombre');
 
-		$childrenOrdered         = $parent->getDescendants()->toHierarchyForceOrder('nombre');
+		/*echo '<pre>';
+		print_r($childrenOrdered);
+		echo '<pre>';*/
 
 		$previousNode = NULL;
+		$firstChildren = $this->getDescendants()->first();
 
-		foreach($childrenOrdered as $chld)
-		{
-			$nodeToMove = $parent->getDescendants()->getDictionary()[$chld->id];
-			//se trata de el primer elemento
-			if(is_null($previousNode))
+		try{
+
+			foreach($childrenOrdered as $chld)
 			{
-				$firstChildren = $parent->getDescendants()->first();
-				if($firstChildren)
+				$nodeToMove = $this->getDescendants()->getDictionary()[$chld->id];
+				/*echo '<pre>';
+				print_r($nodeToMove->toArray());
+				echo '<pre>';*/
+				//se trata de el primer elemento
+				if(is_null($previousNode))
 				{
-					if($firstChildren->id != $nodeToMove->id)
+					if($firstChildren)
 					{
-						//solo ha de moverse si no se trata del mismo nodo
-						$nodeToMove->moveToLeftOf($firstChildren);
+						if($firstChildren->id != $nodeToMove->id)
+						{
+							//solo ha de moverse si no se trata del mismo nodo
+							//echo 'Movemos el nodo ' . $nodeToMove->nombre . ' a la izquierda de ' . $firstChildren->nombre . '<br />';
+							$nodeToMove = $nodeToMove->moveToLeftOf($firstChildren);
+						}
+					}else{
+						//echo 'Hacemos al nodo ' . $nodeToMove->nombre . ' primer hijo de ' . $this->nombre . '<br />';
+						$nodeToMove = $nodeToMove->makeFirstChildOf($this);
 					}
 				}else{
-					$nodeToMove->makeFirstChildOf($parent);
+					//lo movemos si el nodo anterior no es este mismo, si no saltará una excepción
+					if($nodeToMove->id != $previousNode->id)
+					{
+						//echo 'Movemos el nodo ' . $nodeToMove->nombre . ' a la derecha de ' . $previousNode->nombre . '<br />';
+						$nodeToMove = $nodeToMove->moveToRightOf($previousNode);
+					}
 				}
-			}else{
-				//lo movemos si el nodo anterior no es este mismo, si no saltará una excepción
-				if($nodeToMove->id != $previousNode->id)
+				//si este nodo tiene hijos llamamos recursivamente a este método
+				if($chld->getImmediateDescendants()->count())
 				{
-					$nodeToMove->moveToRightOf($previousNode);
+					//echo 'Llamada recursiva<br />';
+					$nodeToMove->makeTreeOrdered();
 				}
+				/*echo '<pre>';
+				print_r($nodeToMove->toArray());
+				echo '<pre>';*/
+				$previousNode = $nodeToMove;
 			}
-
-			//si este nodo tiene hijos llamamos recursivamente a este método
-			if($chld->children->count())
-			{
-				$this->makeTreeOrdered($chld);
-			}
-
-			$previousNode = $nodeToMove;
+		}catch(\RuntimeException $e){
+				echo $e->getMessage();exit;
 		}
 
 		return TRUE;

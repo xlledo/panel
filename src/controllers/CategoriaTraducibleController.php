@@ -739,7 +739,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 		{
 			$item = $this->categoria->rootById($id);
 
-			$item->makeTreeOrdered($item);
+			$item->makeTreeOrdered();
 
 			\Session::flash('messages', array(
 				array(

@@ -360,8 +360,7 @@ class MenuController extends AbstractCrudController{
 		{
 			$item = $this->menu->rootById($id);
 
-			$item->makeTreeOrdered($item);
-
+			$item->makeTreeOrdered();
 			\Session::flash('messages', array(
 				array(
 					'class' => 'alert-success',
