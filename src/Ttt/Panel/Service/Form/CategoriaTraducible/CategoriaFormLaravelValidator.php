@@ -11,7 +11,8 @@ class CategoriaFormLaravelValidator extends AbstractLaravelValidator {
      */
     protected $rules = array(
         'nombre'             => 'required',
-        'idioma'             => 'required'
+        'idioma'             => 'required',
+        'valor'              => 'required'
     );
 
     protected $messages = array(

@@ -14,13 +14,11 @@
 @stop
 @section('page_header')
 	@if($action == 'create')
-		<h1><small><a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado">Categorías</a> <i class="icon-double-angle-right"></i></small>Nueva categoría en {{ link_to('admin/categorias/ver-arbol/' . $item->getRoot()->id, $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}</h1>
+		<h1>Nueva subcategoría en {{ link_to('admin/categorias/ver-arbol/' . $item->getRoot()->id, $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}</h1>
 	@elseif($action == 'createArbol')
-		<h1>Nuevo árbol de <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado">Categorías</a></h1>
-	@elseif($action == 'edit')
-		<h1><small><a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado">Categorías</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }} ubicado en {{ link_to('admin/categorias/ver-arbol/' . $item->getRoot()->id, $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) }}</h1>
+		<h1>Nuevo árbol de <a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado">Taxonomías</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado">Árbol de categorías</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }}</h1>
+		<h1>Editando <em>{{ $item->nombre }}</em></h1>
 	@endif
 @stop
 @section('content')

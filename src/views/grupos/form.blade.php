@@ -10,7 +10,7 @@
 	@if($action == 'create')
 		<h1>Nuevo elemento de <a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Volver al listado">Grupos</a></h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\GrupoController@index') }}" title="Volver al listado">Grupo</a> <i class="icon-double-angle-right"></i></small> {{ $item->name }}</h1>
+		<h1>Editando <em>{{ $item->name }}</em></h1>
 	@endif
 @stop
 @section('content')

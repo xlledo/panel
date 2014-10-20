@@ -15,7 +15,7 @@
 	@if($action == 'create')
 		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small>Nueva opción en {{ $item->parent()->get()->first()->isRoot() ? link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) : link_to('admin/menu/ver/' . $item->parent()->get()->first()->id . '/', $item->parent()->get()->first()->nombre, array('title' => $item->parent()->get()->first()->nombre)) }}</h1>
 	@else
-		<h1><small><a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al listado">{{ $item->getRoot()->nombre }}</a> <i class="icon-double-angle-right"></i></small> {{ $item->nombre }} ubicado en {{ $item->parent()->get()->first()->isRoot() ? link_to('admin/menu/', $item->getRoot()->nombre, array('title' => $item->getRoot()->nombre)) : link_to('admin/menu/ver/' . $item->parent()->get()->first()->id . '/', $item->parent()->get()->first()->nombre, array('title' => $item->parent()->get()->first()->nombre)) }}</h1>
+		<h1>Editando <em>{{ $item->nombre }}</em></h1>
 	@endif
 @stop
 @section('content')

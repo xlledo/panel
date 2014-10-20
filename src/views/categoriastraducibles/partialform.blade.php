@@ -40,7 +40,7 @@
                                     <div class="form-group @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('idioma') ) has-error @endif">
                                     <label for="select_idioma">Idioma *</label>
                                     <select name="idioma_{{ $clave_idioma }}" id="select_idioma" class="form-control">
-                                    <option value="">- - Seleccionar - - </option>
+                                    <option value="">- Seleccionar -</option>
                                         @foreach($todos_idiomas as $id) {{-- Cogemos todos los idiomas disponibles  --}}
                                             @if( ! $item->hasTranslation($id->codigo_iso_2)) {{-- Solo muestra las traducciones que no existan en el item --}}
                                                 <option value="{{$id->codigo_iso_2 }}"<?php if(! is_null(Input::old('idioma_' . $clave_idioma)) && Input::old('idioma_' . $clave_idioma) == $id->codigo_iso_2): ?> selected="selected"<?php endif; ?>>{{ ucfirst($id->nombre) }}</option>
@@ -62,7 +62,7 @@
                             <div class="checkbox">
                                 <label for="visible_{{ $clave_idioma }}">
                                     <input type="checkbox" class="ace ace-checkbox-2" name="visible_{{ $clave_idioma }}" id="visible_{{ $clave_idioma }}" value="1"<?php if($item->visible): ?> checked="checked" <?php endif; ?> data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común" />
-                                    <span class="lbl"><i class="icon-flag"></i>Visible</span>
+                                    <span class="lbl"> <i class="icon-flag"></i> Visible</span>
                                 </label>
                             </div>
                             @if($item->isRoot())
@@ -75,7 +75,7 @@
                             @endif
                         </div>
                         <div class="col-md-3">
-                            <div class="form-group @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('nombre') ) has-error @endif">
+                            <div class="form-group @if( (Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) ) && $errors->first('nombre') ) has-error @endif">
                                 <label for="nombre_{{ $clave_idioma }}">Nombre *</label>
                                 <input type="text" class="form-control" name="nombre_{{ $clave_idioma }}" id="nombre_{{ $clave_idioma }}" value="{{ $trad->nombre }}" size="20" />
                                 @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('nombre') )
@@ -85,9 +85,12 @@
                                 @endif
                             </div>
                             @if(!$item->isRoot())
-                                <div class="form-group @if( Input::old('valor_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('valor') ) has-error @endif">
-                                    <label for="nombre_{{ $clave_idioma }}">Valor</label>
-                                    <input type="text" class="form-control" name="valor_{{ $clave_idioma }}" id="valor_{{ $clave_idioma }}" value="{{ $item->valor }}" size="20"  data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común" />
+                                <div class="form-group @if( (Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion)) && $errors->first('valor') ) has-error @endif">
+                                    <label for="valor_{{ $clave_idioma }}">Valor *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon-flag"></i></span>
+                                        <input type="text" class="form-control" name="valor_{{ $clave_idioma }}" id="valor_{{ $clave_idioma }}" value="{{ $item->valor }}" size="20"  data-html="true" data-rel="popover" data-trigger="focus" data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común" />
+                                    </div>
                                     @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('valor') )
                                         @foreach($errors->get('valor') as $err)
                                             <span class="help-block">{{ $err }}</span>

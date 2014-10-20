@@ -13,6 +13,7 @@
 							</h4>
 
 							<div class="space-6"></div>
+							<p>Introduce tu nueva contraseña</p>
 							<form action="{{ action('Ttt\Panel\RecoveryController@validar') }}" method="post">
 								{{ Form::hidden('reset_code', $reset_code) }}
 								{{ Form::hidden('email', $user->email) }}

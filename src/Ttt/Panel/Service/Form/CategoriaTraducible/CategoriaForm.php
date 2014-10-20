@@ -78,6 +78,7 @@ class CategoriaForm {
      */
     public function createChild(array $input, \Ttt\Panel\Repo\Categoriatraducible\Categoria $root)
     {
+        $this->validator->setRuleForKey('valor', '');
         if( ! $this->valid($input) )
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. No se han podido guardar los cambios. Por favor revise los campos marcados..');
@@ -96,6 +97,7 @@ class CategoriaForm {
      */
     public function updateChild(array $input, \Ttt\Panel\Repo\Categoriatraducible\Categoria $categoria)
     {
+        $this->validator->setRuleForKey('valor', 'required');
         if( ! $this->valid($input) )
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. No se han podido guardar los cambios. Por favor revise los campos marcados..');

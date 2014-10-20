@@ -20,7 +20,7 @@
 				</ol>
 			</div>
 			@if(Sentry::getUser()->hasAccess('categorias-traducibles::editar-arbol'))
-				<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i> </a>
+				<a href="{{ action('Ttt\Panel\CategoriaTraducibleController@ordenarAlfabeticamente', $root->id) }}" title="Ordenar alfabéticamente este árbol" class="btn btn-sm btn-primary no-border"><i class="icon-list"></i> Ordenar alfabéticamente</a>
 			@endif
 		</div>
 	</div>

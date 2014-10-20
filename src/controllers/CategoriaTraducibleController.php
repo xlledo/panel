@@ -477,7 +477,7 @@ class CategoriaTraducibleController extends AbstractCrudController{
 			}
 			$item->visible   = Input::old('visible' . $sufijo) ? Input::old('visible' . $sufijo) : $item->visible;
 			$item->protegida = Input::old('protegida' . $sufijo) ? Input::old('protegida' . $sufijo) : $item->protegida;
-			$item->valor     = Input::old('valor' . $sufijo) ? Input::old('valor' . $sufijo) : $item->valor;
+			$item->valor     = !is_null(Input::old('valor' . $sufijo)) ? Input::old('valor' . $sufijo) : $item->valor;
 
 			\Pila::reset()
 				->push(array(

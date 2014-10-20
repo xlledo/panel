@@ -1,7 +1,7 @@
 @extends('packages/ttt/panel/layout/panel_layout')
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('categorias::crear-arbol'))
-		<a href="{{ action('Ttt\Panel\CategoriaController@nuevoArbol') }}" title="Nuevo árbol de {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva árbol de {{ $_titulo }}</a></li>
+		<a href="{{ action('Ttt\Panel\CategoriaController@nuevoArbol') }}" title="Nuevo árbol de {{ $_titulo }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nuevo árbol de {{ $_titulo }}</a></li>
 	@endif
 @stop
 @section('page_header')
