@@ -57,14 +57,14 @@
 												@if($item->isRoot())
 													<div class="checkbox">
 														<label for="protegida">
-															<input type="checkbox" class="ace ace-checkbox-2" name="protegida" id="protegida" value="1"<?php if($item->protegida): ?> checked="checked" <?php endif; ?>/>
+															<input type="checkbox" tabIndex="1" class="ace ace-checkbox-2" name="protegida" id="protegida" value="1"<?php if($item->protegida): ?> checked="checked" <?php endif; ?>/>
 															<span class="lbl"> Protegida</span>
 														</label>
 													</div>
 												@else
 													<div class="checkbox">
 														<label for="visible">
-															<input type="checkbox" class="ace ace-checkbox-2" name="visible" id="visible" value="1"<?php if($item->visible): ?> checked="checked" <?php endif; ?>/>
+															<input type="checkbox" tabIndex="2" class="ace ace-checkbox-2" name="visible" id="visible" value="1"<?php if($item->visible): ?> checked="checked" <?php endif; ?>/>
 															<span class="lbl"> Visible</span>
 														</label>
 													</div>
@@ -73,25 +73,27 @@
 					                        <div class="col-md-3">
 					                            <div class="form-group @if ($errors->first('nombre')) has-error @endif">
 					                                <label for="nombre">Nombre *</label>
-					                                <input type="text" class="form-control" name="nombre" id="nombre" value="{{ $item->nombre }}" size="20" />
+					                                <input type="text" tabIndex="3" class="form-control" name="nombre" id="nombre" value="{{ $item->nombre }}" size="20" />
 													@if ($errors->first('nombre'))
 														@foreach($errors->get('nombre') as $err)
 															<span class="help-block">{{ $err }}</span>
 														@endforeach
 													@endif
 					                            </div>
-												@if(Sentry::getUser()->isSuperUser() && ! in_array($action, array('create', 'createArbol')))
+					                        </div>
+											@if(Sentry::getUser()->isSuperUser() && ! in_array($action, array('create', 'createArbol')))
+												<div class="col-md-3">
 													<div class="form-group">
 														<label for="slug">Slug</label>
-														<input type="text" class="form-control" name="slug" id="slug" value="{{ $item->slug }}" readonly="readonly" size="20" />
+														<input type="text" tabIndex="4" class="form-control" name="slug" id="slug" value="{{ $item->slug }}" readonly="readonly" size="20" />
 													</div>
-												@endif
-					                        </div>
+												</div>
+											@endif
 											@if(! $item->isRoot())
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="valor">Valor</label>
-														<input type="text" class="form-control" name="valor" id="valor" value="{{ $item->valor }}" size="20" />
+														<input type="text" class="form-control" tabIndex="5" name="valor" id="valor" value="{{ $item->valor }}" size="20" />
 													</div>
 												</div>
 											@endif
