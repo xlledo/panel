@@ -29,7 +29,7 @@
         </td>
         <td>
             @if($action_fichero!='edit')
-                <a href="{{ URL::to('admin/paginas/asociar_fichero/' . $item->id . '?from=' . $item_id) }}" class="btn btn-xs btn-primary">Seleccionar</a>
+                <a href="{{ URL::to('admin/' . $modulo .   '/asociar_fichero/' . $item->id . '?from=' . $item_id) }}" class="btn btn-xs btn-primary">Seleccionar</a>
             @else
                 <a href='#' class='btn btn-xs btn-info btn_asociar_fichero' 
                         data-id-fichero="{{$item->id}}" 

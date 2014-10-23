@@ -26,7 +26,8 @@
                                         <div class="tab-content">
                                                 <div id="agrega_fichero" class="tab-pane fade active in">
                                                         <?php $add_form = (isset($add) && $add) ? '_add' : '' ;?>
-                                                        @include('packages/ttt/panel/' . $modulo . '/ficheros/_partial_form' . $add_form, array('action_fichero'=>'create'))
+                                                        <?php $package  = (isset($package) && $package ) ? $package : 'panel'; ?>
+                                                        @include('packages/ttt/' . $package . '/' . $modulo . '/ficheros/_partial_form' . $add_form, array('action_fichero'=>'create'))
                                                 </div>
                                                 <div id="selecciona_fichero" class="tab-pane fade" >
                                                         @include('packages/ttt/panel/ficheros/_partial_modal_listado')
