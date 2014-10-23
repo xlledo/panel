@@ -252,6 +252,18 @@ trait FicheroTrait {
     
         public function nuevoFichero()
         {
+
+            // Sacamos el namespace  para obtener el nombre del
+            // workbench
+            $namespace = explode('\\', get_called_class());
+            
+            if( $namespace[0] == 'Ttt')
+            {
+                $workbench = $namespace[1] . '::';
+            } else {
+                $workbench = 'panel::';
+            }
+            
             $item = new \stdClass();
             $item->nombre = \Input::old('nombre') ?: '';
             
@@ -266,7 +278,7 @@ trait FicheroTrait {
             
             \View::share('title', 'Creacion de un nuevo fichero');
             
-            return \View::make('panel::' . $this->_views_dir .  '.ficheros._add')
+            return \View::make(lcfirst($workbench) . $this->_views_dir .  '.ficheros._add')
                                     ->with('item', $item)
                                     ->with('item_id', $item_id)
                                     ->with('from_id', $item_id)
