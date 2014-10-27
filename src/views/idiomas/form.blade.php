@@ -58,7 +58,7 @@
 					                        <div class="col-md-3">
 					                            <div class="form-group @if($errors->first('nombre')) has-error @endif">
 					                                <label for="nombre">Nombre *</label>
-					                                <input type="text" class="form-control" name="nombre" id="nombre" value="{{ $item->nombre }}" size="20" />
+					                                <input type="text" class="form-control" name="nombre" id="nombre" value="{{{ $item->nombre }}}" size="20" />
 													@if ($errors->first('nombre'))
 														@foreach($errors->get('nombre') as $err)
 															<span class="help-block">{{ $err }}</span>

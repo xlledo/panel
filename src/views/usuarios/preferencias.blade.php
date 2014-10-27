@@ -27,7 +27,7 @@
 					                        <div class="col-md-3">
 					                            <div class="form-group @if ($errors->first('first_name')) has-error @endif">
 					                                <label for="first_name">Nombre *</label>
-					                                <input type="text" tabIndex="1" class="form-control" name="first_name" id="first_name" value="{{ $item->first_name }}" size="20" />
+					                                <input type="text" tabIndex="1" class="form-control" name="first_name" id="first_name" value="{{{ $item->first_name }}}" size="20" />
 													@if ($errors->first('first_name'))
 														@foreach($errors->get('first_name') as $err)
 															<span class="help-block">{{ $err }}</span>
@@ -47,7 +47,7 @@
 											<div class="col-md-3">
 												<div class="form-group @if ($errors->first('last_name')) has-error @endif">
 													<label for="last_name">Apellidos *</label>
-													<input type="text" tabIndex="2" class="form-control" name="last_name" id="last_name" value="{{ $item->last_name }}" size="20" />
+													<input type="text" tabIndex="2" class="form-control" name="last_name" id="last_name" value="{{{ $item->last_name }}}" size="20" />
 													@if ($errors->first('last_name'))
 														@foreach($errors->get('last_name') as $err)
 															<span class="help-block">{{ $err }}</span>

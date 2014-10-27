@@ -40,7 +40,7 @@
 					                        <div class="col-md-3">
 					                            <div class="form-group">
 					                                <label for="nombre">Nombre *</label>
-					                                <input type="text" class="form-control" name="name" id="name" value="{{ $item->name }}" size="20" />
+					                                <input type="text" class="form-control" name="name" id="name" value="{{{ $item->name }}}" size="20" />
 					                            </div>
 					                        </div>
 					                    </div>

@@ -77,7 +77,7 @@
                         <div class="col-md-3">
                             <div class="form-group @if( (Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) ) && $errors->first('nombre') ) has-error @endif">
                                 <label for="nombre_{{ $clave_idioma }}">Nombre *</label>
-                                <input type="text" tabIndex="4" class="form-control" name="nombre_{{ $clave_idioma }}" id="nombre_{{ $clave_idioma }}" value="{{ $trad->nombre }}" size="20" />
+                                <input type="text" tabIndex="4" class="form-control" name="nombre_{{ $clave_idioma }}" id="nombre_{{ $clave_idioma }}" value="{{{ $trad->nombre }}}" size="20" />
                                 @if( Input::old('idioma_' . $clave_idioma) == $trad->idioma || (Input::old('nueva_traduccion') && $nueva_traduccion) && $errors->first('nombre') )
                                     @foreach($errors->get('nombre') as $err)
                                         <span class="help-block">{{ $err }}</span>
