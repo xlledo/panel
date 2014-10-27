@@ -82,7 +82,8 @@ trait FicheroTrait {
                     $this->guardarCamposEspecificos(NULL, $ficheroId);
             }
 
-            return \Redirect::action(get_called_class() . '@ver', \Pila::getUltimaReferencia()['retrievingValue'] );
+            $url = action(get_called_class() . '@ver', \Pila::getUltimaReferencia()['retrievingValue']) . '?direction=backward';
+            return \Redirect::to($url);
 
         } catch (\Ttt\Panel\Exception\TttException $ex) {
 
@@ -96,7 +97,9 @@ trait FicheroTrait {
             )
         ));
 
-        return \Redirect::action(get_called_class() . '@nuevoFichero')
+        $url = action(get_called_class() . '@nuevoFichero') . '?direction=keep';
+
+        return \Redirect::to($url)
                                     ->withInput()
                                     ->withErrors($this->ficheroForm->errors());
 
@@ -244,9 +247,11 @@ trait FicheroTrait {
                                     )
                 ));
 
-               return \Redirect::action(get_called_class() . '@verFichero', $fichero->id)
-                                                ->withInput()
-                                                ->withErrors($this->ficheroForm->errors());
+                $url = action(get_called_class() . '@verFichero', $fichero->id) . '?direction=keep';
+
+                return \Redirect::to($url)
+                                        ->withInput()
+                                        ->withErrors($this->ficheroForm->errors());
     }
 
 
