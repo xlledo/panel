@@ -43,7 +43,7 @@
 					                        <div class="col-md-3">
 					                            <div class="input-group @if ($errors->first('clave')) has-error @endif">
 					                                <label for="clave">Clave *</label>
-					                                <input type="text" class="form-control" name="clave" id="clave" value="{{ $item->clave }}" size="20" />
+					                                <input type="text" class="form-control" name="clave" id="clave" value="{{{ $item->clave }}}" size="20" />
                                                                         
 										@if ($errors->first('clave'))
                                                                                         @foreach($errors->get('clave') as $err)
@@ -55,7 +55,7 @@
 					                        <div class="col-md-3">
 					                            <div class="input-group @if($errors->first('valor')) has-error @endif">
 					                                <label for="valor">Valor *</label>
-					                                <input type="text" class="form-control" name="valor" id="valor" value="{{ $item->valor }}" size="20" />
+					                                <input type="text" class="form-control" name="valor" id="valor" value="{{{ $item->valor }}}" size="20" />
 
                                                                             @if ($errors->first('valor'))
                                                                                     @foreach($errors->get('valor') as $err)
