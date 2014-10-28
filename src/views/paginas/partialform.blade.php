@@ -50,7 +50,7 @@
                                                         <div class="input-group @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma) || ($errors->first('titulo') && $nueva_traduccion)  ) has-error @endif">
                                                             <label for="titulo">Titulo *</label>
                                 				<div class="input-group">
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value='{{ ($action=='create') ? $item->titulo : ( ($nueva_traduccion) ? $item_nuevatraduccion->titulo : (($idioma_error == $trad->idioma ) ? \Input::old('titulo') : $trad->titulo )) }}' size="60" />
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value='{{{ ($action=='create') ? $item->titulo : ( ($nueva_traduccion) ? $item_nuevatraduccion->titulo : (($idioma_error == $trad->idioma ) ? \Input::old('titulo') : $trad->titulo )) }}}' size="60" />
                                                                 </div>
                                                             @if(($errors->first('titulo') && $action=='create') || ($errors->first('titulo') && $idioma_error==$trad->idioma) || ($errors->first('titulo') && $nueva_traduccion ))
                                                                 @foreach($errors->get('titulo') as $err)
@@ -87,7 +87,7 @@
                                         <div class="widget-main row">
                                                 <div class="input-group @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma) || ($errors->first('slug') && $nueva_traduccion  ) ) has-error @endif">
                                                     <label for="slug"> Clave </label>
-                                                    <input name="slug" type="text" class="form-control" value="{{ ($nueva_traduccion || $action=='create') ? '' : $trad->slug }}" />
+                                                    <input name="slug" type="text" class="form-control" value="{{{ ($nueva_traduccion || $action=='create') ? '' : $trad->slug }}}" />
                                                 </div>
                                             
                                             @if(($errors->first('slug') && $action=='create') || ($errors->first('slug') && $idioma_error==$trad->idioma) || ($errors->first('slug') && $nueva_traduccion ) )

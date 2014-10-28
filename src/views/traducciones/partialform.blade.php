@@ -54,7 +54,7 @@
                                 				<div class="input-group">
                                                                     <span class="input-group-addon"><i class="icon-flag"></i></span>
                                                                     <input type="text" class="form-control" name="clave" id="clave" 
-                                                                           value="{{ ($action=='create') ? $item->clave : ( ($nueva_traduccion) ? $item_nuevatraduccion->clave : (($idioma_error == $trad->idioma ) ? \Input::old('clave') : $item->clave )) }}" 
+                                                                           value="{{{ ($action=='create') ? $item->clave : ( ($nueva_traduccion) ? $item_nuevatraduccion->clave : (($idioma_error == $trad->idioma ) ? \Input::old('clave') : $item->clave )) }}}" 
                                                                            size="20" data-html="true" data-rel="popover" data-trigger="focus" 
                                                                            data-placement="left" data-content="Atención, modificar este dato afectará a todas las traducciones" title="<i class='icon-warning-sign'></i> Campo común"/>
                                                                 </div>

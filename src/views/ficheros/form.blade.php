@@ -41,7 +41,7 @@
                                                                 <div class="col-md-4">
                                                                     <div class="form-group @if($errors->first('nombre')) has-error @endif">
                                                                         <label for='nombre'>Nombre </label>
-                                                                        <input type='text' class='form-control' name='nombre' id='nombre' value='{{$item->nombre}}' size='20' />
+                                                                        <input type='text' class='form-control' name='nombre' id='nombre' value='{{{$item->nombre}}}' size='20' />
                                                                             @if ($errors->first('nombre'))
                                                                                 @foreach($errors->get('nombre') as $err)
                                                                                     <span class="help-block">{{ $err }}</span>
@@ -83,7 +83,7 @@
                                                                 <div class="form-group">
                                                                     <label for="titulo_defecto">Titulo</label>
                                                                     <input type="text" name="titulo_defecto" class="form-control" 
-                                                                           value ="{{$item->titulo_defecto }}"
+                                                                           value ="{{{$item->titulo_defecto }}}"
                                                                            >
                                                                 </div>
                                                             </div>
@@ -91,7 +91,7 @@
                                                                 <div class="form-group">
                                                                     <label for="alt_defecto">Alt</label>
                                                                     <input type="text" name="alt_defecto" class="form-control"
-                                                                           value="{{$item->alt_defecto}}"
+                                                                           value="{{{$item->alt_defecto}}}"
                                                                            >
                                                                 </div>
                                                             </div>
