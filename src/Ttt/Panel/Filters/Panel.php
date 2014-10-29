@@ -145,6 +145,11 @@ class Panel{
 	*/
 	public function pila($route, $request)
 	{
+		//solo queremos tratar la pila si no es una petición AJAX
+		if($request->ajax())
+		{
+			return;
+		}
 		$routeAction = $route->getActionName();//p.e: Ttt\Panel\LoginController@index
 		//extraemos Controller y método
 		list($controller, $method) = explode('@', $routeAction);
