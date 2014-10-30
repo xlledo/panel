@@ -464,6 +464,6 @@ class Pila {
 
 	protected function isFileRelatedCall($metodo)
 	{
-		return in_array($metodo, array('verFichero', 'nuevoFichero'));
+		return preg_match('/^(.+)Fichero$/', $metodo, $matches);
 	}
 }
