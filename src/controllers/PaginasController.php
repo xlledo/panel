@@ -78,10 +78,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $this->fichero      = $fichero;
             $this->ficheroForm  = $ficherosForm;
             
-            $this->ficheroPivot = new Repo\Paginas\PaginasFicheros;
+            $this->ficheroPivot = new Ttt\Panel\Repo\Paginas\PaginasFicheros;
 
-            $this->_idioma_predeterminado = Repo\Idioma\Idioma::where('principal','=',1)->get();
-            $this->_todos_idiomas         = Repo\Idioma\Idioma::all();
+            $this->_idioma_predeterminado = Ttt\Panel\Repo\Idioma\Idioma::where('principal','=',1)->get();
+            $this->_todos_idiomas         = Ttt\Panel\Repo\Idioma\Idioma::all();
 
             View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
             View::share('todos_idiomas', $this->_todos_idiomas);      
@@ -91,7 +91,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
              View::share('config_ficheros', $this->_config_ficheros);
 
              //Cargamos todos los ficheros
-             View::share('ficheros_todos', Repo\Fichero\Fichero::all());
+             View::share('ficheros_todos', Ttt\Panel\Repo\Fichero\Fichero::all());
              
              //Por defecto la accion para el fichero es "create"
              View::share('action_fichero', 'create');
@@ -258,7 +258,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                         'usuario'   => \Sentry::getUser()['id']
                 );
                 $nueva_traduccion = $pagina_i18n ? FALSE : TRUE;
-                $pagina_i18n = $pagina_i18n?: new Repo\Paginas\PaginaI18n;
+                $pagina_i18n = $pagina_i18n?: new Ttt\Panel\Repo\Paginas\PaginaI18n;
                 
                 $posibleSlug = (Input::get('slug')!='') ? Input::get('slug') : Input::get('titulo');
                 
@@ -440,7 +440,7 @@ class PaginasController extends AbstractCrudController implements FicheroControl
 
             if($id)
             {
-                $pagina_i18n = Repo\Paginas\PaginaI18n::find($id);
+                $pagina_i18n = Ttt\Panel\Repo\Paginas\PaginaI18n::find($id);
                 
                 
                 if($pagina_i18n->delete() && $item_id = $pagina_i18n->item_id)
