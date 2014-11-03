@@ -40,6 +40,16 @@ class EloquentFichero implements FicheroInterface{
 
         return $result;
     }
+    
+    public function byCategory($cat_id = null)
+    {
+        if($cat_id)
+        {
+            return $this->fichero->newQuery()->where('categoria_id', '=', $cat_id)->get();
+        }else{
+            return $this->fichero->newQuery()->get();
+        }
+    }
 
     public function create(array $data) {
         
@@ -54,6 +64,7 @@ class EloquentFichero implements FicheroInterface{
                     'ruta'              => $data['ruta'],
                     'mime'              => $data['mime'],
                     'peso'              => $data['peso'],
+                    'categoria_id'      => $data['categoria_id'],
                     //'tipo'              => $data['tipo'],
                     'titulo_defecto'    => $data['titulo_defecto'],
                     'alt_defecto'       => $data['alt_defecto'],
@@ -85,6 +96,7 @@ class EloquentFichero implements FicheroInterface{
         $fichero->alt_defecto           = (array_key_exists('alt_defecto', $data))          ? $data['alt_defecto'] : '' ;
         $fichero->enlace_defecto        = (array_key_exists('enlace_defecto', $data))       ? $data['enlace_defecto'] : '' ;
         $fichero->descripcion_defecto   = (array_key_exists('descripcion_defecto', $data))  ? $data['descripcion_defecto'] : '' ;
+        $fichero->categoria_id          = (array_key_exists('categoria_id', $data))         ? $data['categoria_id'] : '' ;
         
         $fichero->update();
         

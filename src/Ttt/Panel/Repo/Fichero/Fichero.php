@@ -17,7 +17,8 @@ class Fichero extends \Eloquent{
                                     'peso',
                                     'dimensiones',
                                     'creado_por',
-                                    'actualizado_por'   
+                                    'actualizado_por',
+                                    'categoria_id'
                                     );
 
 	public $validator = null;
@@ -38,6 +39,11 @@ class Fichero extends \Eloquent{
 	{
 		return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User', 'actualizado_por');
 	}                
+        
+        public function categoria()
+        {
+                return $this->belongsTo('Ttt\Panel\Repo\Categoria\Categoria', 'categoria_id');
+        }
         
         public function esImagen()
         {

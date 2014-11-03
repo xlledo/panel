@@ -56,7 +56,7 @@
                                                                         <label for='fichero'>Fichero</label>
                                                                         <input type="file" name='fichero' class='form-cotrol' />
                                                                     </div>
-                                                                </div>
+                                                                </div> 
                                                                 
                                                                 <div class="col-md-4">
                                                                     @if($action!='create')
@@ -79,7 +79,7 @@
                                                             <h4 class="smaller lighter">Datos Opcionales</h4>
                                                         </div>
                                                         <div class="widget-main row">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="titulo_defecto">Titulo</label>
                                                                     <input type="text" name="titulo_defecto" class="form-control" 
@@ -87,12 +87,23 @@
                                                                            >
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="alt_defecto">Alt</label>
                                                                     <input type="text" name="alt_defecto" class="form-control"
                                                                            value="{{{$item->alt_defecto}}}"
                                                                            >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="categoria_id">Categoria</label>
+                                                                    <select name="categoria_id" class="form-control">
+                                                                        <option value="">- Sin categoria -</option>
+                                                                        @foreach($_categorias_ficheros_array as $k => $nombre)
+                                                                            <option value="{{ $k }}" @if($k == $item->categoria_id) selected="selected" @endif >{{ $nombre }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <!-- ENLACE
