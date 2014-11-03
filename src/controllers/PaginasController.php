@@ -19,6 +19,9 @@ use Ttt\Panel\Repo\Paginas\PaginasI18n;
 
 use Ttt\Panel\Repo\Fichero\Extensions\FicheroPivotInterface;
 
+use Ttt\Panel\Repo\Idioma\Idioma;
+use Ttt\Panel\Repo\Fichero\Fichero;
+
 use Ttt\Panel\Core\AbstractCrudController;
 
 use Ttt\Panel\Repo\Fichero\Extensions\FicheroControllerInterface;
@@ -70,7 +73,6 @@ class PaginasController extends AbstractCrudController implements FicheroControl
                                
                                     ) 
         {
-        
             parent::__construct();
 
             $this->pagina       = $pagina;
@@ -78,10 +80,10 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             $this->fichero      = $fichero;
             $this->ficheroForm  = $ficherosForm;
             
-            $this->ficheroPivot = new Ttt\Panel\Repo\Paginas\PaginasFicheros;
+            $this->ficheroPivot = new Repo\Paginas\PaginasFicheros();
 
-            $this->_idioma_predeterminado = Ttt\Panel\Repo\Idioma\Idioma::where('principal','=',1)->get();
-            $this->_todos_idiomas         = Ttt\Panel\Repo\Idioma\Idioma::all();
+            $this->_idioma_predeterminado = Idioma::where('principal','=',1)->get();
+            $this->_todos_idiomas         = Idioma::all();
 
             View::share('idioma_predeterminado', $this->_idioma_predeterminado->first());
             View::share('todos_idiomas', $this->_todos_idiomas);      
@@ -91,12 +93,13 @@ class PaginasController extends AbstractCrudController implements FicheroControl
              View::share('config_ficheros', $this->_config_ficheros);
 
              //Cargamos todos los ficheros
-             View::share('ficheros_todos', Ttt\Panel\Repo\Fichero\Fichero::all());
+             View::share('ficheros_todos', Fichero::all());
              
              //Por defecto la accion para el fichero es "create"
              View::share('action_fichero', 'create');
-
-    }   
+             
+             \View::share('viewsDir', $this->_views_dir);
+    }
     
         public function index()
         {

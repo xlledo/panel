@@ -50,6 +50,14 @@ class FicherosController extends AbstractCrudController
 
          $this->_config_ficheros = Config::get('panel::ficheros');    
          
+         $categoria_ficheros = \Ttt\Panel\Repo\Categoria\Categoria::where('slug','=','ficheros')->get()->first();
+         $categorias_ficheros = ($categoria_ficheros) ? $categoria_ficheros->getDescendants()->toArray() : NULL;
+         
+         foreach($categorias_ficheros as $cat){
+             $_categorias_ficheros_array[$cat['id']] = $cat['nombre'];
+         }
+         
+         \View::share('_categorias_ficheros_array', $_categorias_ficheros_array);
          View::share('config_ficheros', $this->_config_ficheros);
     }
     
@@ -93,6 +101,7 @@ class FicherosController extends AbstractCrudController
             $item->alt_defecto      = Input::old('alt_defecto')?:'';
             $item->descripcion_defecto = Input::old('descripcion_defecto')?:'';
             $item->enlace_defecto      = Input::old('enlace_defecto')?:'';
+            $item->categoria_id        = Input::old('categoria_id')?:'';
             
             View::share('title', 'Creacion de un nuevo fichero');
             return View::make('panel::ficheros.form')
@@ -157,6 +166,7 @@ class FicherosController extends AbstractCrudController
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
                     'peso'    => '',
+                    'categoria_id' => Input::get('categoria_id'),
                     'titulo_defecto'        => Input::get('titulo_defecto'),
                     'alt_defecto'           => Input::get('alt_defecto'),
                     'enlace_defecto'        => Input::get('enlace_defecto'),
@@ -253,6 +263,7 @@ class FicherosController extends AbstractCrudController
                 $fichero->alt_defecto           = Input::get('alt_defecto');
                 $fichero->descripcion_defecto   = Input::get('descripcion_defecto');
                 $fichero->enlace_defecto        = Input::get('enlace_defecto');
+                $fichero->categoria_id          = Input::get('categoria_id');
                 
                 $data = array(
                     'id'                    => $fichero->id,
@@ -260,7 +271,8 @@ class FicherosController extends AbstractCrudController
                     'titulo_defecto'        => $fichero->titulo_defecto,
                     'alt_defecto'           => $fichero->alt_defecto,
                     'descripcion_defecto'   => $fichero->descripcion_defecto,
-                    'enlace_defecto'        => $fichero->enlace_defecto
+                    'enlace_defecto'        => $fichero->enlace_defecto,
+                    'categoria_id'          => $fichero->categoria_id
                 );
                 
                 

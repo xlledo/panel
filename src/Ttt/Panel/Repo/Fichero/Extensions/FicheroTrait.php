@@ -46,6 +46,7 @@ trait FicheroTrait {
                     'ruta'    => $path_completo,
                     'mime'    => $mime,
                     'peso'    => '',
+                    'categoria_id' => \Input::get('categoria_id'),
                     'titulo_defecto'        => \Input::get('titulo_defecto'),
                     'alt_defecto'           => \Input::get('alt_defecto'),
                     'enlace_defecto'        => \Input::get('enlace_defecto'),
@@ -125,7 +126,8 @@ trait FicheroTrait {
             $fichero->alt_defecto           = ! is_null(\Input::old('alt_defecto')) ?: $fichero->alt_defecto;
             $fichero->descripcion_defecto   = ! is_null(\Input::old('descripcion_defecto')) ?: $fichero->descripcion_defecto;
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
-
+            
+            
             $item_id    = $pivot->pagina()->first()->id;
             $pivot_id   = $id;
 
@@ -178,7 +180,8 @@ trait FicheroTrait {
                 'titulo_defecto' => \Input::get('titulo_defecto'),
                 'alt_defecto' => \Input::get('alt_defecto'),
                 'enlace_defecto' => \Input::get('enlace_defecto'),
-                'descripcion_defecto' => \Input::get('descripcion_defecto')
+                'descripcion_defecto' => \Input::get('descripcion_defecto'),
+                'categoria_id' => \Input::get('categoria_id')
             );
 
 
