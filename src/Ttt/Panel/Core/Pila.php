@@ -225,7 +225,7 @@ class Pila {
 							//Marcamos este elemento de la Pila como referencia = TRUE
 
 							$pestania = strtolower(str_replace('referencia', '', $metodo));
-							$tituloElm = ucfirst($pestania);
+							$tituloElm = $this->getTabTitle($pestania);
 
 							//el título canónico ha de cogerse de la configuración
 							if(array_key_exists($pestania, \Panel::getConfigMergedForFile('pila')))
@@ -313,8 +313,10 @@ class Pila {
 		return $this;
 	}
 
-	function popToElement($element)
+	public function popToElement($element)
 	{
+		/*
+		//Primera aproximación, se eliminaba desde la derecha de la Pila
 		$reversedStack = array_reverse($this->stack);
 		foreach($reversedStack as $key => $rs)
 		{
@@ -345,6 +347,56 @@ class Pila {
 		$this->stack = array_reverse($reversedStack);
 
 		return $this->stack;
+		*/
+
+		//Segunda aproximación, se elimina desde la izquierda
+		$copyStack = $this->stack;
+		$offset = 0;//desde donde ha de eliminar
+		$length = count($copyStack);
+		foreach($copyStack as $cs)
+		{
+			if($cs['titulo'] === 'Inicio')
+			{
+				$offset ++;
+				continue;
+			}
+
+			$keys = array_keys($cs);
+
+			$totalKeys    = count($keys) - 1;//no queremos comprobar el título porque puede haberse editado
+			$totalMatches = 0;
+
+			foreach($keys as $k)
+			{
+				if($k == 'titulo')
+				{
+					continue;
+				}
+
+				if($element[$k] === $cs[$k])
+				{
+					$totalMatches ++;
+				}
+			}
+
+			$offset ++;
+
+			if($totalMatches === $totalKeys)
+			{
+				break;
+			}
+		}
+
+		//si el offset es igual a la longitud de la pila, es que no existe el elemento, por lo tanto dejamos la pila solo con el Inicio
+		if($offset === ($length - 1))
+		{
+			$offset = 1;
+		}
+
+		$chunkedElements = array_splice($this->stack, $offset, $length);
+
+		return $this->stack;
+
 	}
 
 	public function popToReference()
@@ -465,5 +517,20 @@ class Pila {
 	protected function isFileRelatedCall($metodo)
 	{
 		return preg_match('/^(.+)Fichero$/', $metodo, $matches);
+	}
+
+	protected function getTabTitle($key)
+	{
+		$key = strtolower($key);
+		$specialTabs = array(
+			'posiblesclientes' => 'Posibles Clientes'
+		);
+
+		if(array_key_exists($key, $specialTabs))
+		{
+			return $specialTabs[$key];
+		}
+
+		return ucfirst($key);
 	}
 }
