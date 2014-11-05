@@ -8,7 +8,7 @@
             <a href="#" class="navbar-brand">
                 <small>
                     <i class="icon-globe"></i>
-                    Panel de control de Laravel 4
+                    CRM FacePhi
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
