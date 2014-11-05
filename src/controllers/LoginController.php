@@ -22,7 +22,7 @@ class LoginController extends PanelController{
 		/*echo '<pre>';
 		var_dump(\Config::get('panel::mail.from'));
 		echo '</pre>';exit;*/
-		View::share('title', 'Panel de control de Laravel 4');
+		View::share('title', 'CRM FacePhi');
 		return View::make('panel::' . $this->_views_dir . '.login');
 	}
 

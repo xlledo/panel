@@ -10,7 +10,7 @@ class DashboardController extends PanelController{
 
 	public function index()
 	{
-		View::share('title', 'Intranet Laravel 4');
+		View::share('title', 'CRM FacePhi');
 		return View::make('panel::' . $this->_views_dir . '.dashboard');
 	}
 }

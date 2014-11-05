@@ -7,7 +7,7 @@
 	    <div class="col-md-9">
 	        <div class="well">
 	            <h2 class="green smaller lighter">Bienvenido!</h4>
-	                <p> Le damos la bienvenida a la intranet de gestión de Laravel 4.
+	                <p> Le damos la bienvenida al CRM de FacePhi.
 	                    Seleccione alguna opción del menú lateral o haga click en alguno de los accesos
 	                    rápidos de la derecha.</p>
 	        </div>
