@@ -112,8 +112,10 @@ class Pila {
 			}else{
 				//solo puede ser verFichero
 				//$ficheroRelacionado = $ultimaReferencia->ficheros()->find($parametros['id']);//recuperamos el fichero relacionado de la tabla pivote para su referencia
+				//hay casos especiales en los que el prefijo de la tabla relacional no es el slug del módulo, como el caso de las cuentas, partners y posibles clientes que debe ser CLIENTES
+				$prefijoTabla = in_array($moduleSlug, array('cuentas', 'partners', 'posibles_clientes')) ? 'clientes' : $moduleSlug;
 				$ficheroRelacionado = $ultimaReferencia->ficheros()
-						->where($moduleSlug . '_ficheros.id', $parametros['id'])
+						->where($prefijoTabla . '_ficheros.id', $parametros['id'])
 						->get()->first();//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(
