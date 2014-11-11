@@ -200,12 +200,11 @@ class FicherosController extends AbstractCrudController
                     $url_redirect = \URL::to(Input::get('accion_asociar')) . '/' . $ficheroId . '?from=' . Input::get('from_id');
                     return \Redirect::to( $url_redirect );
                 }
-                
+
                 return \Redirect::action('Ttt\Panel\FicherosController@ver', $ficheroId);
                 
             } catch (\Ttt\Panel\Exception\TttException $e) {
-                                $message = $e->getMessage();
-                
+                $message = $e->getMessage();
             }
             
             \Session::flash('messages', array(

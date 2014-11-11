@@ -714,5 +714,5 @@ class PaginasController extends AbstractCrudController implements FicheroControl
             
             \View::share('assets', $assets);
             
-        }
 }
+        }

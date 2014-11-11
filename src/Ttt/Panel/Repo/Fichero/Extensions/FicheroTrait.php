@@ -112,6 +112,18 @@ trait FicheroTrait {
 
         $ultimaReferencia = \Pila::getUltimaReferencia();
 
+        // Sacamos el namespace  para obtener el nombre del
+        // workbench
+            $namespace = explode('\\', get_called_class());
+
+            if( $namespace[0] == 'Ttt')
+            {
+                $workbench = $namespace[1] . '::';
+            } else {
+                $workbench = 'panel::';
+            }
+        
+        
         //-- Cogemos el elemento de la tabla pivotee
 
         $pivot = $this->ficheroPivot->find($id);
@@ -128,12 +140,11 @@ trait FicheroTrait {
             $fichero->enlace_defecto        = ! is_null(\Input::old('enlace_defecto')) ?: $fichero->enlace_defecto;
             
             
-            $item_id    = $pivot->pagina()->first()->id;
+            $item_id    = $ultimaReferencia['retrievingValue'];
             $pivot_id   = $id;
 
             $this->_fichero_nombre = $fichero->nombre;
 
-            //TODO: Comprobar entrada item_id / pivot_id
             try{
                 $this->obtenerCamposEspecificos($id, $item_id, $pivot_id, TRUE);
 
@@ -150,8 +161,14 @@ trait FicheroTrait {
             \View::share('pivot_id', $id);
 
             \View::share('item', $fichero);
-
-            return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
+            
+            if(\Input::get('categoria'))
+            {
+                //$ruta = lcfirst($workbench) . $this->_views_dir .  '.' . \Input::get('categoria') . '._editar';
+                return \View::make(lcfirst($workbench) . $this->_views_dir .  '.' . \Input::get('categoria') . '._editar');
+            }else{
+                return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
+            }
 
         }
     }
@@ -166,9 +183,13 @@ trait FicheroTrait {
 
         try{
 
-            $pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($pivot_id);
+            //$pivot = \Ttt\Panel\Repo\Paginas\PaginasFicheros::find($pivot_id);
             //$fichero = $this->fichero->byId(\Input::get('id'));
-            $fichero = $this->fichero->byId($pivot->fichero()->first()->id);
+            
+            $pivot = $this->ficheroPivot->find($pivot_id);
+            $fichero = \Ttt\Panel\Repo\Fichero\Fichero::find($pivot->fichero()->first()->id);
+            
+            //$fichero = $this->fichero->byId($pivot->fichero()->first()->id);
 
             $this->_fichero_nombre = $fichero->nombre;
 
