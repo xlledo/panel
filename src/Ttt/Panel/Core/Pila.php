@@ -84,22 +84,32 @@ class Pila {
 				throw new \Ttt\Panel\Exception\TttException('No existe referencia en la Pila, para poder acceder ha de pasar por una vista de edición');
 			}
 
+			$rawTab = \Input::get('categoria', 'ficheros');
+			$tab = str_replace('-', '', $rawTab);
+			$tituloElm = $this->getTabTitle($tab);
+			//vemos si el parámetro categoría está presente y además existe una categoría para él en los árboles de categoría
+			if($rawTab != 'ficheros' && $catExistente = \Ttt\Panel\Repo\Categoria\Categoria::query()->where('slug', '=', $rawTab)->get()->first();
+			{
+				$tituloElm = $catExistente->nombre;
+			}
+
+
 			if($metodo === 'nuevoFichero')
 			{
 				$this->push(
 					array(
-						'titulo'          => 'Ficheros',
-						'url'             => $ultimaReferenciaPila['url'] . '#ficheros',
+						'titulo'          => $tituloElm,
+						'url'             => $ultimaReferenciaPila['url'] . '#' . $tab,
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
 						'retrievingValue' => NULL,
 						'reference'       => FALSE,
-						'pestania'        => 'ficheros'
+						'pestania'        => $tab
 					)
 				)->push(
 					array(
-						'titulo'          => 'Nuevo Fichero',
+						'titulo'          => 'Nuevo',
 						'url'             => action($controlador . '@nuevoFichero'),
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
@@ -119,25 +129,25 @@ class Pila {
 						->get()->first();//recuperamos el fichero relacionado de la tabla pivote para su referencia
 				$this->push(
 					array(
-						'titulo'          => 'Ficheros',
-						'url'             => $ultimaReferenciaPila['url'] . '#ficheros',
+						'titulo'          => $tituloElm,
+						'url'             => $ultimaReferenciaPila['url'] . '#' . $tab,
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
 						'retrievingValue' => NULL,
 						'reference'       => FALSE,
-						'pestania'        => 'ficheros'
+						'pestania'        => $tab
 					)
 				)->push(
 					array(
 						'titulo'          => $ficheroRelacionado->nombre,
-						'url'             => $ultimaReferencia->url . '#ficheros',
+						'url'             => $ultimaReferencia->url . '#' . $tab,
 						'eloquent'        => NULL,
 						'eloquentMethod'  => NULL,
 						'retrievingField' => NULL,
 						'retrievingValue' => NULL,
 						'reference'       => FALSE,
-						'pestania'        => 'ficheros'
+						'pestania'        => $tab
 					)
 				);
 			}
