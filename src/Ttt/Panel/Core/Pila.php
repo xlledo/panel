@@ -88,7 +88,7 @@ class Pila {
 			$tab = str_replace('-', '', $rawTab);
 			$tituloElm = $this->getTabTitle($tab);
 			//vemos si el parámetro categoría está presente y además existe una categoría para él en los árboles de categoría
-			if($rawTab != 'ficheros' && $catExistente = \Ttt\Panel\Repo\Categoria\Categoria::query()->where('slug', '=', $rawTab)->get()->first();
+			if($rawTab != 'ficheros' && $catExistente = \Ttt\Panel\Repo\Categoria\Categoria::query()->where('slug', '=', $rawTab)->get()->first())
 			{
 				$tituloElm = $catExistente->nombre;
 			}
