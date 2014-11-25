@@ -163,6 +163,8 @@ function accion_por_lotes(e) {
         return false;
     }
 
+    var element = $(this);
+
     // comprobamos que ha seleccionado un item
     var items_seleccionados = $(this).find('.listado input.item:visible:checked').length;
     if ( ! items_seleccionados) {
@@ -191,7 +193,7 @@ function accion_por_lotes(e) {
                 if(result){
                     $('.listado').parents('form').unbind('submit', accion_por_lotes);
                     //alert($('.listado').parents('form').serialize());
-                    $('.listado').parents('form').submit();
+                    element.submit();
                 }
                 //return true;
             }
