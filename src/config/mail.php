@@ -55,7 +55,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'custom-no-responder@trestristestigres.com', 'name' => 'Laravel 4'),
+	'from' => array('address' => 'custom-no-responder@trestristestigres.com', 'name' => 'No-Responder'),
 
 	/*
 	|--------------------------------------------------------------------------
