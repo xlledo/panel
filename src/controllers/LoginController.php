@@ -47,7 +47,7 @@ class LoginController extends PanelController{
 			\Session::flash('messages', array(
 				array(
 					'class' => 'alert-success',
-					'msg'   => 'Bienvenido a la Aplicación de Gestión de Laravel 4'
+					'msg'   => 'Bienvenido a la Aplicación de Gestión CRM FacePhi'
 				)
 			));
 			return \Redirect::action('Ttt\Panel\DashboardController@index');
