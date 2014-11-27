@@ -59,7 +59,7 @@ class GrupoController extends AbstractCrudController{
 		echo '</pre>';exit;*/
 		//construimos permisos
 		$permisos = array();
-		foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+		foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 		{
 			foreach($acciones as $actionKey => $metodos)
 			{
@@ -92,7 +92,7 @@ class GrupoController extends AbstractCrudController{
 				'name'        => Input::get('name')
 			);
 			$permisos = array();
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+			foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 			{
 				foreach($acciones as $actionKey => $metodos)
 				{
@@ -146,7 +146,7 @@ class GrupoController extends AbstractCrudController{
 			echo '</pre>';exit;*/
 			$item = $this->grupo->findById($id);
 			$item->name   = ! is_null(Input::old('name')) ? Input::old('name') : $item->name;
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+			foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 			{
 				foreach($acciones as $actionKey => $metodos)
 				{
@@ -200,7 +200,7 @@ class GrupoController extends AbstractCrudController{
 
 			$ent->name = Input::get('name');
 			$permisos = array();
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+			foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 			{
 				foreach($acciones as $actionKey => $metodos)
 				{

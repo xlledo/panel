@@ -98,7 +98,7 @@ class UsuarioController extends AbstractCrudController {
 
 		//construimos permisos
 		$permisos = array();
-		foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+		foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 		{
 			foreach($acciones as $actionKey => $metodos)
 			{
@@ -136,7 +136,7 @@ class UsuarioController extends AbstractCrudController {
 			if($tmp_grupo != 1)
 			{
 				$permisos = array();
-				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+				foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 				{
 					foreach($acciones as $actionKey => $metodos)
 					{
@@ -209,7 +209,7 @@ class UsuarioController extends AbstractCrudController {
 			$item->email        = ! is_null(Input::old('email')) ? Input::old('email') : $item->email;
 
 
-			foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+			foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 			{
 				foreach($acciones as $actionKey => $metodos)
 				{
@@ -277,7 +277,7 @@ class UsuarioController extends AbstractCrudController {
 			$permisos = array();
 			if($tmp_grupo != 1)
 			{
-				foreach(Config::get('panel::acciones') as $moduloKey => $acciones)
+				foreach(\Panel::getConfigMergedForFile() as $moduloKey => $acciones)
 				{
 					foreach($acciones as $actionKey => $metodos)
 					{
