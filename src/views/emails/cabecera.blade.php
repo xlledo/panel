@@ -9,7 +9,7 @@
 		<td width="20">&nbsp;</td>
         <td height="69" align="right">
                 <a title="Logo Cabecera" href="{{ url('admin') }}">
-                    <img border="0" title="xkuty.com" alt="xkuty.com" src="{{ asset('packages/ttt/panel/images/emails/logo.jpg') }}" style="border:0;margin:0;padding:0;" align="right">
+                    <img border="0" title="facephi.com" alt="facephi.com" src="{{ asset('packages/ttt/panel/images/emails/logo.jpg') }}" style="border:0;margin:0;padding:0;" align="right">
                 </a>
         </td>
 		 <td width="20">&nbsp;</td>
