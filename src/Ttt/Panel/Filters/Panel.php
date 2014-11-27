@@ -53,8 +53,8 @@ class Panel{
 		$methodName    = $routeActionArray[1];
 		$moduleSlug = $fullNameClass::$moduleSlug;
 
-		//si es nula se trata de un módulo permisible (accesible por cualquiera)
-		if(! is_null($moduleSlug))
+		//si es nula o el método es del tipo referenciaXXXX se trata de un módulo permisible (accesible por cualquiera)
+		if(! is_null($moduleSlug) && ! preg_match('/^referencia(.+)$/', $methodName))
 		{
 			//que empiece la fiesta
 			$user = \Sentry::getUser();
