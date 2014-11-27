@@ -16,6 +16,7 @@ class PanelController extends \BaseController {
 	* @var array
 	*/
 	protected $whitelist = array();
+	protected $whitelistForPermission = array();
 
 
 	public function __construct()
@@ -33,7 +34,7 @@ class PanelController extends \BaseController {
 
 		$this->beforeFilter( 'notLogged' , array('except' => $this->whitelist));
 
-		$this->beforeFilter( 'hasPermission');
+		$this->beforeFilter( 'hasPermission' , array('except' => $this->whitelistForPermission));
 		$this->beforeFilter( 'pila');
 
 		$this->_setDefaultAssets();
