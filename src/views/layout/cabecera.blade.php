@@ -28,14 +28,12 @@
                     </a>
 
                     <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        @if(Sentry::getUser()->hasAccess('usuarios::editar-preferencias'))
-                            <li>
-                                <a href="{{ action('Ttt\Panel\UsuarioController@verPreferencias') }}"  title="Preferencias de usuario">
-                                    <i class="icon-cog"></i>
-                                    Preferencias
-                                </a>
-                            </li>
-                        @endif
+                        <li>
+                            <a href="{{ action('Ttt\Panel\UsuarioController@verPreferencias') }}"  title="Preferencias de usuario">
+                                <i class="icon-cog"></i>
+                                Preferencias
+                            </a>
+                        </li>
 
                         <li class="divider"></li>
 

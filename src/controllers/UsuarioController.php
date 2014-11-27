@@ -26,6 +26,8 @@ class UsuarioController extends AbstractCrudController {
 		'nombre', 'email', 'ordenPor', 'ordenDir', 'creado_por'
 	);
 
+	protected $whitelistForPermission = array('verPreferencias', 'actualizarPreferencias');
+
 	public function __construct(UsuarioInterface $usuario, GrupoInterface $grupo, UsuarioForm $usuarioForm)
 	{
 		parent::__construct();
