@@ -17,6 +17,8 @@ class GrupoController extends AbstractCrudController{
 
 	protected $grupo;
 
+	protected $whitelistForPermission = array('permisos');
+
 	public function __construct(GrupoInterface $grupo)
 	{
 		parent::__construct();
