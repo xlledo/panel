@@ -58,7 +58,7 @@ class CategoriaForm {
      */
     public function updateRoot(array $input, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
     {
-
+        $this->validator->setRuleForKey('slug', 'required');
         if( ! $this->valid($input) )
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido actualizarse el registro. No se han podido guardar los cambios. Por favor revise los campos marcados..');
@@ -96,6 +96,7 @@ class CategoriaForm {
      */
     public function updateChild(array $input, \Ttt\Panel\Repo\Categoria\Categoria $categoria)
     {
+        $this->validator->setRuleForKey('slug', 'required');
         if( ! $this->valid($input) )
         {
             throw new \Ttt\Panel\Exception\TttException('No ha podido crearse la categoría. No se han podido guardar los cambios. Por favor revise los campos marcados..');

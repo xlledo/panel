@@ -100,7 +100,7 @@ class EloquentCategoria implements CategoriaInterface{
     {
 
         $categoria->nombre = $data['nombre'];
-        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
+        $categoria->slug = $this->slug($data['slug'], $categoria->id);
         $categoria->visible   = $data['visible'];
         $categoria->protegida = $data['protegida'];
 
@@ -133,7 +133,7 @@ class EloquentCategoria implements CategoriaInterface{
         $categoria->visible     = $data['visible'];
         $categoria->valor       = $data['valor'];
 
-        $categoria->slug = $this->slug($categoria->nombre, $categoria->id);
+        $categoria->slug = $this->slug($data['slug'], $categoria->id);
 
         $categoria->update();
 

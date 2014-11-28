@@ -163,6 +163,7 @@ class CategoriaController extends AbstractCrudController{
 
 			$item->nombre    = !is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
 			$item->protegida = Input::old('protegida') ? Input::old('protegida') : $item->protegida;
+                        $item->slug      = Input::old('slug') ? Input::old('slug') : $item->slug;
 
 			\Pila::reset()
 				->push(array(
@@ -230,7 +231,8 @@ class CategoriaController extends AbstractCrudController{
 			$data =  array(
 				'nombre'    => Input::get('nombre'),
 				'visible'   => 1,
-				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE
+				'protegida' => Input::has('protegida') ? Input::get('protegida') : FALSE,
+                                'slug'      => Input::get('slug')
 			);
 
 			$root = $this->categoriaForm->updateRoot($data, $item);
@@ -395,6 +397,7 @@ class CategoriaController extends AbstractCrudController{
 			$item->nombre    = ! is_null(Input::old('nombre')) ? Input::old('nombre') : $item->nombre;
 			$item->visible   = Input::old('visible') ? Input::old('visible') : $item->visible;
 			$item->valor     = Input::old('valor') ? Input::old('valor') : $item->valor;
+                        $item->slug      = ! is_null(Input::old('slug')) ? Input::old('slug') : $item->slug;
 
 			\Pila::reset()
 				->push(array(
@@ -463,6 +466,7 @@ class CategoriaController extends AbstractCrudController{
 				'nombre'    => Input::get('nombre'),
 				'visible'   => Input::has('visible') ? Input::get('visible') : FALSE,
 				'valor'     => Input::get('valor'),
+                                'slug'      => Input::get('slug')
 			);
 
 			$this->categoriaForm->updateChild($data, $item);
@@ -473,6 +477,8 @@ class CategoriaController extends AbstractCrudController{
 					'msg'   => $message
 				)
 			));
+                        
+                        return \Redirect::action('Ttt\Panel\CategoriaController@ver', $item->id);
 		}
 		catch(\Ttt\Panel\Exception\TttException $e)
 		{

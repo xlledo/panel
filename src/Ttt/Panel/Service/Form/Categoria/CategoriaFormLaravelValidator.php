@@ -10,7 +10,8 @@ class CategoriaFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'nombre'             => 'required'
+        'nombre'             => 'required',
+        'slug'               => ''
     );
 
     protected $messages = array(
