@@ -67,6 +67,7 @@ Route::group(array('prefix' => 'admin'), function()
 
 	Route::post('/grupos/crear', 'Ttt\Panel\GrupoController@crear');//creación de un nuevo grupo
 	Route::post('/grupos/actualizar', 'Ttt\Panel\GrupoController@actualizar');//actualización de un grupo
+    Route::post('/grupos/permisos', 'Ttt\Panel\GrupoController@permisos');//recoge los permisos de un grupo por AJAX
 
 	//Gestión de usuarios
 	Route::get('/usuarios', 'Ttt\Panel\UsuarioController@index');//listado

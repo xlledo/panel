@@ -292,4 +292,25 @@ class GrupoController extends AbstractCrudController{
 
 		return \Redirect::action('Ttt\Panel\GrupoController@ver', $group->id);
 	}
+        
+        public function permisos()
+	{
+                $response = array(
+                    'error'    => FALSE,
+                    'message'  => 'Obtenidos los permisos del grupo correctamente',
+                    'id'       => Input::get('id'),
+                    'permission' => array()
+                );
+		try
+		{
+			$ent = $this->grupo->findById(Input::get('id'));
+			$response['permission'] = $ent->permissions;
+		}
+		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		{
+			$response['message'] = $e->getMessage();
+		}
+
+		return $response;
+	}
 }
