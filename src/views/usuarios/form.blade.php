@@ -169,7 +169,7 @@
     $(document).ready(function() {
         tttjs.usuarios.init({
             vista: 'edicion',
-            currentGroupPermission: <?php if ($item->groups->count() && $item->groups->first()->id == $grupo->id): ?>{}<?php else: ?><?php echo json_encode($item->groups->first()->permissions); ?><?php endif; ?>
+            currentGroupPermission: <?php if (! $item->groups->count()): ?>{}<?php else: ?><?php echo json_encode($item->groups->first()->permissions); ?><?php endif; ?>
         });
     });
 @stop
