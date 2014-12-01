@@ -34,6 +34,8 @@ $(function(){
                 {
                     tttjs.usuarios.$settings.currentGroupPermission = {};
                     tttjs.usuarios.updateRadiosPermission();
+                }else{
+                    tttjs.usuarios.$settings.inited = true;
                 }
             }else{
                 $('#permissionBox').show();
