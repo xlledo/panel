@@ -23,7 +23,7 @@ class SentryUsuario extends \Cartalyst\Sentry\Users\Eloquent\Provider implements
 
         if($orderBy == 'nombre')
         {
-            $orderBy = 'last_name';
+            $orderBy = 'first_name';
         }
 
         $query = $this->getQuery($params);
