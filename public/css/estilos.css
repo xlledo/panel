@@ -13,6 +13,66 @@ input.btn::-moz-focus-inner {
 }
 #tabs{padding:0;}
 #aux.mi{padding-left: 133px;}
+
+#tabs #aux:before, #tabs #aux:after{  border-collapse: collapse;
+    content: "";
+    display: table;}
+	
+#tabs #aux{   border-bottom: 1px solid #c5d0dc;    padding: 0;margin:0;}
+#tabs #aux >li{  border-bottom-width: 0;
+    float: left;
+    list-style: outside none none;
+    margin: 1px 0.2em 0 0;
+    padding: 0;
+    position: relative;
+    top: 0;
+    white-space: nowrap;}
+
+#tabs #aux>li.ui-tabs-active{ margin-bottom: -1px;
+    padding-bottom: 1px;}
+#tabs #aux >li a{
+	 background-color: #f9f9f9;
+    border-color: #c5d0dc;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    color: #999;
+    line-height: 16px;
+    margin-right: -1px;
+    padding: 8px 12px;
+    position: relative;
+    top: 2px;
+    z-index: 11;
+	}
+	#tabs #aux >li.ui-state-default > a{
+
+	 background-color: #f9f9f9;
+    border-color: #c5d0dc;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    color: #999;
+    line-height: 16px;
+    margin-right: -1px;
+    padding: 8px 12px;
+    position: relative;
+    top: 2px;
+    z-index: 11;
+	}
+		#tabs #aux >li.ui-tabs-active > a{
+		   background-color: #fff;
+    border-color: #4c8fbd #c5d0dc transparent;
+    border-image: none;
+    border-right: 1px solid #c5d0dc;
+    border-style: solid;
+    border-width: 2px 1px 1px;
+    box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+    color: #576373;
+    position: relative;
+    top: 1px;
+		}
+		#tabs>div{display:none;}
+	
 #tabsI{padding:0;background:#eee;}
 #tabsI>ul{border-color: #C5D0DC;float: left;margin-bottom: 0;top: auto;position:relative;min-width:132px;}
 #tabsI> ul > li {float: none;margin:0 0 -1px 0;display:block;position:relative;}
