@@ -109,7 +109,7 @@ function url_title($str, $separator = 'dash', $lowercase = FALSE)
             $str = strtolower($str);
         }
     }
-	$permitted_uri_chars = 'a-z 0-9~%.:_\-áéíóúüñàèìòùãêôõçÇÁÉÍÓÚÀÈÌÒÙÑ+';
+    $permitted_uri_chars = 'a-z 0-9~%.:_\-áéíóúüñàèìòùãêôõçÇÁÉÍÓÚÀÈÌÒÙÑ+';
     $str = preg_replace('#[^'.$permitted_uri_chars.']#i', '', $str);
 
     return trim(stripslashes($str));
@@ -118,26 +118,26 @@ function url_title($str, $separator = 'dash', $lowercase = FALSE)
 function ordenable_link($baseUrl, $key, $name, $params = array(), $currentOrderDir = 'asc')
 {
 
-	/*
-	<a href="{{ $currentUrl }}?{{ Config::get('ttt.orderBy') }}=nombre&{{ Config::get('ttt.orderDir') }}=<?php if($params[Config::get('ttt.orderDir')] == 'desc'): ?>asc<?php else: ?>desc<?php endif; ?>">Nombre</a>
-	*/
+    /*
+    <a href="{{ $currentUrl }}?{{ Config::get('ttt.orderBy') }}=nombre&{{ Config::get('ttt.orderDir') }}=<?php if($params[Config::get('ttt.orderDir')] == 'desc'): ?>asc<?php else: ?>desc<?php endif; ?>">Nombre</a>
+    */
 
-	$nextOrder = $currentOrderDir == 'asc' ? 'desc' : 'asc';
+    $nextOrder = $currentOrderDir == 'asc' ? 'desc' : 'asc';
 
-	$class = '';
-	if($params['ordenPor'] == $key)
-	{
-		$class = $currentOrderDir;
-	}
+    $class = '';
+    if($params['ordenPor'] == $key)
+    {
+        $class = $currentOrderDir;
+    }
 
-	$params['ordenPor'] = $key;
-	$params['ordenDir'] = $nextOrder;
+    $params['ordenPor'] = $key;
+    $params['ordenDir'] = $nextOrder;
 
-	$url = $baseUrl . '?' . http_build_query($params);
+    $url = $baseUrl . '?' . http_build_query($params);
 
-	return link_to($url, $name, $attributes = array(
-		'class' => $class
-	));
+    return link_to($url, $name, $attributes = array(
+        'class' => $class
+    ));
 }
 
 function toNestable($items, $slug)
@@ -173,7 +173,7 @@ function toNestable($items, $slug)
             $res = toNestable($item->children, $slug);
             if ($res) {
                 $out .= '
-    			<ol class="dd-list">' . $res . '</ol>';
+                <ol class="dd-list">' . $res . '</ol>';
             }
         }
         $out .= '</li>';
@@ -183,7 +183,13 @@ function toNestable($items, $slug)
 
 function render_menu($menu, &$output = '')
 {
-    $url_solicitada = \Request::segment(2);
+//    $url_solicitada = \Request::segment(2);
+    $pilaElm = \Pila::first();
+    $sgms = explode('/', $pilaElm['url']);
+//    echo "<pre>";
+//    print_r($sgms);
+//    echo "</pre>";exit;
+    $url_solicitada = $sgms[4];
     $valores_vacios = array('', '#');
     foreach ($menu as $item) {
 
