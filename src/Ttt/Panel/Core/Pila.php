@@ -500,5 +500,44 @@ class Pila {
         }
         return $this->stack[0];
     }
+    
+    public function isTabShowable($tab, $eloquent, $permission = FALSE, $action = 'create')
+    {
+        if($tab === 'datos')
+        {
+            return TRUE;
+        }
+        
+        if($tab === 'resumen')
+        {
+            if($action == 'create')
+            {
+                return FALSE;
+            }
+            return TRUE;
+        }
+        
+        if($action == 'create')
+        {
+            return FALSE;
+        }
+        
+        $canShowTab = TRUE;
+        foreach($this->stack as $st)
+        {
+            if(strpos($st['eloquent'], $eloquent) !== FALSE)
+            {
+                $canShowTab = FALSE;
+                break;
+            }
+        }
+        
+        if($permission !== FALSE)
+        {
+            return \Sentry::getUser()->hasAccess($permission) && $canShowTab;
+        }
+        
+        return $canShowTab;
+    }
 
 }
