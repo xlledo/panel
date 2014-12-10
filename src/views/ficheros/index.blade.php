@@ -52,7 +52,8 @@
                                         <th scope="col">Preview</th>
 	                                <th scope="col">{{ ordenable_link($currentUrl, 'nombre', 'Nombre', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                                         <th scope="col">Subido por</th>
-                                        <th scope="col">Fecha</th>
+                                        <th scope="col">
+                                            {{ ordenable_link($currentUrl, 'created_at', 'Fecha', $params, $params[Config::get('panel::app.orderDir')]) }}</th>
                                         <th scope="col">Ruta</th>
 					
                                         
@@ -81,7 +82,7 @@
 											@endif
 										</td>
                                                                                 <td class="td_click">{{ $item->maker->first_name . ' ' . $item->maker->last_name }}</td>
-                                                                                <td class="td_click">{{ $item->created_at }}</td>
+                                                                                <td class="td_click">{{ $item->created_at->format('d/m/y'); }}</td>
                                                                                 <td class="td_click">
                                                                                         <input type="text" value="{{ \URL::to('/').'/'.$item->ruta.$item->fichero}}" readonly="readonly" size="100"/>
                                                                                 </td>
