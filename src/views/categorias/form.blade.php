@@ -2,7 +2,7 @@
 
 @section('tools')
     @if($action != 'createArbol' && Sentry::getUser()->hasAccess('categorias::verArbol'))
-        <a href="{{ action('Ttt\Panel\CategoriaController@verArbol', $item->isRoot() ? $item->id : $item->getRoot()->id) }}" title="Volver al árbol {{ $item->isRoot() ? $item->nombre : $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
+        <a href="{{ action('Ttt\Panel\CategoriaController@verArbol', $item->isRoot() ? $item->id : $item->getRoot()->id) }}" title="Volver al árbol {{ $item->isRoot() ? $item->nombre : $item->getRoot()->nombre }}" class="btn btn-sm no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
     @endif
 
     @if($action == 'edit' || $action == 'editArbol')

@@ -2,7 +2,7 @@
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('menu::listar'))
-		<a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al árbol {{ $item->getRoot()->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
+		<a href="{{ action('Ttt\Panel\MenuController@index') }}" title="Volver al árbol {{ $item->getRoot()->nombre }}" class="btn btn-sm no-border"><i class="icon-double-angle-left"></i> Volver al árbol</a>
 	@endif
 	@if($action == 'edit')
 		@if(Sentry::getUser()->hasAccess('menu::crear'))

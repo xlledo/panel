@@ -2,7 +2,7 @@
 
 @section('tools')
 	@if(Sentry::getUser()->hasAccess('categorias::listar'))
-		<a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado" class="btn btn-sm btn-primary no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
+		<a href="{{ action('Ttt\Panel\CategoriaController@index') }}" title="Volver al listado" class="btn btn-sm no-border"><i class="icon-double-angle-left"></i> Volver al listado</a>
 	@endif
 	@if(Sentry::getUser()->hasAccess('categorias::crear'))
 		<a href="{{ action('Ttt\Panel\CategoriaController@nuevo', $root->id) }}" title="Nueva subcategoría en {{ $root->nombre }}" class="btn btn-sm btn-primary no-border"><i class="icon-file"></i> Nueva subcategoría</a>
