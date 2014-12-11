@@ -53,4 +53,17 @@ class Fichero extends \Eloquent{
                     return TRUE;
                 }
         }
+        
+                
+        public function getStreamBase64()
+        {
+            
+            $fichero_path_completo = public_path() . '/' . $this->ruta . $this->fichero;
+            $fichero_stream = file_get_contents($fichero_path_completo);
+            $fichero_base64 = base64_encode($fichero_stream);
+            $str = "data:" . $this->mime . ";base64," .  $fichero_base64;
+            
+            return $str;
+            
+        }
 }

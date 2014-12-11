@@ -13,9 +13,9 @@
     <tr class="@if($index % 2 == 0) par @else impar @endif">
         <td>
             @if($item->esImagen())
-                 <img src='{{URL::to('/') . '/' .$item->ruta . $item->fichero }}' width="50" />
+                <img src="{{ $item->getStreamBase64()}}" style="max-width: 50px;"/>
             @else
-                 No disponible
+                No disponible
             @endif
         </td>
         <td>
