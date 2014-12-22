@@ -315,4 +315,56 @@ trait FicheroTrait {
                                     ->with('from_url', (\Input::get('from_url')?: ''))
                                     ->with('action', 'create' );
         }
+
+   public function getFicherosAjaxForDataTables()
+        {
+       
+            $solo_imagenes = \Input::get('solo_imagenes', FALSE);
+        
+            //$ficherosTodos = \Ttt\Panel\Repo\Fichero\Fichero::all();
+            
+            $page   = \Input::get('draw',1);
+            $start  = \Input::get('start',0);   
+            $length = \Input::get('length',10); //items en cada página
+            
+            $queryFicheros = \Ttt\Panel\Repo\Fichero\Fichero::query();
+            
+            if($solo_imagenes)
+            {
+                $queryFicheros->where('mime','LIKE','%image%');
+            }
+            
+            $ficherosTodos = $queryFicheros->get();
+            
+            $queryFicheros->take($length);
+            $queryFicheros->skip($start);
+            
+            $ficheros = $queryFicheros->get();
+            
+            $array_result = array();
+            
+            $solo_imagenes = FALSE;
+            
+            foreach($ficheros as $fic)
+            {
+                    $arr_fic = array(
+                        ($fic->esImagen()) ?  "<img src='"  . $fic->getStreamBase64($fic->getSize(50)) .  "'  width='50' />" : '-',
+                         $fic->nombre,
+                         ucfirst($fic->maker->first_name . ' ' .$fic->maker->last_name),
+                         $fic->created_at->format('d/m/Y'),
+                        '<a href="' . \URL::to('admin/' . static::$moduleSlug. '/asociar_fichero/' . $fic->id) . '?from=' . \Input::get('from') . '&multiple=' . \Input::get('multiple') .  '&categoria=' . \Input::get('categoria') . '" class="btn btn-xs btn-primary">Seleccionar</a>'
+                    );
+                    $array_result[]=$arr_fic;
+            }
+            
+            $array_json = array();
+            
+            $array_json['data'] = $array_result;
+            $array_json['draw'] = $page;
+            $array_json['recordsTotal'] = count($ficherosTodos);
+            $array_json['recordsFiltered'] = count($ficherosTodos);
+            
+            return json_encode($array_json);
+        }                
+        
 }

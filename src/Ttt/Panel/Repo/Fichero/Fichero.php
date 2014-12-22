@@ -55,15 +55,54 @@ class Fichero extends \Eloquent{
         }
         
                 
-        public function getStreamBase64()
+        public function getStreamBase64($path = null)
         {
             
-            $fichero_path_completo = public_path() . '/' . $this->ruta . $this->fichero;
+            if(!$path)
+            {
+                $fichero_path_completo = public_path() . '/' . $this->ruta . $this->fichero;
+            }else{
+                $fichero_path_completo = public_path() . '/' . $path;
+            }
+            
             $fichero_stream = file_get_contents($fichero_path_completo);
             $fichero_base64 = base64_encode($fichero_stream);
             $str = "data:" . $this->mime . ";base64," .  $fichero_base64;
             
             return $str;
+        }
+
+        
+        
+        public function getSize($width = null, $height = null)
+        {
+            if(!$width)
+            {
+                throw  new \Ttt\Panel\Exception\TttException('Necesita proporcionar las medidas de la imagen');
+            }
             
+            $height = $height?: $width;
+            
+            if($this->esImagen())
+            {
+                //primero chequeamos si el fichero ya existe
+                $ruta_fisica_esperada = public_path() . '/' . $this->ruta . 'resized/' . $width . '_' . $height . $this->fichero;
+                $str_imagen = $this->ruta . 'resized/'. $width . '_' . $height . $this->fichero;
+                
+                if( !file_exists($ruta_fisica_esperada) or !is_file($ruta_fisica_esperada) )
+                { //Si no existe creamos el thumb con las medidas
+                
+                    //creamos el path
+                    @mkdir(public_path() . '/' . $this->ruta . 'resized/');
+                    
+                    $img = Image::create( public_path() . '/' . $this->ruta  . $this->fichero );
+                    $img->resize($width, $height);
+                    $img->save( public_path() . '/' . $this->ruta . 'resized/' . $width . '_' . $height .$this->fichero );
+                }
+                return $str_imagen;
+                
+            }else{
+                throw new \Ttt\Panel\Exception\TttException('No se puede hacer resize de un fichero que no es una imagen');
+            }
         }
 }
