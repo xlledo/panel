@@ -49,6 +49,24 @@ class Fichero extends \Eloquent{
       
         }
         
+        /**
+                *  Borra las miniaturas de un item determinado
+                */
+        
+        public function limpiarCacheMiniaturas()
+        {
+                //Si no es imagen no tendrá thumbnails
+                if($this->esImagen())
+                {
+                    $ruta_resized = public_path() . '/' . $this->ruta . 'resized/';
+                
+                    foreach(glob($ruta_resized . '*' . $this->fichero) as $f)
+                    {
+                        @unlink( $f);
+                    }
+                }   
+        }
+        
         //Relaciones Many to Many
         public function paginas()
         {
