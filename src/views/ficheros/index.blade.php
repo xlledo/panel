@@ -68,7 +68,7 @@
 									<tr class="@if($index % 2 == 0) par @else impar @endif">
                                                                                 <td class="td_click">
                                                                                     @if($item->esImagen())
-                                                                                        <img src="{{ $item->getStreamBase64()}}" style="max-width: 50px;"/>
+                                                                                        <img src="{{ $item->getStreamBase64($item->getSize(50))}}" style="max-width: 50px;"/>
                                                                                     @else
                                                                                         <i class="icon-file-text"></i>
                                                                                     @endif
