@@ -23,6 +23,31 @@ class Fichero extends \Eloquent{
 
 	public $validator = null;
         
+        protected static function boot() {
+            parent::boot();
+            
+            static::deleting(function($element) {
+                
+                //Borramos el fichero fisicamente y los thumbnails si tiene    
+                $ruta_fichero_original = public_path() . '/'. $element->ruta . $element->fichero;
+                @unlink($ruta_fichero_original);
+
+                //Si no es imagen no tendrá thumbnails
+                if($element->esImagen())
+                {
+                    $ruta_resized = public_path() . '/' . $element->ruta . 'resized/';
+                
+                    foreach(glob($ruta_resized . '*' . $element->fichero) as $f)
+                    {
+                        @unlink( $f);
+                    }
+                }
+                
+                
+                
+          });
+      
+        }
         
         //Relaciones Many to Many
         public function paginas()
@@ -65,11 +90,18 @@ class Fichero extends \Eloquent{
                 $fichero_path_completo = public_path() . '/' . $path;
             }
             
-            $fichero_stream = file_get_contents($fichero_path_completo);
-            $fichero_base64 = base64_encode($fichero_stream);
-            $str = "data:" . $this->mime . ";base64," .  $fichero_base64;
+            if(is_file($fichero_path_completo))
+            {
             
-            return $str;
+                $fichero_stream = file_get_contents($fichero_path_completo);
+                $fichero_base64 = base64_encode($fichero_stream);
+                $str = "data:" . $this->mime . ";base64," .  $fichero_base64;
+            
+            
+                return $str;
+            }else{
+                return FALSE;
+            }
         }
 
         
@@ -95,7 +127,7 @@ class Fichero extends \Eloquent{
                     //creamos el path
                     @mkdir(public_path() . '/' . $this->ruta . 'resized/');
                     
-                    $img = Image::create( public_path() . '/' . $this->ruta  . $this->fichero );
+                    $img = \Imagecow\Image::create( public_path() . '/' . $this->ruta  . $this->fichero );
                     $img->resize($width, $height);
                     $img->save( public_path() . '/' . $this->ruta . 'resized/' . $width . '_' . $height .$this->fichero );
                 }
@@ -105,4 +137,6 @@ class Fichero extends \Eloquent{
                 throw new \Ttt\Panel\Exception\TttException('No se puede hacer resize de un fichero que no es una imagen');
             }
         }
+        
+        
 }
