@@ -70,7 +70,7 @@
                                                                                     @if($item->esImagen())
                                                                                         <img src="{{ $item->getStreamBase64($item->getSize(50))}}" style="max-width: 50px;"/>
                                                                                     @else
-                                                                                        <i class="icon-file-text"></i>
+                                                                                        <i class="icon-file-text icon-4x"></i>
                                                                                     @endif
                                                                                 </td>
 

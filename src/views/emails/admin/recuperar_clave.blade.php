@@ -1,6 +1,7 @@
 @extends('packages/ttt/panel/emails/layout')
 @section('content')
-    <p>Tu clave para recuperar la contraseña es <strong>{{ $params['resetCode'] }}</strong></p>
-    <p>URL: {{ url('admin/cambiar-clave', $params) }}</p>
-    <p>O pinche <a href="{{ url('admin/cambiar-clave', $params) }}">aquí</a></p>
+    <p>Has pedido una nueva clave para acceder al panel</pa>
+    <p>Para recuperar tu password, por favor haz click <a href="{{ url('admin/cambiar-clave', $params) }}">aquí</a> o usa este enlace: <br/>
+        <a href="{{ url('admin/cambiar-clave', $params) }}">{{ url('admin/cambiar-clave', $params) }}</a>
+    </p>
 @stop

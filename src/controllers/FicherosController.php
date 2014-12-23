@@ -254,7 +254,8 @@ class FicherosController extends AbstractCrudController
             try{
                 $fichero = $this->fichero->byId(Input::get('id'));
                 
-     
+                //Eliminamos las miniaturas anteriores
+                $fichero->limpiarCacheMiniaturas();
                 
                 //--Guardamos el fichero
                 $fichero->nombre                = (Input::get('nombre'))?:$fichero->fichero;
