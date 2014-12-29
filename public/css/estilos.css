@@ -110,3 +110,16 @@ ul.nestedView{
 
 #formComentarioEnvio .acciones{margin-bottom:30px;}
 .ace-spinner{width:100% !important;}
+
+#imagen_comercial{overflow:hidden;position:relative;}
+.capaOver{-webkit-transition:bottom 0.5s ease 0s;
+-moz-transition:bottom 0.5s ease 0s;
+transition:bottom 0.5s ease 0s;
+background: rgb(241, 241, 241) transparent;
+background: rgba(241, 241, 241, 0.8);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCf1f1f1, endColorstr=#CCf1f1f1);
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCf1f1f1, endColorstr=#CCf1f1f1)";
+padding:15px;position:absolute;bottom:-140px;right:0;left:0;text-align:center;}
+#imagen_comercial:hover .capaOver{bottom:0px;}
+.icoR{background:#438EB9;border-radius:50%;padding:10px;color:#fff;}
+.capaOver a:hover{text-decoration:none;}
