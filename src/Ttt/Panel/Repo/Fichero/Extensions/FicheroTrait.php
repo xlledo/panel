@@ -83,8 +83,13 @@ trait FicheroTrait {
                     $this->guardarCamposEspecificos(NULL, $ficheroId);
             }
 
-            $url = action(get_called_class() . '@ver', \Pila::getUltimaReferencia()['retrievingValue']) . '?direction=backward';
-            return \Redirect::to($url);
+            if(!\Input::get('origin',FALSE))
+            {
+                $url = action(get_called_class() . '@ver', \Pila::getUltimaReferencia()['retrievingValue']) . '?direction=backward';
+                return \Redirect::to($url);
+            }else{
+                return \Redirect::to(\Input::get('origin'));
+            }
 
         } catch (\Ttt\Panel\Exception\TttException $ex) {
 

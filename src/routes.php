@@ -1,9 +1,5 @@
 <?php
-Route::get('/', function()
-{
-	return Panel::saluda();
-	//return View::make('hello');
-});
+Route::get('/','Ttt\Panel\DashboardController@index');
 
 
 
