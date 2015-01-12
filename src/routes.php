@@ -1,15 +1,61 @@
 <?php
-Route::get('/', function()
-{
-	return Panel::saluda();
-	//return View::make('hello');
-});
+Route::get('/','Ttt\Panel\DashboardController@index');
 
 
 
 
 Route::group(array('prefix' => 'admin'), function()
 {
+
+    //Manejo personalizado de errores, descomentar el condicional para que funcione
+    //if(! getenv('LARA_ENV'))
+    //{
+        App::error(function(\Exception $exception, $code){
+            $mensajesError = array(
+                '400' => 'Bad Request',
+                '401' => 'No autorizada',
+                '402' => 'Requiere pago',
+                '403' => 'Olvidada',
+                '404' => 'Página no encontrada'
+            );
+            Log::error($exception);
+            if(array_key_exists($code, $mensajesError))
+            {
+
+                $components_assets = array();
+                $css_assets = array();
+
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/bootstrap.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/ace-extra.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/typeahead-bs2.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/jquery-ui-1.10.3.full.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/ace-elements.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/ace.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/bootstrap/js/bootbox.min.js');
+                $components_assets[] = asset('packages/ttt/panel/components/autonumeric.js');
+                $components_assets[] = asset('packages/ttt/panel/components/jquery/timepicker/jquery-ui-timepicker-addon.js');
+                $components_assets[] = asset('packages/ttt/panel/components/jquery/timepicker/jquery-ui-timepicker-es.js');
+                $components_assets[] = asset('packages/ttt/panel/js/base.js');
+                $components_assets[] = asset('packages/ttt/panel/js/autonumericExtended.js');
+                $components_assets[] = asset('packages/ttt/panel/components/tiny_mce/tinymce.min.js');
+                $components_assets[] = asset('packages/ttt/panel/js/initTiny.js');
+
+                $css_assets[]        = asset('packages/ttt/panel/components/bootstrap/css/jquery-ui-1.10.3.full.min.css');
+                $css_assets[]        = asset('packages/ttt/panel/components/jquery/timepicker/jquery-ui-timepicker-addon.css');
+
+                \View::share('assets', array(
+                    'js'  => $components_assets,
+                    'css' => $css_assets
+                ));
+
+                return Response::view('panel::errors.default',array(
+                    'mensaje' => $mensajesError[$code],
+                    'codigo' => $code,
+                    'title' => 'CRM FacePhi'
+                ) , $code);
+            }
+        });
+    //}
 
 	// Filtros de control de logueado o no
 	Route::filter('notLogged', 'Ttt\Panel\Filters\Panel@notLogged');
