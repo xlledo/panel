@@ -331,12 +331,18 @@ trait FicheroTrait {
             $page   = \Input::get('draw',1);
             $start  = \Input::get('start',0);   
             $length = \Input::get('length',10); //items en cada página
+            $seachArray = (array)\Input::get('search');
             
             $queryFicheros = \Ttt\Panel\Repo\Fichero\Fichero::query();
             
-            if($solo_imagenes)
+            if( $solo_imagenes )
             {
                 $queryFicheros->where('mime','LIKE','%image%');
+            }
+            
+            if( $seachArray['value']!='' )
+            {
+                $queryFicheros->where('nombre','LIKE', '%' . $seachArray['value'] . '%');
             }
             
             $ficherosTodos = $queryFicheros->get();
@@ -370,6 +376,6 @@ trait FicheroTrait {
             $array_json['recordsFiltered'] = count($ficherosTodos);
             
             return json_encode($array_json);
-        }                
+        }                 
         
 }
