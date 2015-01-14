@@ -11,6 +11,33 @@
 	                    Seleccione alguna opción del menú lateral o haga click en alguno de los accesos
 	                    rápidos de la derecha.</p>
 	        </div>
+                
+                
+        
+            @foreach($dashboardItems as $key => $item) 
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <div class="widget-box ui-sortable-handle">
+                        <div class="widget-header">
+                                <h5 class="widget-title">{{$item['titulo']; }}</h5>
+                                <div class="widget-toolbar">
+                                        <div class="widget-menu">
+                                                <a href="#" data-action="settings" data-toggle="dropdown">
+                                                        <i class="ace-icon fa fa-bars"></i>
+                                                </a>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="widget-body">
+                                <div class="widget-main">
+                                      @include($item['view'],array('items' => $dashboardItemsResult[$key]))
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach                
+                
 	    </div>
 	    <div class="col-md-3">
 	        <div class="widget-box transparent">
@@ -37,4 +64,7 @@
 
 	    </div>
 	</div>
+        
+
+        
 @stop

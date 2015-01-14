@@ -10,6 +10,18 @@ class DashboardController extends PanelController{
 
 	public function index()
 	{
+                //-- Preparación de items para la portada
+                $dasboardItems = \Config::get('dashboard.items');
+                $dasboardResultData = array();
+                
+                foreach ($dasboardItems as $key => $item)
+                {
+                    $dasboardResultData[$key] = call_user_func_array($item['eloquent'] . '::' . $item['method'], $item['defaultArguments']);
+                }
+                
+                \View::share('dashboardItems', $dasboardItems);
+                \View::share('dashboardItemsResult', $dasboardResultData);
+                
 		View::share('title', 'CRM FacePhi');
 		return View::make('panel::' . $this->_views_dir . '.dashboard');
 	}
