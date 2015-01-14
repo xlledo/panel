@@ -16,7 +16,8 @@ Route::group(array('prefix' => 'admin'), function()
                 '401' => 'No autorizada',
                 '402' => 'Requiere pago',
                 '403' => 'Olvidada',
-                '404' => 'Página no encontrada'
+                '404' => 'Página no encontrada',
+                '500' => 'Página no existente'
             );
             Log::error($exception);
             if(array_key_exists($code, $mensajesError))
