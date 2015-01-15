@@ -331,6 +331,7 @@ trait FicheroTrait {
             $page   = \Input::get('draw',1);
             $start  = \Input::get('start',0);   
             $length = \Input::get('length',10); //items en cada página
+            $originUrl = \Input::get('originUrl');
             $seachArray = (array)\Input::get('search');
             
             $queryFicheros = \Ttt\Panel\Repo\Fichero\Fichero::query();
@@ -363,7 +364,7 @@ trait FicheroTrait {
                          $fic->nombre,
                          ucfirst($fic->maker->first_name . ' ' .$fic->maker->last_name),
                          $fic->created_at->format('d/m/Y'),
-                        '<a href="' . \URL::to('admin/' . static::$moduleSlug. '/asociar_fichero/' . $fic->id) . '?from=' . \Input::get('from') . '&multiple=' . \Input::get('multiple') .  '&categoria=' . \Input::get('categoria') . '" class="btn btn-xs btn-primary">Seleccionar</a>'
+                        '<a href="' . \URL::to('admin/' . static::$moduleSlug. '/asociar_fichero/' . $fic->id) . '?from=' . \Input::get('from') . '&multiple=' . \Input::get('multiple') .  '&categoria=' . \Input::get('categoria') . '&originUrl=' . $originUrl .  '" class="btn btn-xs btn-primary">Seleccionar</a>'
                     );
                     $array_result[]=$arr_fic;
             }
