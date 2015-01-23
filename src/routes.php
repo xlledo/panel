@@ -10,6 +10,7 @@ Route::group(array('prefix' => 'admin'), function()
     //Manejo personalizado de errores, descomentar el condicional para que funcione
     //if(! getenv('LARA_ENV'))
     //{
+    if(getenv('LARA_ENV')!= 'local'){
         App::error(function(\Exception $exception, $code){
             $mensajesError = array(
                 '400' => 'Bad Request',
@@ -56,6 +57,7 @@ Route::group(array('prefix' => 'admin'), function()
                 ) , $code);
             }
         });
+    }
     //}
 
 	// Filtros de control de logueado o no

@@ -11,7 +11,7 @@ class DashboardController extends PanelController{
 	public function index()
 	{
                 //-- Preparación de items para la portada
-                $dasboardItems = \Config::get('dashboard.items');
+                $dasboardItems = \Config::get('dashboard.items',array());
                 $dasboardResultData = array();
                 
                 foreach ($dasboardItems as $key => $item)
