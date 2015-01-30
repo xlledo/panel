@@ -142,7 +142,7 @@ class EloquentPaginas implements PaginasInterface{
             return FALSE;
         }
 
-        $pagina->actualizado_por   = $data['usuario'];
+        $pagina->actualizado_por = $data['usuario'];
 
         $pagina->update();
 
