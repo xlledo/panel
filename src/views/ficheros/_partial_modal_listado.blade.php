@@ -13,7 +13,7 @@
     <tr class="@if($index % 2 == 0) par @else impar @endif">
         <td>
             @if($item->esImagen())
-                <img src="{{ $item->getStreamBase64()}}" style="max-width: 50px;"/>
+                <img src="{{ $item->getStreamBase64($item->getSize(50))}}" style="max-width: 50px;"/>
             @else
                 No disponible
             @endif
