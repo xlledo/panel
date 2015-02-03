@@ -5,21 +5,28 @@
 
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-            <button class="btn btn-success">
-                <i class="icon-bar-chart"></i>
-            </button>
-
-            <button class="btn btn-info">
-                <i class="icon-gift"></i>
-            </button>
-
-            <button class="btn btn-warning">
-                <i class="icon-flag"></i>
-            </button>
-
-            <button class="btn btn-danger">
-                <i class="icon-cogs"></i>
-            </button>
+            @if($dashboardIcons)
+                <button class="btn btn-success">
+                    <a href="{{\URL::to($dashboardIcons['icon1']['link']) }}" style="color:white;">
+                        <i class="{{$dashboardIcons['icon1']['icon'] }}"></i>
+                    </a>
+                </button>
+                <button class="btn btn-info">
+                    <a href="{{\URL::to($dashboardIcons['icon2']['link']) }}" style="color:white;">
+                        <i class="{{$dashboardIcons['icon2']['icon'] }}"></i>
+                    </a>
+                </button>
+                <button class="btn btn-warning">
+                    <a href="{{\URL::to($dashboardIcons['icon3']['link']) }}" style="color:white;">
+                        <i class="{{$dashboardIcons['icon3']['icon'] }}"></i>
+                    </a>
+                </button>
+                <button class="btn btn-danger">
+                    <a href="{{\URL::to($dashboardIcons['icon4']['link']) }}" style="color:white;">
+                        <i class="{{$dashboardIcons['icon4']['icon'] }}"></i>
+                    </a>
+                </button>
+            @endif
         </div>
 
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">

@@ -66,6 +66,10 @@ class PanelController extends \BaseController {
 		}
 		exit;
 		*/
+                
+                //-- Iconos Izquierda
+                $dashboardIcons = \Config::get('dashboard.dashboard-links', FALSE);
+                \View::share('dashboardIcons', $dashboardIcons);                
 	}
 
 	protected function _setMenu()
