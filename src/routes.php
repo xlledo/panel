@@ -218,24 +218,24 @@ Route::group(array('prefix' => 'admin'), function()
         Route::post('/ficheros','Ttt\Panel\FicherosController@index');
         
         //Gestion Paginas
-        Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
-        Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
-        Route::get('/paginas/borrar/{id}','Ttt\Panel\PaginasControllers@borrar');
-        Route::get('/paginas/ver/{id}','Ttt\Panel\PaginasController@ver');
-        Route::get('/paginas/borrar/{id}', 'Ttt\Panel\PaginasController@borrar');
-        Route::get('/paginas/borrarTraduccion/{id}', 'Ttt\Panel\PaginasController@borrarTraduccion');
-        Route::post('/paginas/acciones_por_lote','Ttt\Panel\PaginasController@accionesPorLote');
-        Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
-        Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
-        Route::post('/paginas/', 'Ttt\Panel\PaginasController@index'); //buscar
-        
-        //Ficheros Paginas
-        Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
-        Route::get('/paginas/desasociar_fichero/{id}','Ttt\Panel\PaginasController@desasociarFichero');
-        Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
-        Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
-        Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
-        Route::get('/paginas/nuevo_fichero','Ttt\Panel\PaginasController@nuevoFichero');
+//        Route::get('/paginas', 'Ttt\Panel\PaginasController@index');
+//        Route::get('/paginas/nuevo', 'Ttt\Panel\PaginasController@nuevo');
+//        Route::get('/paginas/borrar/{id}','Ttt\Panel\PaginasControllers@borrar');
+//        Route::get('/paginas/ver/{id}','Ttt\Panel\PaginasController@ver');
+//        Route::get('/paginas/borrar/{id}', 'Ttt\Panel\PaginasController@borrar');
+//        Route::get('/paginas/borrarTraduccion/{id}', 'Ttt\Panel\PaginasController@borrarTraduccion');
+//        Route::post('/paginas/acciones_por_lote','Ttt\Panel\PaginasController@accionesPorLote');
+//        Route::post('/paginas/crear','Ttt\Panel\PaginasController@crear');
+//        Route::post('/paginas/actualizar', 'Ttt\Panel\PaginasController@actualizar');
+//        Route::post('/paginas/', 'Ttt\Panel\PaginasController@index'); //buscar
+//        
+//        //Ficheros Paginas
+//        Route::get('/paginas/asociar_fichero/{id}', 'Ttt\Panel\PaginasController@asociarFichero');
+//        Route::get('/paginas/desasociar_fichero/{id}','Ttt\Panel\PaginasController@desasociarFichero');
+//        Route::post('/paginas/crear_fichero','Ttt\Panel\PaginasController@crearFichero');
+//        Route::get('/paginas/ver_fichero/{id}', 'Ttt\Panel\PaginasController@verFichero');
+//        Route::post('/paginas/actualizar_fichero', 'Ttt\Panel\PaginasController@actualizarFichero');
+//        Route::get('/paginas/nuevo_fichero','Ttt\Panel\PaginasController@nuevoFichero');
         
 	Route::get('/hola', function()
 	{

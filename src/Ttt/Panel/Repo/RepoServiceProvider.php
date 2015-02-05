@@ -30,9 +30,9 @@ use Ttt\Panel\Repo\Categoriatraducible\CategoriaI18n as CategoriaTraducibleI18n;
 use Ttt\Panel\Repo\Fichero\Fichero;
 use Ttt\Panel\Repo\Fichero\EloquentFichero;
 
-use Ttt\Panel\Repo\Paginas\Pagina;
-use Ttt\Panel\Repo\Paginas\PaginaI18n;
-use Ttt\Panel\Repo\Paginas\EloquentPaginas;
+//use Ttt\Panel\Repo\Paginas\Pagina;
+//use Ttt\Panel\Repo\Paginas\PaginaI18n;
+//use Ttt\Panel\Repo\Paginas\EloquentPaginas;
 
 use Ttt\Panel\Repo\Menu\Menu;
 use Ttt\Panel\Repo\Menu\EloquentMenu;
@@ -108,12 +108,12 @@ class RepoServiceProvider extends ServiceProvider{
             );
         });
 
-        $this->app->bind('Ttt\Panel\Repo\Paginas\PaginasInterface', function($app)
-        {
-            return new EloquentPaginas(
-                    new Pagina, new PaginaI18n
-                    );
-        });
+//        $this->app->bind('Ttt\Panel\Repo\Paginas\PaginasInterface', function($app)
+//        {
+//            return new EloquentPaginas(
+//                    new Pagina, new PaginaI18n
+//                    );
+//        });
 
         $this->app->bind('Ttt\Panel\Repo\Categoriatraducible\CategoriaInterface', function($app)
         {
