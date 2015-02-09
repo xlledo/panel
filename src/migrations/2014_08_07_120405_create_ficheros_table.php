@@ -35,9 +35,12 @@ class CreateFicherosTable extends Migration {
                     
                     $table->integer('creado_por')->unsigned();
                     $table->integer('actualizado_por')->unsigned();
-                    
-                    $table->foreign('creado_por')->references('id')->on('users');
-                    $table->foreign('actualizado_por')->references('id')->on('users');
+                   
+                    /*
+                                        $table->foreign('creado_por')->references('id')->on('users');
+                                        $table->foreign('actualizado_por')->references('id')->on('users');
+                                         * 
+                                         */
                     
                     $table->timestamps();
                 });
