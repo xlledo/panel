@@ -101,7 +101,7 @@ class EmailNotifier implements NotifierInterface
         $bcc   = $this->bcc;
 
         $from = $this->from;
-
+//        $this->mailer->pretend(TRUE);
 		$this->mailer->send($this->notifyTemplate, $data, function($message) use ($subject, $data, $to, $from, $bcc, $cc, $attachment)
 		{
 			$message->subject($subject);

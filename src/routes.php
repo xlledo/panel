@@ -1,5 +1,5 @@
 <?php
-Route::get('/','Ttt\Panel\DashboardController@index');
+//Route::get('/','Ttt\Panel\DashboardController@index');
 
 
 
@@ -94,16 +94,16 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::post('/modulos/cambiar_estado', 'Ttt\Panel\ModuloController@visibleNoVisible');
 
         //Variables Globales
-	Route::get('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');
-        Route::get('/variablesglobales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
-        Route::get('/variablesglobales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
-        Route::get('/variablesglobales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
-        Route::post('/variablesglobales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
-        Route::post('/variablesglobales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
-	Route::post('/variablesglobales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
-        Route::post('/variablesglobales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
+	Route::get('/variables-globales', 'Ttt\Panel\VariablesglobalesController@index');
+        Route::get('/variables-globales/nuevo', 'Ttt\Panel\VariablesglobalesController@nuevo');
+        Route::get('/variables-globales/ver/{id}', 'Ttt\Panel\VariablesglobalesController@ver');
+        Route::get('/variables-globales/borrar/{id}', 'Ttt\Panel\VariablesglobalesController@borrar');
+        Route::post('/variables-globales/crear', 'Ttt\Panel\VariablesglobalesController@crear');
+        Route::post('/variables-globales/actualizar', 'Ttt\Panel\VariablesglobalesController@actualizar');
+	Route::post('/variables-globales', 'Ttt\Panel\VariablesglobalesController@index');//los filtros
+        Route::post('/variables-globales/acciones_por_lote', 'Ttt\Panel\VariablesglobalesController@accionesPorLote');//las acciones por lote
 
-        Route::get('/variablesglobales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
+        Route::get('/variables-globales/version/{id}', 'Ttt\Panel\VariablesglobalesController@getVersion'); //Las versiones
 
         //Versiones
         Route::get('/version/{id}', 'Ttt\Panel\VersionesController@getVersion');

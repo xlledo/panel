@@ -51,8 +51,9 @@ class FicherosController extends AbstractCrudController
          $this->_config_ficheros = Config::get('panel::ficheros');    
          
          $categoria_ficheros = \Ttt\Panel\Repo\Categoria\Categoria::where('slug','=','ficheros')->get()->first();
-         $categorias_ficheros = ($categoria_ficheros) ? $categoria_ficheros->getDescendants()->toArray() : NULL;
+         $categorias_ficheros = ($categoria_ficheros) ? $categoria_ficheros->getDescendants()->toArray() : array();
          
+         $_categorias_ficheros_array = array();
          foreach($categorias_ficheros as $cat){
              $_categorias_ficheros_array[$cat['id']] = $cat['nombre'];
          }

@@ -8,7 +8,7 @@
             <a href="#" class="navbar-brand">
                 <small>
                     <i class="icon-globe"></i>
-                    CRM FacePhi
+                    {{ \Config::get('panel::app.dashboardTitle', 'Tres Tristes Tigres') }}
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->

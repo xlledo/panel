@@ -29,8 +29,7 @@ return array(
 	*/
 
 	//'host' => 'smtp.mailgun.org',
-	//'host' => 'mail.trestristestigres.com',
-        'host' => 'smtp.1und1.de',
+	'host' => 'mail.trestristestigres.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -56,7 +55,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'noresponder@facephi.com', 'name' => 'No-Responder'),
+	'from' => array('address' => 'noresponder@trestristestigres.com', 'name' => 'No-Responder'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +66,7 @@ return array(
 	|
 	*/
 
-	'notifyTo' => array('address' => 'miguel@trestristestigres.com', 'name' => 'Panel'),
+	'notifyTo' => array('address' => 'ximo@trestristestigres.com', 'name' => 'Panel'),
         
 
 	/*
@@ -94,8 +93,7 @@ return array(
 	|
 	*/
 
-	//'username' => 'ximo@trestristestigres.com',
-        'username'  => 'noreply@facephi.com',
+	'username' => 'ximo@trestristestigres.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -108,8 +106,7 @@ return array(
 	|
 	*/
 
-	//'password' => 'si73fu28',
-        'password'=> '8s39OwUKThxgqL8zpECg',
+	'password' => 'si73fu28',
 
 	/*
 	|--------------------------------------------------------------------------

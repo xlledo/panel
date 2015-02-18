@@ -22,7 +22,7 @@ class DashboardController extends PanelController{
                 \View::share('dashboardItems', $dasboardItems);
                 \View::share('dashboardItemsResult', $dasboardResultData);
                 
-		View::share('title', 'CRM FacePhi');
+		View::share('title', \Config::get('panel::app.dashboardTitle', 'Tres Tristes Tigres'));
 		return View::make('panel::' . $this->_views_dir . '.dashboard');
 	}
 }

@@ -22,7 +22,7 @@ class LoginController extends PanelController{
 		/*echo '<pre>';
 		var_dump(\Config::get('panel::mail.from'));
 		echo '</pre>';exit;*/
-		View::share('title', 'CRM FacePhi');
+		View::share('title', \Config::get('panel::app.dashboardTitle', 'Tres Tristes Tigres'));
 		return View::make('panel::' . $this->_views_dir . '.login');
 	}
 
@@ -47,7 +47,7 @@ class LoginController extends PanelController{
 			\Session::flash('messages', array(
 				array(
 					'class' => 'alert-success',
-					'msg'   => 'Bienvenido a la Aplicación de Gestión CRM FacePhi'
+					'msg'   => 'Bienvenido a la Aplicación de Gestión ' . \Config::get('panel::app.dashboardTitle', 'Tres Tristes Tigres')
 				)
 			));
 			return \Redirect::action('Ttt\Panel\DashboardController@index');

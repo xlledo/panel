@@ -50,4 +50,6 @@ return array(
 	*/
 
 	'orderDir' => 'ordenDir',
+    
+        'dashboardTitle' => 'CRM FacePhi'
 );
