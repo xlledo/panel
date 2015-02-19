@@ -33,18 +33,18 @@ trait FicheroStandardControllerTrait {
         }
         
         
-        /**
+    /**
          * 
-         * Elimina la asociación entre fichero y pagina
+         * Elimina la asociación entre Item y Fichero
          * 
          * @param type $id
          * @return type
          */
-        
+
     public function desasociarFichero($id = null)
         {
             //-- Recuperamos el fichero
-            if(     $fichero = Repo\Fichero\Fichero::find($id) 
+            if(     $fichero = \Ttt\Panel\Repo\Fichero\Fichero::find($id)
                     && $item = call_user_func($this->_configAdjuntos['eloquentItem'] . '::find',\Input::get('from')) ){
                 
                 $item->ficheros()->detach($id);
@@ -65,7 +65,7 @@ trait FicheroStandardControllerTrait {
             }
             
             return \Redirect::to('admin/' . static::$moduleSlug . '/ver/' . $item->id . '#ficheros');
-        }        
+        }
         
 
         
@@ -95,28 +95,25 @@ trait FicheroStandardControllerTrait {
                                         if($this->validarCamposEspecificos()->passes())
                                         {
                                             $pivot_id = $id;
-
-                                            $ficherosPivot = $item
-                                                                ->ficheros()
-                                                                ->where($this->_configAdjuntos['itemTable'] . '_ficheros.id', $pivot_id)
-                                                                ->get();
-
-                                            //Si cambiamos la relación, creamos una nueva
                                             
+                                            $ficheroPivot = call_user_func($this->_configAdjuntos['eloquentPivot'] . '::find', $pivot_id);
+                                            
+                                            //Si cambiamos la relación, creamos una nueva
                                             if($pivot->fichero_id != \Input::get('fichero_id')){
                                                 //Borramos la relacion y creamos uno nuevo
-                                                $ficherosPivot->first()->pivot->delete();
+                                                $ficheroPivot->delete();
                                                 $r = $item->ficheros()->attach(\Input::get('fichero_id'), $datosEspecificos);
                                                 return \Input::get('fichero_id');
                                             }else{
+
+                                                $ficheroPivot->titulo      = $datosEspecificos['titulo'];
+                                                $ficheroPivot->alt         = $datosEspecificos['alt'];
+                                                $ficheroPivot->enlace      = $datosEspecificos['enlace'];
+                                                $ficheroPivot->descripcion = $datosEspecificos['descripcion'];
+                                                $ficheroPivot->idioma      = $datosEspecificos['idioma'];
                                                 
-                                                $ficherosPivot->first()->pivot->titulo      = $datosEspecificos['titulo'];
-                                                $ficherosPivot->first()->pivot->alt         = $datosEspecificos['alt'];
-                                                $ficherosPivot->first()->pivot->enlace      = $datosEspecificos['enlace'];
-                                                $ficherosPivot->first()->pivot->descripcion = $datosEspecificos['descripcion'];
-                                                $ficherosPivot->first()->pivot->idioma      = $datosEspecificos['idioma'];
+                                                $ficheroPivot->save();
                                                 
-                                                $ficherosPivot->first()->pivot->save();
                                             return TRUE;
                                             }
                                         }else{
@@ -149,4 +146,92 @@ trait FicheroStandardControllerTrait {
                         return TRUE;
                     }
         }
+        
+        public function validarCamposEspecificos() {
+
+            $validator = \Validator::make(
+                            array( //La validacion siempre se hará sobre un get
+                                'nombre' => $this->_fichero_nombre,
+                                'titulo' => \Input::get('titulo_defecto'),
+                                'alt'    => \Input::get('alt_defecto'),
+                                'enlace' => \Input::get('enlace_defecto'),
+                                'descripcion' => \Input::get('descripcion_defecto')),
+                            array(
+                                'nombre' => 'required|max:255',
+                                'titulo' => 'max:255',
+                                'alt'    => 'max:255',
+                                'enlace' => 'max:255',
+                                'descripcion' => 'max:255'),
+                            array(
+                                'required'          => 'El campo :attribute es obligatorio',
+                                'max'               => 'El :attribute no puede ser mayor de :max caracteres.',
+                                'mimes'             => 'Tipo no permitido, compruebe la extensión del fichero'
+                            )
+                );
+            
+            return $validator;
+        }
+
+    function mandarALaVista($data = null)
+    {
+        if( !$data ){
+            $data = array(  'titulo'        => \Input::old('titulo'),
+                            'alt'           => \Input::old('alt'),
+                            'enlace'        => \Input::old('enlace'),
+                            'descripcion'   => \Input::old('descripcion'),
+                            'idioma'        => \Input::old('idioma')
+                            );
+        }
+        
+                \View::share('titulo',      $data['titulo']);
+                \View::share('alt',         $data['alt']);
+                \View::share('enlace',      $data['enlace']);
+                \View::share('descripcion', $data['descripcion']);
+                \View::share('idioma',      $data['idioma']);
+                
+                return $data;
+    }        
+
+    public function obtenerCamposEspecificos( $ficheroId = null, $itemId = null, $pivot_id = null, $enviarAVista = FALSE ) {
+        
+        try{
+                            
+                $item          = call_user_func($this->_configAdjuntos['eloquentItem'] . '::find', $itemId);
+                $ficheros      = $item->ficheros()->getResults();
+                $ficherosPivot = $item->ficheros()
+                                      ->where($this->_configAdjuntos['pivotTable'] . '.id', $pivot_id)
+                                      ->get();
+            
+            if( $ficherosPivot->count() > 0 )
+            {
+                $camposEspecificos = $ficherosPivot->first()->pivot->toArray();
+   
+            }else{ //Si no tiene tabla pivote es que hemos cambiado el fichero
+                $camposEspecificos = array( 'nombre'        => \Input::old('nombre')?:\Input::get('nombre'),
+                                            'idioma'        => \Input::old('idioma')?:\Input::get('idioma'),
+                                            'titulo'        => \Input::old('titulo')?:\Input::get('titulo'),
+                                            'alt'           => \Input::old('alt')?:\Input::get('alt'),
+                                            'enlace'        => \Input::old('enlace')?:\Input::get('enlace'),
+                                            'descripcion'   => \Input::old('descripcion')?:\Input::get('descripcion'));
+                
+            }
+        }  catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+                //-- Si no encuentra los modelos, repopulamos los datos de la vista
+                $camposEspecificos = array( 'nombre'        => (\Input::old('nombre'))?:\Input::get('nombre'),
+                                            'idioma'        => (\Input::old('idioma'))?:\Input::get('idioma'),
+                                            'titulo'        => (\Input::old('titulo'))?:\Input::get('titulo'),
+                                            'alt'           => (\Input::old('alt'))?:\Input::get('alt'),
+                                            'enlace'        => (\Input::old('enlace'))?:\Input::get('enlace'),
+                                            'descripcion'   => (\Input::old('descripcion')))?:\Input::get('descripcion');
+                return $camposEspecificos;
+        }
+        
+        if($enviarAVista){
+               
+            $this->mandarALaVista($camposEspecificos);
+        }
+        return $camposEspecificos;
+        
+    }
+        
 }

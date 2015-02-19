@@ -172,7 +172,7 @@ trait FicheroTrait {
                 //$ruta = lcfirst($workbench) . $this->_views_dir .  '.' . \Input::get('categoria') . '._editar';
                 return \View::make(lcfirst($workbench) . $this->_views_dir .  '.' . \Input::get('categoria') . '._editar');
             }else{
-                return \View::make('panel::' . $this->_views_dir . '.ficheros._editar');
+                return \View::make(lcfirst($workbench) . $this->_views_dir . '.ficheros._editar');
             }
 
         }
