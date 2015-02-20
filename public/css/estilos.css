@@ -123,3 +123,4 @@ padding:15px;position:absolute;bottom:-140px;right:0;left:0;text-align:center;}
 #imagen_comercial:hover .capaOver{bottom:0px;}
 .icoR{background:#438EB9;border-radius:50%;padding:10px;color:#fff;}
 .capaOver a:hover{text-decoration:none;}
+.selector_versiones{ cursor: pointer; padding: 5px;}

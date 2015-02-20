@@ -185,6 +185,8 @@ trait FicheroTrait {
 
         $id = \Input::get('id');
         $pivot_id = \Input::get('pivot_id');
+        
+        
 
         try{
 
@@ -222,12 +224,14 @@ trait FicheroTrait {
                         $data['peso'] = '';
                     }
             }
-
+            
             //Atualizamos el fichero
             $ficheroId = $this->ficheroForm->update($data);
 
             $item_id    = \Input::get('item_id');
+            
             $result = $this->guardarCamposEspecificos($pivot_id);
+            
 
             \View::share('item_id', $item_id);
             \View::share('pivot_id', $pivot_id);

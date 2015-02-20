@@ -80,16 +80,16 @@ trait FicheroStandardControllerTrait {
                     );
                     
                         //-- Obtenemos el elemento de la tabla Pivote
-                        
+                    
                         $pivot = call_user_func($this->_configAdjuntos['eloquentPivot']. '::find', $id);
-                        
+                    
                         //-- Si hay elemento Pivot, es por que la relación ya existe
                         if($pivot){
                         
                                 //-- Obtenemos la página
                                 
                                 $item   = $pivot->{$this->_configAdjuntos['relation']}->first();
-
+                                
                                 //-- Solo cuando actualizamos guardamos los campos directamente 
                                 if( $id ){
                                         if($this->validarCamposEspecificos()->passes())
