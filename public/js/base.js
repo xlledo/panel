@@ -532,7 +532,7 @@ jQuery(function($){
 		 //bootstrap
 		$('[data-rel=popover]').popover({placement:"auto left",container:'body'});
 		bootbox.setDefaults({locale: "es"});
-		 $("input[type=file]").ace_file_input({
+		 $("input[type=file][name='ficheroWeTransfer']").ace_file_input({
 					no_file:'Sin archivo',
 					btn_choose:'Elegir',
 					btn_change:'Cambiar',
